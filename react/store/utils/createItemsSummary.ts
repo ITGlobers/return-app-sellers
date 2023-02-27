@@ -1,4 +1,4 @@
-import type { OrderToReturnSummary } from 'vtex.return-app'
+import type { OrderToReturnSummary } from 'obidev.obi-return-app-sellers'
 
 import { formatItemsToReturn } from './formatItemsToReturn'
 

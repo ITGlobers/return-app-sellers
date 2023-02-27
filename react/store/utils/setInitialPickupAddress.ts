@@ -1,4 +1,4 @@
-import type { ShippingData } from 'vtex.return-app'
+import type { ShippingData } from 'obidev.obi-return-app-sellers'
 
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
 

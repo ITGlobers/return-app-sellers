@@ -1,7 +1,7 @@
 import type {
   QueryNearestPickupPointsArgs,
   NearPickupPointQueryResponse,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app-sellers'
 
 export const nearestPickupPoints = async (
   _: unknown,
