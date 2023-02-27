@@ -1,14 +1,14 @@
 {
   "admin.app.return-list": {
     "component": "AdminReturnList",
-    "path": "/admin/app/returns/requests/"
+    "path": "/admin/app/seller/returns/requests/"
   },
   "admin.app.return-settings": {
     "component": "AdminReturnSettings",
-    "path": "/admin/app/returns/settings/"
+    "path": "/admin/app/seller/returns/settings/"
   },
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
-    "path": "/admin/app/returns/:id/details/"
+    "path": "/admin/app/seller/returns/:id/details/"
   }
 }

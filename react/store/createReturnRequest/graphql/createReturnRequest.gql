@@ -1,6 +1,0 @@
-mutation CreateReturn($returnRequest: ReturnRequestInput!) {
-  createReturnRequest(returnRequest: $returnRequest)
-    @context(provider: "obidev.obi-return-app-sellers") {
-    returnRequestId
-  }
-}
