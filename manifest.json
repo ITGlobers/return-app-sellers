@@ -15,6 +15,9 @@
     "vtex.tenant-graphql": "0.x",
     "vtex.catalog-graphql": "1.x"
   },
+  "peerDependencies": {
+    "vtex.return-app": "3.x"
+  },
   "builders": {
     "admin": "0.x",
     "react": "3.x",
