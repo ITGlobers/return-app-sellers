@@ -3,14 +3,16 @@ import type { ReturnRequest } from 'obidev.obi-return-app-sellers'
 
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {
-    clients: { returnRequest: returnRequestClient },
+    clients: { return : returnClient ,   account : accountClient },
     state: { userProfile, appkey },
   } = ctx
-
+console.log("entre")
   const { userId, role } = userProfile ?? {}
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
-  const returnRequestResult = await returnRequestClient.get(requestId, ['_all'])
+  const accountInfo = await accountClient.getInfo()  
+
+  const returnRequestResult = await returnClient.getReturnById(requestId, accountInfo)
 
   if (!returnRequestResult) {
     // Code error 'E_HTTP_404' to match the one when failing to find and order by OMS

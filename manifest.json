@@ -2,8 +2,8 @@
   "vendor": "obidev",
   "name": "obi-return-app-sellers",
   "version": "0.0.1",
-  "title": "Return app",
-  "description": "Return app",
+  "title": "Return app seller",
+  "description": "Return app seller",
   "dependencies": {
     "vtex.styleguide": "9.x",
     "vtex.format-currency": "0.x",
@@ -14,9 +14,6 @@
     "vtex.easypost": "0.x",
     "vtex.tenant-graphql": "0.x",
     "vtex.catalog-graphql": "1.x"
-  },
-  "peerDependencies": {
-    "vtex.return-app": "3.x"
   },
   "builders": {
     "admin": "0.x",
@@ -33,6 +30,13 @@
   },
   "credentialType": "absolute",
   "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*.myvtex.com",
+        "path": "/_v/return-request"
+      }
+    },
     {
       "name": "outbound-access",
       "attrs": {

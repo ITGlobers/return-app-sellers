@@ -9,6 +9,8 @@ import { MailClient } from './mail'
 import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
+import { Return} from './return'
+import { Account } from './account'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -18,6 +20,9 @@ export class Clients extends IOClients {
     return this.getOrSet('oms', OMS)
   }
 
+  public get account() {
+    return this.getOrSet('account', Account)
+  }
   public get appSettings() {
     return this.getOrSet('appSettings', ReturnAppSettings)
   }
@@ -53,4 +58,9 @@ export class Clients extends IOClients {
   public get sphinx() {
     return this.getOrSet('sphinx', Sphinx)
   }
+
+  public get return() {
+    return this.getOrSet('return', Return)
+  }
+  
 }

@@ -14,12 +14,9 @@ export async function getRequestList(ctx: Context) {
     _dateSubmitted,
     _orderId,
     _userEmail,
-    _allFields,
   } = query
 
   const [from, to] = (_dateSubmitted as string | undefined)?.split(',') ?? []
-
-  const getAllFields = Boolean(_allFields)
 
   ctx.set('Cache-Control', 'no-cache')
 
@@ -36,7 +33,6 @@ export async function getRequestList(ctx: Context) {
         orderId: _orderId as string | undefined,
         userEmail: _userEmail as string | undefined,
       },
-    },
-    getAllFields
+    }
   )
 }
