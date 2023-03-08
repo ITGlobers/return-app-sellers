@@ -45,12 +45,23 @@ export const returnRequestListService = async (
     throw new ForbiddenError('Missing params to filter by store user')
   }
 
+  const adjustedFilter = requireFilterByUser
+  ? { ...filter, userId, userEmail }
+  : filter
+
   const accountInfo = await accountClient.getInfo()  
+  const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined  
   const rmaSearchResult = await returnClient.getReturnList(
     {
       _page: page,
       _pageSize: perPage && perPage <= 100 ? perPage : 25,
-      _perPage:  perPage
+      _perPage:  perPage,
+      _status : adjustedFilter?.status ,
+      _sequenceNumber: adjustedFilter?.sequenceNumber,
+      _id: adjustedFilter?.id,
+      _dateSubmitted: createdIn ,
+      _orderId: adjustedFilter?.orderId,
+      _userEmail: adjustedFilter?.userEmail
     },
     accountInfo,
   )

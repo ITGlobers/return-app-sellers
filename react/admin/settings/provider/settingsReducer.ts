@@ -6,6 +6,7 @@ import type {
 } from 'obidev.obi-return-app-sellers'
 
 export const initialSettingsState: ReturnAppSettings = {
+  id: '' ,
   maxDays: 0,
   excludedCategories: [],
   termsUrl: '',

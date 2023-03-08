@@ -1,4 +1,5 @@
 type ReturnAppSettings {
+  id: String
   maxDays: Int!
   excludedCategories: [String!]!
   paymentOptions: PaymentOptions!
@@ -38,6 +39,7 @@ type ReturnOption {
 }
 
 input ReturnAppSettingsInput {
+  id: String
   maxDays: Int!
   excludedCategories: [String!]!
   paymentOptions: PaymentOptionsInput!

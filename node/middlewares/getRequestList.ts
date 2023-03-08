@@ -4,7 +4,6 @@ import { returnRequestListService } from '../services/returnRequestListService'
 
 export async function getRequestList(ctx: Context) {
   const { query } = ctx
-
   const {
     _page,
     _perPage,

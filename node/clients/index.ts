@@ -11,6 +11,7 @@ import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 import { Return} from './return'
 import { Account } from './account'
+import { ReturnSettings } from './appSettings'
 
 const ReturnAppSettings = vbaseFor<string, ReturnAppSettings>('appSettings')
 const ReturnRequest = masterDataFor<ReturnRequest>('returnRequest')
@@ -61,6 +62,10 @@ export class Clients extends IOClients {
 
   public get return() {
     return this.getOrSet('return', Return)
+  }
+
+  public get returnSettings() {
+    return this.getOrSet('returnSettings', ReturnSettings)
   }
   
 }

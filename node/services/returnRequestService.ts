@@ -6,7 +6,6 @@ export const returnRequestService = async (ctx: Context, requestId: string) => {
     clients: { return : returnClient ,   account : accountClient },
     state: { userProfile, appkey },
   } = ctx
-console.log("entre")
   const { userId, role } = userProfile ?? {}
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 

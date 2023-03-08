@@ -49,7 +49,6 @@ const initialFilters = {
 } as Filters
 
 const ListTableFilter = (props: Props) => {
-  console.log("ENTRE A ESTE COMPONENTE")
   const handles = useCssHandles(CSS_HANDLES)
 
   const { refetch, loading, isDisabled } = props

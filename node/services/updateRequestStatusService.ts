@@ -183,7 +183,7 @@ export const updateRequestStatusService = async (
         })
       : returnRequest.refundData
 
-  const refundReturn = await handleRefund({
+    const refundReturn = await handleRefund({
     currentStatus: requestStatus,
     previousStatus: returnRequest.status,
     refundPaymentData: returnRequest.refundPaymentData ?? {},
@@ -200,6 +200,7 @@ export const updateRequestStatusService = async (
   const giftCard = refundReturn?.giftCard
 
   const updatedRequest = {
+    sellerName : accountInfo.accountName,
     ...formatRequestToPartialUpdate(returnRequest),
     status: requestStatus,
     refundStatusData,

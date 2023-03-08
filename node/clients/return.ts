@@ -4,8 +4,8 @@ import { ExternalClient } from '@vtex/api'
 const baseURL = 'myvtex.com/_v/return-request'
 
 const routes = {
-  retunrByID: (parentAccountName: string , returnId: string) => `http://eurango--${parentAccountName}.${baseURL}/${returnId}`,
-  returnList: (sellerName: string , parentAccountName: string) => `http://eurango--${parentAccountName}.${baseURL}?_sellerName=${sellerName}`,
+  returnByID: (parentAccountName: string , returnId: string) => `http://nmanrique--${parentAccountName}.${baseURL}/${returnId}`,
+  returnList: (sellerName: string , parentAccountName: string) => `http://nmanrique--${parentAccountName}.${baseURL}?_sellerName=${sellerName}`,
 }
 
 export class Return extends ExternalClient {
@@ -13,10 +13,11 @@ export class Return extends ExternalClient {
     super('', ctx, options)
   }
 
-  public async getReturnList ( params : any , accountInfo : any ) : Promise<any | undefined> {
+  public async getReturnList ( params : any ,  accountInfo : any ) : Promise<any | undefined> {
     try {
       const response = await this.http.get(
         routes.returnList(accountInfo.accountName , accountInfo.parentAccountName),
+        
         {
           params,
           headers: {
@@ -36,7 +37,7 @@ export class Return extends ExternalClient {
   public async getReturnById ( returnId : any , accountInfo : any ) : Promise<any | undefined> {
     try {
       const response = await this.http.get(
-        routes.retunrByID(accountInfo.parentAccountName , returnId),
+        routes.returnByID(accountInfo.parentAccountName , returnId),
         {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken,
@@ -44,7 +45,6 @@ export class Return extends ExternalClient {
           }
         }
       )
-      console.log(response)
       return response
 
     } catch (error) {
@@ -57,7 +57,7 @@ export class Return extends ExternalClient {
   public async updateReturn ( returnId : any , updatedRequest:any ,  accountInfo : any ) : Promise<any | undefined> {
     try {
       const response = await this.http.put(
-        routes.retunrByID(accountInfo.parentAccountName , returnId),
+        routes.returnByID(accountInfo.parentAccountName , returnId),
         updatedRequest,
         {
           headers: {
@@ -66,7 +66,6 @@ export class Return extends ExternalClient {
           }
         }
       )
-      console.log(response)
       return response
 
     } catch (error) {
