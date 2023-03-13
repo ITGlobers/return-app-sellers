@@ -41,7 +41,7 @@ export class ReturnSettings extends ExternalClient {
         settings,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
+            VtexIdClientAutCookie: this.context.adminUserAuthToken || "",
             'X-Vtex-Use-Https': 'true',
           }
         }

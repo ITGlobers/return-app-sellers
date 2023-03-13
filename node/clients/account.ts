@@ -25,7 +25,7 @@ export class Account extends JanusClient {
         routes.getMket(),
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
+            VtexIdClientAutCookie: this.context.adminUserAuthToken || "",
           }
         })
       return response

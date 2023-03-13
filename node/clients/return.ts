@@ -21,7 +21,7 @@ export class Return extends ExternalClient {
         {
           params,
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
+            VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
           }
         }
@@ -40,7 +40,7 @@ export class Return extends ExternalClient {
         routes.returnByID(accountInfo.parentAccountName , returnId),
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
+            VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
           }
         }
@@ -61,7 +61,7 @@ export class Return extends ExternalClient {
         updatedRequest,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
+            VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
           }
         }
