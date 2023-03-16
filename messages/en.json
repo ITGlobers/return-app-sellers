@@ -1,6 +1,6 @@
 {
   "admin/return-app.navigation.label": "Returns Seller",
-  "navigation.labelRequests": "Requests Seller",
+  "navigation.labelRequests": "Return Requests Seller",
   "admin/return-app.settings.navigation.label": "Returns Settings Seller",
   "admin/return-app.settings.max-days.label": "Max days:",
   "admin/return-app.settings.error.header": "Error loading settings",

@@ -6,10 +6,6 @@
     {
       "labelId": "navigation.labelRequests",
       "path": "/admin/seller/returns/requests"
-    },
-    {
-      "labelId": "admin/return-app.settings.navigation.label",
-      "path": "/admin/seller/returns/settings"
     }
   ]
 }

@@ -3,10 +3,6 @@
     "component": "AdminReturnList",
     "path": "/admin/app/seller/returns/requests/"
   },
-  "admin.app.return-settings": {
-    "component": "AdminReturnSettings",
-    "path": "/admin/app/seller/returns/settings/"
-  },
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
     "path": "/admin/app/seller/returns/:id/details/"

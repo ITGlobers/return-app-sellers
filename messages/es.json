@@ -1,6 +1,6 @@
 {
   "admin/return-app.navigation.label": "Devoluciones Seller",
-  "navigation.labelRequests": "Solicitudes Seller",
+  "navigation.labelRequests": "Solicitudes devolución Seller",
   "admin/return-app.settings.navigation.label": "Configuración de devolución Seller",
   "admin/return-app.settings.max-days.label": "Max. días:",
   "admin/return-app.settings.error.header": "Error al cargar la configuración",

@@ -10,7 +10,7 @@ import { Clients } from './clients'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 
-const TIMEOUT_MS = 5000
+const TIMEOUT_MS = 10000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
 
 const clients: ClientsConfig<Clients> = {
