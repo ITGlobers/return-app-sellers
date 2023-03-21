@@ -290,6 +290,7 @@
   "store/return-app.return-request-list.page-header.title": "My Returns",
   "store/return-app.return-request-list.page-header.goBack": "Go Back",
   "store/return-app.return-request-list.page-header.cta": "New Request",
+  "admin/return-app.return-request-list.page-header.cta": "New Request",
   "return-app.return-request-list.table.status.new": "New",
   "return-app.return-request-list.table.status.processing": "Processing",
   "return-app.return-request-list.table.status.pickedup-from-client": "Picked up from client",
@@ -329,5 +330,13 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "Text message for allowing a cancellation for admins",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "Text message for refusing a cancellation for admins",
   "return-app.return-request-details.cancellation.modal.storeAllow": "Text message for allowing a cancellation for store users",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "Text message for refusing a cancellation for store users"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "Text message for refusing a cancellation for store users",
+  "return-app.request-return.orders.header": "Request New Return",
+  "return-app.request-return.orders.header.subtitle": "Select an order to start the return request process",
+  "return-app.request-return-order-list.table-header.order-id": "Order ID",
+  "return-app.request-return-order-list.table-header.creation-date": "Created Date",
+  "return-app.request-return-order-list.table-header.items-to-return": "Items Available for Return",
+  "return-app.request-return-order-list.table-header.select-order": "Select Order",
+  "return-app.request-return-order-list.table-pagination.text-of": "of"
+
 }

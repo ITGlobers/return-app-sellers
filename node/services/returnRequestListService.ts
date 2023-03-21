@@ -61,7 +61,8 @@ export const returnRequestListService = async (
       _id: adjustedFilter?.id,
       _dateSubmitted: createdIn ,
       _orderId: adjustedFilter?.orderId,
-      _userEmail: adjustedFilter?.userEmail
+      _userEmail: adjustedFilter?.userEmail,
+      _sellerName: accountInfo.accountName
     },
     accountInfo,
   )

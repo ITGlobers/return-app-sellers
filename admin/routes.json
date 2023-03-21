@@ -6,5 +6,13 @@
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
     "path": "/admin/app/seller/returns/:id/details/"
+  },  
+  "admin.app.order-list": {
+    "component": "AdminReturnOrderList",
+    "path": "/admin/app/seller/returns/orders/"
+  },
+  "admin.app.return-add": {
+    "component": "AdminReturnAdd",
+    "path": "/admin/app/seller/returns/orders/add/:id/"
   }
 }

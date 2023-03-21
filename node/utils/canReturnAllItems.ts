@@ -1,19 +1,22 @@
-import type { OrderDetailResponse, MasterDataEntity } from '@vtex/clients'
+import type { OrderDetailResponse } from '@vtex/clients'
 import type {
   ReturnRequestItemInput,
   ReturnAppSettings,
-  ReturnRequest,
 } from 'obidev.obi-return-app-sellers'
 import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'
 import type { CatalogGQL } from '../clients/catalogGQL'
+import type { Return } from '../clients/return'
+import type { Account } from '../clients/account'
 
 interface CanReturnAllItemsSetup {
   order: OrderDetailResponse
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: MasterDataEntity<ReturnRequest>
+  returnRequestClient: Return
   catalogGQL: CatalogGQL
+  accountClient : Account
+
 }
 
 export const canReturnAllItems = async (
@@ -23,6 +26,7 @@ export const canReturnAllItems = async (
     excludedCategories,
     returnRequestClient,
     catalogGQL,
+    accountClient
   }: CanReturnAllItemsSetup
 ) => {
   // we pass email as email because we won't use the email form the return object here
@@ -31,6 +35,7 @@ export const canReturnAllItems = async (
       excludedCategories,
       returnRequestClient,
       catalogGQL,
+      accountClient
     })
 
   const excludedItemsIndexMap = new Map<number, boolean>()

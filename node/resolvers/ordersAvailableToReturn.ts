@@ -1,7 +1,6 @@
 import { ResolverError } from '@vtex/api'
 import type { OrdersToReturnList, OrderToReturnSummary } from 'obidev.obi-return-app-sellers'
 
-import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { getCurrentDate, substractDays } from '../utils/dateHelpers'
 
@@ -17,17 +16,14 @@ function pacer(callsPerMinute: number) {
 
 const createParams = ({
   maxDays,
-  userEmail,
   page = 1,
 }: {
   maxDays: number
-  userEmail: string
   page: number
 }) => {
   const currentDate = getCurrentDate()
 
   return {
-    clientEmail: userEmail,
     orderBy: 'creationDate,desc' as const,
     f_status: 'invoiced' as const,
     f_creationDate: `creationDate:[${substractDays(
@@ -47,16 +43,18 @@ export const ordersAvailableToReturn = async (
   const {
     state: { userProfile },
     clients: {
-      appSettings,
+      returnSettings,
       oms,
-      returnRequest: returnRequestClient,
+      return: returnRequestClient,
       catalogGQL,
+      account: accountClient
     },
   } = ctx
 
   const { page, storeUserEmail } = args
 
-  const settings = await appSettings.get(SETTINGS_PATH, true)
+  const accountInfo = await accountClient.getInfo()  
+  const settings = await returnSettings.getReturnSettings(accountInfo)
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured')
@@ -70,11 +68,12 @@ export const ordersAvailableToReturn = async (
   if (!userEmail) {
     throw new ResolverError('Missing user email', 400)
   }
-
+ 
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
-    createParams({ maxDays, userEmail, page })
+    createParams({ maxDays, page  })
   )
+
 
   const orderListPromises = []
 
@@ -91,12 +90,13 @@ export const ordersAvailableToReturn = async (
   const orders = await Promise.all(orderListPromises)
 
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
-
+  
   for (const order of orders) {
     const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
       excludedCategories,
       returnRequestClient,
       catalogGQL,
+      accountClient
     })
 
     orderSummaryPromises.push(orderToReturnSummary)

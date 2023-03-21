@@ -1,4 +1,4 @@
-import type { OrderDetailResponse, MasterDataEntity } from '@vtex/clients'
+import type { OrderDetailResponse } from '@vtex/clients'
 import type {
   OrderToReturnSummary,
   InvoicedItem,
@@ -14,12 +14,15 @@ import { transformOrderClientProfileData } from './transformOrderClientProfileDa
 import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
 import type { CatalogGQL } from '../clients/catalogGQL'
+import type { Return } from '../clients/return'
+import type { Account } from '../clients/account'
 import { handleTranlateItems } from './translateItems'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: MasterDataEntity<ReturnRequest>
+  returnRequestClient: Return
   catalogGQL: CatalogGQL
+  accountClient : Account
 }
 
 export const createOrdersToReturnSummary = async (
@@ -29,53 +32,61 @@ export const createOrdersToReturnSummary = async (
     excludedCategories,
     returnRequestClient,
     catalogGQL,
+    accountClient
   }: CreateOrdersToReturnSummarySetup
 ): Promise<OrderToReturnSummary> => {
-  const { items, orderId, creationDate } = order
+  const { items, orderId, creationDate , marketplaceOrderId} = order
+  const accountInfo = await accountClient.getInfo()  
 
-  const returnRequestSameOrder = await returnRequestClient.search(
-    { page: 1, pageSize: 100 },
-    ['items', 'refundData', 'refundPaymentData'],
-    undefined,
-    `orderId=${orderId} AND status <> cancelled`
-  )
-
+  const params = {
+    _page: 1,
+    _pageSize: 10,
+    _perPage:  10,
+    _orderId: marketplaceOrderId,
+    _sellerName: accountInfo.accountName
+  }
+  
+  const returnRequestSameOrder = await returnRequestClient.getReturnList(params , accountInfo)
   const invoicesCreatedByReturnApp: string[] = []
   const committedItemsToReturn: Array<{ itemIndex: number; quantity: number }> =
     []
+  try {
+      for (const returnRequest of returnRequestSameOrder.list) {
+      const { refundData, items: rmaItems } =
+        (returnRequest as Pick<
+          ReturnRequest,
+          'items' | 'refundData' | 'refundPaymentData'
+        >) ?? {}
 
-  for (const returnRequest of returnRequestSameOrder) {
-    const { refundData, items: rmaItems } =
-      (returnRequest as Pick<
-        ReturnRequest,
-        'items' | 'refundData' | 'refundPaymentData'
-      >) ?? {}
+      const { invoiceNumber } = refundData ?? {}
 
-    const { invoiceNumber } = refundData ?? {}
-
-    /**
-     * Colect all invoices created by the return app.
-     * The app creates invoices type Input on object only when refunding a card.
-     * It's necessary to remove all the invoices from OMS Order object to avoid considering the items twice.
-     */
-    // Use
-    if (invoiceNumber) {
-      invoicesCreatedByReturnApp.push(invoiceNumber)
-    }
-
-    for (const item of rmaItems ?? []) {
-      const { orderItemIndex, quantity } = item
-
-      if (orderItemIndex === undefined || quantity === undefined) continue
-
-      const committedItem = {
-        itemIndex: orderItemIndex,
-        quantity,
+      /**
+       * Colect all invoices created by the return app.
+       * The app creates invoices type Input on object only when refunding a card.
+       * It's necessary to remove all the invoices from OMS Order object to avoid considering the items twice.
+       */
+      // Use
+      if (invoiceNumber) {
+        invoicesCreatedByReturnApp.push(invoiceNumber)
       }
 
-      committedItemsToReturn.push(committedItem)
+      for (const item of rmaItems ?? []) {
+        const { orderItemIndex, quantity } = item
+
+        if (orderItemIndex === undefined || quantity === undefined) continue
+
+        const committedItem = {
+          itemIndex: orderItemIndex,
+          quantity,
+        }
+
+        committedItemsToReturn.push(committedItem)
+      }
     }
+  } catch (error) 
+  {
   }
+  
 
   // get all items (based on index on order.items) that were invoiced and sent to customer.
   // By the documentation: The Output type should be used when the invoice you are sending is a selling invoice
@@ -131,7 +142,7 @@ export const createOrdersToReturnSummary = async (
     })
 
     const categoryIdList = categoriesIds.split('/').filter(Boolean)
-    const excludedCategory = excludedCategories.filter((categoryId) =>
+    const excludedCategory = excludedCategories.filter((categoryId: string) =>
       categoryIdList.includes(categoryId)
     )
 

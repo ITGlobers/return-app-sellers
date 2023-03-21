@@ -289,6 +289,7 @@
   "store/return-app.return-request-list.page-header.title": "Mis devoluciones",
   "store/return-app.return-request-list.page-header.goBack": "Volver",
   "store/return-app.return-request-list.page-header.cta": "Nueva solicitud",
+  "admin/return-app.return-request-list.page-header.cta": "Nueva solicitud",
   "return-app.return-request-list.table.status.new": "Nuevo",
   "return-app.return-request-list.table.status.processing": "En procesamiento",
   "return-app.return-request-list.table.status.pickedup-from-client": "Recogido del cliente",
@@ -328,5 +329,13 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Atención: El status de esta solicitud se establecerá como CANCELADA.</p><p>El usuario será notificado por correo electrónico y podrá crear una nueva solicitud de devolución con los elementos de la solicitud cancelada.</p><p>Si esa no es tu intención, define la solicitud como DENEGADA.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Lo sentimos, no se puede cancelar esta solicitud debido a su status actual.</p> <p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Cancelar esta solicitud permitirá utilizar los ítems actuales en una nueva solicitud de devolución.</p><p>Esta acción es irreversible.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Lo sentimos, debes ponerte en contacto con el equipo de soporte para cancelar esta solicitud debido a su status actual.</p> <p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Lo sentimos, debes ponerte en contacto con el equipo de soporte para cancelar esta solicitud debido a su status actual.</p> <p>",
+  "return-app.request-return.orders.header": "Solicitar nueva devolución",
+  "return-app.request-return.orders.header.subtitle": "Selecciona un pedido para iniciar el proceso de solicitud de devolución",
+  "return-app.request-return-order-list.table-header.order-id": "ID de pedido",
+  "return-app.request-return-order-list.table-header.creation-date": "Fecha de creación",
+  "return-app.request-return-order-list.table-header.items-to-return": "Ítems disponibles para devolución",
+  "return-app.request-return-order-list.table-header.select-order": "Seleccionar pedido",
+  "return-app.request-return-order-list.table-pagination.text-of": "de"
+
 }
