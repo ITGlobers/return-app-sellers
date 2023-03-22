@@ -4,9 +4,9 @@ import { ExternalClient } from '@vtex/api'
 const baseURL = 'myvtex.com/_v/return-request'
 
 const routes = {
-  returnByID: (parentAccountName: string , returnId: string) => `http://develop--${parentAccountName}.${baseURL}/${returnId}`,
-  createReturn: (parentAccountName: string) => `http://develop--${parentAccountName}.${baseURL}`,
-  returnList: (parentAccountName: string) => `http://develop--${parentAccountName}.${baseURL}`,
+  returnByID: (parentAccountName: string , returnId: string) => `http://${parentAccountName}.${baseURL}/${returnId}`,
+  createReturn: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
+  returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
 }
 
 export class Return extends ExternalClient {

@@ -4,8 +4,8 @@ import { ExternalClient } from '@vtex/api'
 const baseURL = 'myvtex.com/_v/returns/seller/settings'
 
 const routes = {
-  returnSettings: (parentAccountName: string , sellerName: string) => `http://develop--${parentAccountName}.${baseURL}/${sellerName}`,
-  updateSettings: (parentAccountName: string ) => `http://develop--${parentAccountName}.${baseURL}`,
+  returnSettings: (parentAccountName: string , sellerName: string) => `http://${parentAccountName}.${baseURL}/${sellerName}`,
+  updateSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
 }
 
 export class ReturnSettings extends ExternalClient {
