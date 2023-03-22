@@ -1,4 +1,4 @@
-import type { ReturnRequest } from 'vtex.return-app'
+import type { ReturnRequest } from 'obidev.obi-return-app-sellers'
 
 type VtexProduct = 'admin' | 'store' | undefined
 
@@ -46,11 +46,13 @@ export const ReturnRequestResponse = {
     if (refundableAmount) return refundableAmount
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
 
+    const accountInfo = await accountClient.getInfo()  
+
     const { refundableAmount: refundableAmountValue } =
-      await returnRequestClient.get(id as string, ['refundableAmount'])
+      await returnRequestClient.get(id as string, accountInfo , ['refundableAmount'])
 
     return refundableAmountValue
   },
@@ -64,11 +66,13 @@ export const ReturnRequestResponse = {
     if (customerProfileData) return customerProfileData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
 
+    const accountInfo = await accountClient.getInfo()  
+
     const { customerProfileData: customerProfile } =
-      await returnRequestClient.get(id as string, ['customerProfileData'])
+      await returnRequestClient.get(id as string, accountInfo , ['customerProfileData'])
 
     return customerProfile
   },
@@ -82,11 +86,16 @@ export const ReturnRequestResponse = {
     if (refundableAmountTotals) return refundableAmountTotals
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
 
+    const accountInfo = await accountClient.getInfo()  
+
     const { refundableAmountTotals: refundableAmountTotalsData } =
-      await returnRequestClient.get(id as string, ['refundableAmountTotals'])
+      await returnRequestClient.get(
+        id as string, 
+        accountInfo,
+        ['refundableAmountTotals'])
 
     return refundableAmountTotalsData
   },
@@ -100,11 +109,14 @@ export const ReturnRequestResponse = {
     if (pickupReturnData) return pickupReturnData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
+
+    const accountInfo = await accountClient.getInfo()  
 
     const { pickupReturnData: pickupData } = await returnRequestClient.get(
       id as string,
+      accountInfo,
       ['pickupReturnData']
     )
 
@@ -120,11 +132,14 @@ export const ReturnRequestResponse = {
     if (refundPaymentData) return refundPaymentData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
+
+    const accountInfo = await accountClient.getInfo()  
 
     const { refundPaymentData: refundData } = await returnRequestClient.get(
       id as string,
+      accountInfo,
       ['refundPaymentData']
     )
 
@@ -136,12 +151,15 @@ export const ReturnRequestResponse = {
     if (items) return items
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
 
-    const { items: itemsList } = await returnRequestClient.get(id as string, [
-      'items',
-    ])
+    const accountInfo = await accountClient.getInfo()  
+
+    const { items: itemsList } = await returnRequestClient.get(
+      id as string, 
+      accountInfo,
+      ['items', ])
 
     return itemsList
   },
@@ -151,11 +169,14 @@ export const ReturnRequestResponse = {
     if (refundData) return refundData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
+
+    const accountInfo = await accountClient.getInfo()  
 
     const { refundData: refundDataList } = await returnRequestClient.get(
       id as string,
+      accountInfo,
       ['refundData']
     )
 
@@ -167,16 +188,20 @@ export const ReturnRequestResponse = {
     ctx: Context
   ) => {
     const { id, refundStatusData } = root
+
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
       request: { header },
+
     } = ctx
+
+    const accountInfo = await accountClient.getInfo()  
 
     const vtexProduct = header['x-vtex-product'] as VtexProduct
 
     const { refundStatusData: refundStatusDataList } = refundStatusData
       ? { refundStatusData }
-      : await returnRequestClient.get(id as string, ['refundStatusData'])
+      : await returnRequestClient.get(id as string, accountInfo, ['refundStatusData'])
 
     return transformStatusForStoreUser(refundStatusDataList, vtexProduct)
   },
@@ -190,11 +215,14 @@ export const ReturnRequestResponse = {
     if (cultureInfoData) return cultureInfoData
 
     const {
-      clients: { returnRequest: returnRequestClient },
+      clients: { return: returnRequestClient , account : accountClient},
     } = ctx
+
+    const accountInfo = await accountClient.getInfo()  
 
     const { cultureInfoData: cultureInfo } = await returnRequestClient.get(
       id as string,
+      accountInfo,
       ['cultureInfoData']
     )
 

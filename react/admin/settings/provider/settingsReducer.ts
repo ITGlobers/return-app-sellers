@@ -3,9 +3,10 @@ import type {
   PaymentOptions,
   ReturnAppSettings,
   ReturnOption,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app-sellers'
 
 export const initialSettingsState: ReturnAppSettings = {
+  id: '' ,
   maxDays: 0,
   excludedCategories: [],
   termsUrl: '',

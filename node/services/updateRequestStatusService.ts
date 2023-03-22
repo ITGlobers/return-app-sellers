@@ -3,7 +3,7 @@ import type {
   ReturnRequest,
   Status,
   RefundItemInput,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app-sellers'
 import {
   ResolverError,
   ForbiddenError,
@@ -15,9 +15,6 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-import { OMS_RETURN_REQUEST_STATUS_UPDATE } from '../utils/constants'
-import { OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE } from '../utils/templates'
-import type { StatusUpdateMailData } from '../typings/mailClient'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
@@ -93,12 +90,12 @@ export const updateRequestStatusService = async (
   const {
     state: { userProfile, appkey },
     clients: {
-      returnRequest: returnRequestClient,
+      return : returnClient ,
+      account : accountClient,
       oms,
       giftCard: giftCardClient,
-      mail,
-    },
-    vtex: { logger },
+      
+    }
   } = ctx
 
   const { status, requestId, comment, refundData } = args
@@ -116,10 +113,13 @@ export const updateRequestStatusService = async (
       'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
     )
   }
+  const accountInfo = await accountClient.getInfo()  
 
-  const returnRequest = (await returnRequestClient.get(requestId, [
-    '_all',
-  ])) as ReturnRequest
+
+  const returnRequest = (await returnClient.getReturnById(
+    requestId , 
+    accountInfo
+    )) as ReturnRequest
 
   if (!returnRequest) {
     throw new NotFoundError(`Request ${requestId} not found`)
@@ -183,7 +183,7 @@ export const updateRequestStatusService = async (
         })
       : returnRequest.refundData
 
-  const refundReturn = await handleRefund({
+    const refundReturn = await handleRefund({
     currentStatus: requestStatus,
     previousStatus: returnRequest.status,
     refundPaymentData: returnRequest.refundPaymentData ?? {},
@@ -200,6 +200,7 @@ export const updateRequestStatusService = async (
   const giftCard = refundReturn?.giftCard
 
   const updatedRequest = {
+    sellerName : accountInfo.accountName,
     ...formatRequestToPartialUpdate(returnRequest),
     status: requestStatus,
     refundStatusData,
@@ -209,7 +210,7 @@ export const updateRequestStatusService = async (
   }
 
   try {
-    await returnRequestClient.update(requestId, updatedRequest)
+    await returnClient.updateReturn(requestId, updatedRequest , accountInfo)
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
@@ -225,56 +226,6 @@ export const updateRequestStatusService = async (
       : error.message
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
-  }
-
-  const { cultureInfoData } = updatedRequest
-
-  // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
-  try {
-    const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale)
-    )
-
-    if (!templateExists) {
-      await mail.publishTemplate(
-        OMS_RETURN_REQUEST_STATUS_UPDATE_TEMPLATE(cultureInfoData?.locale)
-      )
-    }
-
-    const {
-      status: updatedStatus,
-      items,
-      customerProfileData,
-      refundStatusData: updatedRefundStatusData,
-      refundPaymentData,
-      refundData: updatedRefundData,
-    } = updatedRequest
-
-    const mailData: StatusUpdateMailData = {
-      templateName: OMS_RETURN_REQUEST_STATUS_UPDATE(cultureInfoData?.locale),
-      jsonData: {
-        data: {
-          status: updatedStatus,
-          name: customerProfileData?.name ?? '',
-          DocumentId: requestId,
-          email: customerProfileData?.email ?? '',
-          paymentMethod: refundPaymentData?.refundPaymentMethod ?? '',
-          iban: refundPaymentData?.iban ?? '',
-          refundedAmount:
-            Number(updatedRefundData?.refundedItemsValue) +
-            Number(updatedRefundData?.refundedShippingValue),
-        },
-        products: items,
-        refundStatusData: updatedRefundStatusData,
-      },
-    }
-
-    await mail.sendMail(mailData)
-  } catch (error) {
-    logger.warn({
-      message: `Failed to send email for return request ${requestId}`,
-      error,
-    })
   }
 
   return { id: requestId, ...updatedRequest }

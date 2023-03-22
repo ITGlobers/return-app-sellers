@@ -1,14 +1,13 @@
 import type {
   ReturnAppSettings,
   MutationSaveReturnAppSettingsArgs,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app-sellers'
 
 import {
   validateMaxDaysCustomReasons,
   validatePaymentOptions,
   valideteUniqueCustomReasonsPerLocale,
 } from '../utils/appSettingsValidation'
-import { SETTINGS_PATH } from '../utils/constants'
 
 const returnAppSettings = async (
   _root: unknown,
@@ -16,11 +15,15 @@ const returnAppSettings = async (
   ctx: Context
 ): Promise<ReturnAppSettings | null> => {
   const {
-    clients: { appSettings },
+    clients: { 
+      returnSettings : returnSettingsClient,
+      account : accountClient ,
+    },
   } = ctx
 
-  const settings = await appSettings.get(SETTINGS_PATH, true)
-
+  
+  const accountInfo = await accountClient.getInfo()  
+  const settings = await returnSettingsClient.getReturnSettings(accountInfo)
   if (!settings) return null
 
   return settings
@@ -32,7 +35,10 @@ const saveReturnAppSettings = async (
   ctx: Context
 ) => {
   const {
-    clients: { appSettings },
+    clients: { 
+      returnSettings : returnSettingsClient,
+      account : accountClient 
+    },
   } = ctx
 
   // validate if all custom reasons have max days smaller than the general max days
@@ -43,17 +49,29 @@ const saveReturnAppSettings = async (
 
   // validate if all custom reasons have unique locales for their translations
   valideteUniqueCustomReasonsPerLocale(args.settings.customReturnReasons)
-
   const settings = {
     ...args.settings,
     // validate that there is at least one payment method selected or user has to use the same as in the order
     paymentOptions: validatePaymentOptions(args.settings.paymentOptions),
   }
 
-  await appSettings.save(SETTINGS_PATH, settings)
+  const accountInfo = await accountClient.getInfo()  
+  const requestSettings = {
+    settings :
+    {
+      sellerId: accountInfo.accountName,
+      parentAccount: accountInfo.parentAccountName ,
+      ...settings,
 
+    }
+
+  }
+  await returnSettingsClient.saveReturnSettings(accountInfo , requestSettings)
   return true
 }
 
 export const queries = { returnAppSettings }
 export const mutations = { saveReturnAppSettings }
+
+
+

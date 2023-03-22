@@ -1,9 +1,9 @@
 {
-  "vendor": "vtex",
-  "name": "return-app",
-  "version": "3.5.6",
-  "title": "Return app",
-  "description": "Return app",
+  "vendor": "obidev",
+  "name": "obi-return-app-sellers",
+  "version": "0.0.1",
+  "title": "Return app seller",
+  "description": "Return app seller",
   "dependencies": {
     "vtex.styleguide": "9.x",
     "vtex.format-currency": "0.x",
@@ -30,6 +30,13 @@
   },
   "credentialType": "absolute",
   "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*.myvtex.com",
+        "path": "/_v/return-request"
+      }
+    },
     {
       "name": "outbound-access",
       "attrs": {

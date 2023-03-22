@@ -1,7 +1,6 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-import type { OrderToReturnSummary } from 'vtex.return-app'
+import type { OrderToReturnSummary } from 'obidev.obi-return-app-sellers'
 
-import { SETTINGS_PATH } from '../utils/constants'
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
@@ -16,15 +15,19 @@ export const orderToReturnSummary = async (
   const {
     state: { userProfile, appkey },
     clients: {
-      appSettings,
+      returnSettings,
       oms,
-      returnRequest: returnRequestClient,
+      return: returnRequestClient,
       catalogGQL,
+      account :accountClient,
+
     },
     vtex: { logger },
   } = ctx
 
-  const settings = await appSettings.get(SETTINGS_PATH, true)
+  const accountInfo = await accountClient.getInfo()  
+  const settings = await returnSettings.getReturnSettings(accountInfo)
+
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
@@ -69,5 +72,6 @@ export const orderToReturnSummary = async (
     excludedCategories,
     returnRequestClient,
     catalogGQL,
+    accountClient
   })
 }

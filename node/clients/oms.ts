@@ -6,7 +6,7 @@ const baseURL = '/api/oms'
 
 const routes = {
   orders: `${baseURL}/pvt/orders`,
-  invoice: (orderId: string) => `${baseURL}/pvt/orders/${orderId}/invoice`,
+  invoice: (orderId: string) => `${baseURL}/pvt/orders/SLR-${orderId}/invoice`,
 }
 
 interface OrderList {
@@ -26,7 +26,6 @@ type InputInvoiceFields = Omit<
 >
 
 interface OrderListParams {
-  clientEmail: string
   orderBy: 'creationDate,desc'
   f_status: 'invoiced'
   f_creationDate: string
@@ -57,7 +56,7 @@ export class OMSCustom extends OMS {
       invoice,
       {
         headers: {
-          VtexIdClientAutCookie: this.context.adminUserAuthToken,
+          VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
         },
         metric: 'oms-create-invoice',
       }

@@ -1,4 +1,4 @@
-import type { QueryReturnRequestArgs } from 'vtex.return-app'
+import type { QueryReturnRequestArgs } from 'obidev.obi-return-app-sellers'
 
 import { returnRequestService } from '../services/returnRequestService'
 

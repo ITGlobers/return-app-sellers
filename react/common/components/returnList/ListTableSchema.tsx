@@ -15,7 +15,7 @@ const ReturnListSchema = () => {
 
   const navigateToRequest = (id: string) => {
     const page = isAdmin
-      ? `/admin/app/returns/${id}/details/`
+      ? `/admin/app/seller/returns/${id}/details/`
       : `#/my-returns/details/${id}`
 
     navigate({

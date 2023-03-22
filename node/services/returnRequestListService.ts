@@ -1,71 +1,18 @@
 import type {
-  QueryReturnRequestListArgs,
-  ReturnRequestFilters,
-  Maybe,
-} from 'vtex.return-app'
+  QueryReturnRequestListArgs
+} from 'obidev.obi-return-app-sellers'
 import { ForbiddenError } from '@vtex/api'
 
-const filterDate = (date: string): string => {
-  const newDate = new Date(date)
-  const day = newDate.getDate()
-  const month = newDate.getMonth() + 1
-  const year = newDate.getFullYear()
-
-  return `${year}-${month < 10 ? `0${month}` : `${month}`}-${
-    day < 10 ? `0${day}` : `${day}`
-  }`
-}
-
-const buildWhereClause = (filter: Maybe<ReturnRequestFilters> | undefined) => {
-  if (!filter) return
-
-  const returnFilters = Object.entries(filter)
-  const whereFilter = returnFilters.reduce((where, [key, value]) => {
-    if (!value) return where
-
-    if (where.length) {
-      where += ` AND `
-    }
-
-    if (key === 'userId') {
-      where += `customerProfileData.userId = "${value}"`
-
-      return where
-    }
-
-    if (key === 'userEmail') {
-      where += `customerProfileData.email = "${value}"`
-
-      return where
-    }
-
-    if (key === 'createdIn' && typeof value !== 'string') {
-      where += `dateSubmitted between ${filterDate(
-        value.from
-      )} AND ${filterDate(value.to)}`
-
-      return where
-    }
-
-    where += `${key}=${value}`
-
-    return where
-  }, '')
-
-  return whereFilter
-}
 
 export const returnRequestListService = async (
   ctx: Context,
-  args: QueryReturnRequestListArgs,
-  getAllFields = false
+  args: QueryReturnRequestListArgs
 ) => {
   const {
-    clients: { returnRequest: returnRequestClient },
+    clients: { return : returnClient , account : accountClient},
     request: { header },
     state: { userProfile, appkey },
   } = ctx
-
   const { page, perPage, filter } = args
   const {
     userId: userIdProfile,
@@ -99,40 +46,31 @@ export const returnRequestListService = async (
   }
 
   const adjustedFilter = requireFilterByUser
-    ? { ...filter, userId, userEmail }
-    : filter
+  ? { ...filter, userId, userEmail }
+  : filter
 
-  const resultFields = getAllFields
-    ? ['_all']
-    : [
-        'id',
-        'orderId',
-        'sequenceNumber',
-        'createdIn',
-        'status',
-        'dateSubmitted',
-      ]
-
-  const rmaSearchResult = await returnRequestClient.searchRaw(
+  const accountInfo = await accountClient.getInfo()  
+  const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined  
+  const rmaSearchResult = await returnClient.getReturnList(
     {
-      page,
-      pageSize: perPage && perPage <= 100 ? perPage : 25,
+      _page: page,
+      _pageSize: perPage && perPage <= 100 ? perPage : 25,
+      _perPage:  perPage,
+      _status : adjustedFilter?.status ,
+      _sequenceNumber: adjustedFilter?.sequenceNumber,
+      _id: adjustedFilter?.id,
+      _dateSubmitted: createdIn ,
+      _orderId: adjustedFilter?.orderId,
+      _userEmail: adjustedFilter?.userEmail,
+      _sellerName: accountInfo.accountName
     },
-    resultFields,
-    'dateSubmitted DESC',
-    buildWhereClause(adjustedFilter)
+    accountInfo,
   )
 
-  const { data, pagination } = rmaSearchResult
-  const { page: currentPage, pageSize, total } = pagination
-
+  const { list, paging } = rmaSearchResult
+  
   return {
-    list: data,
-    paging: {
-      total,
-      perPage: pageSize,
-      currentPage,
-      pages: Math.ceil(total / pageSize),
-    },
+    list,
+    paging
   }
 }

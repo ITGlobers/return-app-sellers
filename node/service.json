@@ -4,14 +4,5 @@
   "timeout": 5000,
   "minReplicas": 2,
   "maxReplicas": 4,
-  "routes": {
-    "returnRequests": {
-      "path": "/_v/return-request",
-      "public": true
-    },
-    "returnRequest": {
-      "path": "/_v/return-request/:requestId",
-      "public": true
-    }
-  }
+  "routes": {}
 }

@@ -17,8 +17,8 @@ export const OrderLink = () => {
   const { orderId } = data.returnRequestDetails
 
   const targetHref = isAdmin
-    ? `/admin/checkout/#/orders/${orderId}`
-    : `/account/#/orders/${orderId}`
+    ? `/admin/checkout/#/orders/SLR-${orderId}`
+    : `/account/#/orders/SLR-${orderId}`
 
   return (
     <Link href={targetHref} target="_blank">

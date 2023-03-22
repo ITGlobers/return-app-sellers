@@ -1,7 +1,7 @@
 {
-  "admin/return-app.navigation.label": "Returns",
-  "navigation.labelRequests": "Requests",
-  "admin/return-app.settings.navigation.label": "Returns Settings",
+  "admin/return-app.navigation.label": "Returns Seller",
+  "navigation.labelRequests": "Return Requests Seller",
+  "admin/return-app.settings.navigation.label": "Returns Settings Seller",
   "admin/return-app.settings.max-days.label": "Max days:",
   "admin/return-app.settings.error.header": "Error loading settings",
   "admin/return-app.settings.error.description": "There was an error loading the application settings. Please try reloading the page.",
@@ -290,6 +290,7 @@
   "store/return-app.return-request-list.page-header.title": "My Returns",
   "store/return-app.return-request-list.page-header.goBack": "Go Back",
   "store/return-app.return-request-list.page-header.cta": "New Request",
+  "admin/return-app.return-request-list.page-header.cta": "New Request",
   "return-app.return-request-list.table.status.new": "New",
   "return-app.return-request-list.table.status.processing": "Processing",
   "return-app.return-request-list.table.status.pickedup-from-client": "Picked up from customer",
@@ -329,5 +330,14 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Attention: This request's status will be set to CANCELLED.</p><p>This will notify the user via email and allow them to create a new return request with the cancelled request's items.</p><p>If that is not your intention, set the request as DENIED.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Sorry, it's not possible to cancel this request due to its current status.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Cancelling this request will allow the current items to be used in a new return request.</p><p>This action is irreversible.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Sorry, you need to contact the support team to cancel this request due to its current status.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Sorry, you need to contact the support team to cancel this request due to its current status.</p>",
+  "return-app.request-return.orders.header": "Request New Return",
+  "return-app.request-return.orders.header.subtitle": "Select an order to start the return request process",
+  "return-app.request-return-order-list.table-header.order-id": "Order ID",
+  "return-app.request-return-order-list.table-header.creation-date": "Created Date",
+  "return-app.request-return-order-list.table-header.items-to-return": "Items Available for Return",
+  "return-app.request-return-order-list.table-header.select-order": "Select Order",
+  "return-app.request-return-order-list.table-pagination.text-of": "of"
+
+
 }

@@ -3,7 +3,7 @@ import type {
   PaymentTypeInput,
   CustomReturnReasonInput,
   PaymentOptions,
-} from 'vtex.return-app'
+} from 'obidev.obi-return-app-sellers'
 
 export const validatePaymentOptions = (
   paymentOptions: PaymentOptionsInput
@@ -25,10 +25,10 @@ export const validatePaymentOptions = (
     return paymentOptions
   }
 
-  // Make automaticallyRefundPaymentMethod null when enablePaymentMethodSelection is true. This way we avoid confusion. We cannot have this value as true when payment method selection is eneble.
+  // Make automaticallyRefundPaymentMethod false when enablePaymentMethodSelection is true. This way we avoid confusion. We cannot have this value as true when payment method selection is eneble.
   const adjustedPaymentOptions = {
     ...paymentOptions,
-    automaticallyRefundPaymentMethod: null,
+    automaticallyRefundPaymentMethod: false,
   }
 
   for (const paymentType of Object.keys(allowedPaymentTypes)) {

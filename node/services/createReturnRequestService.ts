@@ -1,11 +1,6 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from 'vtex.return-app'
+import type { ReturnRequestCreated, ReturnRequestInput } from 'obidev.obi-return-app-sellers'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
-
-import {
-  SETTINGS_PATH,
-  OMS_RETURN_REQUEST_CONFIRMATION,
-} from '../utils/constants'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
@@ -14,8 +9,6 @@ import { validatePaymentMethod } from '../utils/validatePaymentMethod'
 import { validateCanUsedropoffPoints } from '../utils/validateCanUseDropoffPoints'
 import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
-import { OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE } from '../utils/templates'
-import type { ConfirmationMailData } from '../typings/mailClient'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
 
@@ -26,9 +19,9 @@ export const createReturnRequestService = async (
   const {
     clients: {
       oms,
-      returnRequest: returnRequestClient,
-      appSettings,
-      mail,
+      return: returnRequestClient,
+      returnSettings,
+      account :accountClient,
       catalogGQL,
     },
     state: { userProfile, appkey },
@@ -76,18 +69,18 @@ export const createReturnRequestService = async (
   if (!orderId) {
     throw new UserInputError('Order ID is missing')
   }
-
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
-  const searchRMAPromise = returnRequestClient.searchRaw(
-    { page: 1, pageSize: 1 },
-    ['id'],
-    undefined,
-    `orderId=${orderId}`
-  )
-
-  const settingsPromise = appSettings.get(SETTINGS_PATH, true)
-
+  const params = {
+    _page: 1,
+    _pageSize: 1,
+    _perPage:  1,
+    _id: orderId
+  }
+  
+  const accountInfo = await accountClient.getInfo()  
+  const searchRMAPromise = await returnRequestClient.getReturnList(params , accountInfo)
+  const settingsPromise = returnSettings.getReturnSettings(accountInfo)
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
   const [order, searchRMA, settings] = await Promise.all([
@@ -114,7 +107,7 @@ export const createReturnRequestService = async (
     sellers,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
-    shippingData,
+    //shippingData,
     storePreferencesData: { currencyCode },
   } = order
 
@@ -144,6 +137,7 @@ export const createReturnRequestService = async (
     excludedCategories,
     returnRequestClient,
     catalogGQL,
+    accountClient
   })
 
   // Validate maxDays for custom reasons.
@@ -231,40 +225,44 @@ export const createReturnRequestService = async (
 
   let rmaDocument: DocumentResponse
 
+
   try {
-    rmaDocument = await returnRequestClient.save({
-      orderId,
-      refundableAmount,
-      sequenceNumber,
-      status: 'new',
-      refundableAmountTotals,
-      customerProfileData: {
-        userId: clientProfileData.userProfileId,
-        name: customerProfileData.name,
-        email: customerEmail,
-        phoneNumber: customerProfileData.phoneNumber,
-      },
-      pickupReturnData,
-      refundPaymentData: {
-        ...refundPaymentDataResult,
-        automaticallyRefundPaymentMethod: createInvoiceTypeInput,
-      },
-      items: itemsToReturn,
-      dateSubmitted: requestDate,
-      refundData: null,
-      refundStatusData: [
-        {
-          status: 'new',
-          submittedBy,
-          createdAt: requestDate,
-          comments: userCommentData,
+    const request = 
+      {
+        sellerName: accountInfo.accountName,
+        orderId,
+        refundableAmount,
+        sequenceNumber,
+        status: 'new',
+        refundableAmountTotals,
+        customerProfileData: {
+          userId: clientProfileData.userProfileId,
+          name: customerProfileData.name,
+          email: customerEmail,
+          phoneNumber: customerProfileData.phoneNumber,
         },
-      ],
-      cultureInfoData: {
-        currencyCode,
-        locale,
-      },
-    })
+        pickupReturnData,
+        refundPaymentData: {
+          ...refundPaymentDataResult,
+          automaticallyRefundPaymentMethod: createInvoiceTypeInput,
+        },
+        items: itemsToReturn,
+        dateSubmitted: requestDate,
+        refundData: null,
+        refundStatusData: [
+          {
+            status: 'new',
+            submittedBy,
+            createdAt: requestDate,
+            comments: userCommentData,
+          },
+        ],
+        cultureInfoData: {
+          currencyCode,
+          locale,
+        },
+      }
+    rmaDocument = await returnRequestClient.createReturn( request, accountInfo)
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
@@ -280,62 +278,6 @@ export const createReturnRequestService = async (
       : error.message
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
-  }
-
-  // We add a try/catch here so we avoid sending an error to the browser only if the email fails.
-  try {
-    const templateExists = await mail.getTemplate(
-      OMS_RETURN_REQUEST_CONFIRMATION(locale)
-    )
-
-    if (!templateExists) {
-      await mail.publishTemplate(
-        OMS_RETURN_REQUEST_CONFIRMATION_TEMPLATE(locale)
-      )
-    }
-
-    const {
-      firstName: clientFirstName,
-      lastName: clientLastName,
-      phone,
-    } = clientProfileData
-
-    const {
-      address: { country, city, street },
-    } = shippingData
-
-    const mailData: ConfirmationMailData = {
-      templateName: OMS_RETURN_REQUEST_CONFIRMATION(locale),
-      jsonData: {
-        data: {
-          status: 'new',
-          name: `${clientFirstName} ${clientLastName}`,
-          DocumentId: rmaDocument.DocumentId,
-          email: customerEmail,
-          phoneNumber: phone,
-          country,
-          locality: city,
-          address: street,
-          paymentMethod: refundPaymentData.refundPaymentMethod,
-        },
-        products: [...itemsToReturn],
-        refundStatusData: [
-          {
-            status: 'new',
-            submittedBy,
-            createdAt: requestDate,
-            comments: userCommentData,
-          },
-        ],
-      },
-    }
-
-    await mail.sendMail(mailData)
-  } catch (error) {
-    logger.warn({
-      message: `Failed to send email for return request ${rmaDocument.DocumentId}`,
-      error,
-    })
   }
 
   return { returnRequestId: rmaDocument.DocumentId }

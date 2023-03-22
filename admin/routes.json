@@ -1,14 +1,18 @@
 {
   "admin.app.return-list": {
     "component": "AdminReturnList",
-    "path": "/admin/app/returns/requests/"
-  },
-  "admin.app.return-settings": {
-    "component": "AdminReturnSettings",
-    "path": "/admin/app/returns/settings/"
+    "path": "/admin/app/seller/returns/requests/"
   },
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
-    "path": "/admin/app/returns/:id/details/"
+    "path": "/admin/app/seller/returns/:id/details/"
+  },  
+  "admin.app.order-list": {
+    "component": "AdminReturnOrderList",
+    "path": "/admin/app/seller/returns/orders/"
+  },
+  "admin.app.return-add": {
+    "component": "AdminReturnAdd",
+    "path": "/admin/app/seller/returns/orders/add/:id/"
   }
 }
