@@ -10,8 +10,12 @@ import type {
 } from 'vtex.return-app'
 import { useQuery } from 'react-apollo'
 import { OrderList } from './OrderList'
+import { useRuntime } from 'vtex.render-runtime'
+import { AdminLoader } from '../AdminLoader'
 
 export const OrderListContainer = () => {
+
+  const { navigate } = useRuntime()
 
   
   const [ordersToReturn, setOrdersToReturn] = useState<OrdersToReturnList[]>([])
@@ -22,7 +26,7 @@ export const OrderListContainer = () => {
       QueryOrdersAvailableToReturnArgs
     >(ORDERS_AVAILABLE_TO_RETURN, {
       variables: {
-        page: 1,
+        page: 1
       },
       fetchPolicy: 'no-cache',
     })
@@ -76,6 +80,15 @@ export const OrderListContainer = () => {
         title={
           <FormattedMessage id="return-app.request-return.orders.header" />
         }
+        
+        linkLabel={
+          <FormattedMessage id="admin/return-app.return-request-details.page-header.link-label" />
+        }
+        onLinkClick={() => {
+          navigate({
+            to: '/admin/app/seller/returns/requests/',
+          })
+        }}
         subtitle={
           <FormattedMessage id="return-app.request-return.orders.header.subtitle" />
         }
@@ -83,21 +96,34 @@ export const OrderListContainer = () => {
       </PageHeader>
      </>
     }
-    >
-     <PageBlock variation="full" fit="fill">
-        <>
-          {loading || error || !ordersToReturn.length ? (
-            <div>Loading</div>
-          ) : (
-            <OrderList
-              orders={ordersToReturn[currentPage - 1]}
-              handlePagination={handlePagination}
-              refetch={refetch}
-              isLoading={loading}
-            />
-          )}
-        </>
-      </PageBlock>
+    > 
+
+    <PageBlock variation="full" fit="fill">
+      <>
+        {loading || error || !ordersToReturn.length ? (
+          <AdminLoader
+            loading={loading}
+            error={error}
+            data={ordersToReturn}
+            errorMessages={{
+              errorTitle: (
+                <FormattedMessage id="admin/return-app.return-request-details.error.title" />
+              ),
+              errorDescription: (
+                <FormattedMessage id="admin/return-app.return-request-details.error.description" />
+              ),
+            }}
+          />
+        ) : (
+          <OrderList
+            orders={ordersToReturn[currentPage - 1]}
+            handlePagination={handlePagination}
+            refetch={refetch}
+            isLoading={loading}
+          />
+        )}
+      </>
+    </PageBlock>
     </Layout>
   )
 }

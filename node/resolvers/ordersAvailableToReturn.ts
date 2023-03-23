@@ -17,27 +17,34 @@ function pacer(callsPerMinute: number) {
 const createParams = ({
   maxDays,
   page = 1,
+  filter
 }: {
   maxDays: number
   page: number
+  filter:any
 }) => {
   const currentDate = getCurrentDate()
+  const creationDate = filter?.createdIn ?  
+  `creationDate:[${filter.createdIn.from} TO ${filter.createdIn.to}]` :  
+  `creationDate:[${substractDays(
+    currentDate,
+    maxDays
+  )} TO ${currentDate}]`
 
   return {
+    q: filter?.orderId,
     orderBy: 'creationDate,desc' as const,
     f_status: 'invoiced' as const,
-    f_creationDate: `creationDate:[${substractDays(
-      currentDate,
-      maxDays
-    )} TO ${currentDate}]`,
+    f_creationDate: creationDate,
     page,
     per_page: 10 as const,
+    
   }
 }
 
 export const ordersAvailableToReturn = async (
   _: unknown,
-  args: { page: number; storeUserEmail?: string },
+  args: { page: number; storeUserEmail?: string , filter : any},
   ctx: Context
 ): Promise<OrdersToReturnList> => {
   const {
@@ -50,8 +57,7 @@ export const ordersAvailableToReturn = async (
       account: accountClient
     },
   } = ctx
-
-  const { page, storeUserEmail } = args
+  const { page, storeUserEmail , filter} = args
 
   const accountInfo = await accountClient.getInfo()  
   const settings = await returnSettings.getReturnSettings(accountInfo)
@@ -71,7 +77,7 @@ export const ordersAvailableToReturn = async (
  
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
-    createParams({ maxDays, page  })
+    createParams({ maxDays, page , filter })
   )
 
 

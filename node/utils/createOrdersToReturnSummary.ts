@@ -17,6 +17,7 @@ import type { CatalogGQL } from '../clients/catalogGQL'
 import type { Return } from '../clients/return'
 import type { Account } from '../clients/account'
 import { handleTranlateItems } from './translateItems'
+import { ResolverError } from '@vtex/api'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
@@ -85,6 +86,7 @@ export const createOrdersToReturnSummary = async (
     }
   } catch (error) 
   {
+    throw new ResolverError('Error createOrdersToReturnSummary')
   }
   
 
