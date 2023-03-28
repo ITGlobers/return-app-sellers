@@ -1,4 +1,4 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequestCreated, ReturnRequestInput } from 'vtexromania.obi-return-app-sellers'
 import { UserInputError, ResolverError } from '@vtex/api'
 import type { DocumentResponse } from '@vtex/clients'
 import { isUserAllowed } from '../utils/isUserAllowed'

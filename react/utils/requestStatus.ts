@@ -2,7 +2,7 @@ import type {
   Status,
   RefundStatusData,
   RefundStatusComment,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import { defineMessages } from 'react-intl'
 
 const statusSequence: Status[] = [

@@ -1,4 +1,4 @@
-import type { OrderToReturnValidation } from 'obidev.obi-return-app-sellers'
+import type { OrderToReturnValidation } from 'vtexromania.obi-return-app-sellers'
 
 import type {
   ReturnRequestConfirmation,

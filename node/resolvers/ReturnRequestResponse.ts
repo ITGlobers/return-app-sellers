@@ -1,4 +1,4 @@
-import type { ReturnRequest } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequest } from 'vtexromania.obi-return-app-sellers'
 
 type VtexProduct = 'admin' | 'store' | undefined
 

@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { CustomReturnReason } from 'obidev.obi-return-app-sellers'
+import type { CustomReturnReason } from 'vtexromania.obi-return-app-sellers'
 import {
   ButtonWithIcon,
   IconPlusLines,

@@ -3,7 +3,7 @@ import type {
   PaymentOptions,
   ReturnAppSettings,
   ReturnOption,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 
 export const initialSettingsState: ReturnAppSettings = {
   id: '' ,

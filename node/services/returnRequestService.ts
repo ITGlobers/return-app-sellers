@@ -1,5 +1,5 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
-import type { ReturnRequest } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequest } from 'vtexromania.obi-return-app-sellers'
 
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {

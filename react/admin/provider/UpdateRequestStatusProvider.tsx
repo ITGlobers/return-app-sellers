@@ -6,7 +6,7 @@ import type {
   RefundDataInput,
   ReturnRequestResponse,
   MutationUpdateReturnRequestStatusArgs,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 

@@ -5,7 +5,7 @@ import type {
   RefundData,
   Status,
   Maybe,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl } from 'react-intl'

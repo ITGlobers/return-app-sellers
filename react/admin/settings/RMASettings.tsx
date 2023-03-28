@@ -3,7 +3,7 @@ import type { FormEvent, ReactElement } from 'react'
 import type {
   PaymentOptions as PaymentOptionsInterface,
   PaymentType,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import { FormattedMessage } from 'react-intl'
 import {
   Layout,

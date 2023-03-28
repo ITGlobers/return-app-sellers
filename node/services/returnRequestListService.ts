@@ -1,6 +1,6 @@
 import type {
   QueryReturnRequestListArgs
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import { ForbiddenError } from '@vtex/api'
 
 

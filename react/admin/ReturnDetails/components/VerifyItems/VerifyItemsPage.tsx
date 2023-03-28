@@ -7,7 +7,7 @@ import {
   IconInfo,
 } from 'vtex.styleguide'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { RefundItemInput } from 'obidev.obi-return-app-sellers'
+import type { RefundItemInput } from 'vtexromania.obi-return-app-sellers'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 import { VerifyItemsTable } from './VerifyItemsTable'

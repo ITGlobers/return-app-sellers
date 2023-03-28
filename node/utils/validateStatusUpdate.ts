@@ -1,5 +1,5 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-import type { Status } from 'obidev.obi-return-app-sellers'
+import type { Status } from 'vtexromania.obi-return-app-sellers'
 
 const statusAllowed: Record<Status, Status[]> = {
   new: ['new', 'processing', 'denied', 'cancelled'],

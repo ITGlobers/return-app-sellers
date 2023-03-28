@@ -1,5 +1,5 @@
 import type { ClientProfileDetail } from '@vtex/clients'
-import type { ClientProfileData } from 'obidev.obi-return-app-sellers'
+import type { ClientProfileData } from 'vtexromania.obi-return-app-sellers'
 
 export const transformOrderClientProfileData = (
   clientProfileData: ClientProfileDetail,

@@ -1,5 +1,5 @@
 import type { ShippingDetail } from '@vtex/clients'
-import type { ShippingData } from 'obidev.obi-return-app-sellers'
+import type { ShippingData } from 'vtexromania.obi-return-app-sellers'
 
 export const transformShippingData = (
   shippingData: ShippingDetail

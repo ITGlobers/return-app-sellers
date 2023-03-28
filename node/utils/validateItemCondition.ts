@@ -1,4 +1,4 @@
-import type { ReturnRequestItemInput } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequestItemInput } from 'vtexromania.obi-return-app-sellers'
 import { UserInputError } from '@vtex/api'
 
 export const validateItemCondition = (

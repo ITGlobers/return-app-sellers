@@ -1,4 +1,4 @@
-import type { QueryReturnRequestListArgs } from 'obidev.obi-return-app-sellers'
+import type { QueryReturnRequestListArgs } from 'vtexromania.obi-return-app-sellers'
 
 import { returnRequestListService } from '../services/returnRequestListService'
 

@@ -6,7 +6,7 @@ import type {
   QueryReturnRequestListArgs,
   ReturnRequestList,
   Status,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'

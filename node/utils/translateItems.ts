@@ -1,4 +1,4 @@
-import type { InvoicedItem } from 'obidev.obi-return-app-sellers'
+import type { InvoicedItem } from 'vtexromania.obi-return-app-sellers'
 
 import type { CatalogGQL } from '../clients/catalogGQL'
 

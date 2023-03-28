@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Table } from 'vtex.styleguide'
-import type { ReturnRequestItem } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequestItem } from 'vtexromania.obi-return-app-sellers'
 
 import { verifyItemsTableSchema } from './verifyItemsTableSchema'
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'

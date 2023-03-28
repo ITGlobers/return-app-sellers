@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem, CultureInfoData } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequestItem, CultureInfoData } from 'vtexromania.obi-return-app-sellers'
 import { NumericStepper, InputCurrency } from 'vtex.styleguide'
 
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'

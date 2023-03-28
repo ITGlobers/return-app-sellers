@@ -10,7 +10,7 @@ import {
   Tooltip,
   IconInfo,
 } from 'vtex.styleguide'
-import type { Status } from 'obidev.obi-return-app-sellers'
+import type { Status } from 'vtexromania.obi-return-app-sellers'
 
 import { useReturnDetails } from '../../../common/hooks/useReturnDetails'
 import {

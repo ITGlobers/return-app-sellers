@@ -1,4 +1,4 @@
-import type { Status, Maybe, ReturnRequest, GiftCard } from 'obidev.obi-return-app-sellers'
+import type { Status, Maybe, ReturnRequest, GiftCard } from 'vtexromania.obi-return-app-sellers'
 import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'

@@ -1,4 +1,4 @@
-import type { CategoryInfo } from 'obidev.obi-return-app-sellers'
+import type { CategoryInfo } from 'vtexromania.obi-return-app-sellers'
 
 const transformCategoryTree = (
   categoryTree: CategoryTree[],

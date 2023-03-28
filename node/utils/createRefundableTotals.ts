@@ -1,4 +1,4 @@
-import type { RefundableAmountTotal, ReturnRequest } from 'obidev.obi-return-app-sellers'
+import type { RefundableAmountTotal, ReturnRequest } from 'vtexromania.obi-return-app-sellers'
 import type { ItemTotal } from '@vtex/clients'
 
 export const createRefundableTotals = (

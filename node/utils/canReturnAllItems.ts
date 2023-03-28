@@ -2,7 +2,7 @@ import type { OrderDetailResponse } from '@vtex/clients'
 import type {
   ReturnRequestItemInput,
   ReturnAppSettings,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'

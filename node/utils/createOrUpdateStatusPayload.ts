@@ -4,7 +4,7 @@ import type {
   ReturnRequest,
   ReturnRequestCommentInput,
   Status,
-} from 'obidev.obi-return-app-sellers'
+} from 'vtexromania.obi-return-app-sellers'
 
 export const createOrUpdateStatusPayload = ({
   refundStatusData,

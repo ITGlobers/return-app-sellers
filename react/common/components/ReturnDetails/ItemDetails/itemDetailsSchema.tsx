@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import React from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequestItem } from 'vtexromania.obi-return-app-sellers'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'

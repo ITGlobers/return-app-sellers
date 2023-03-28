@@ -1,5 +1,5 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-import type { OrderToReturnSummary } from 'obidev.obi-return-app-sellers'
+import type { OrderToReturnSummary } from 'vtexromania.obi-return-app-sellers'
 
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isUserAllowed } from '../utils/isUserAllowed'
