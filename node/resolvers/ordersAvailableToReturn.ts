@@ -1,6 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import type { OrdersToReturnList, OrderToReturnSummary } from 'obidev.obi-return-app-sellers'
-
+import {OrdersToReturnList, OrderToReturnSummary} from "../../typings/OrdertoReturn"
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { getCurrentDate, substractDays } from '../utils/dateHelpers'
 

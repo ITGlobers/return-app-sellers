@@ -1,17 +1,13 @@
 import React from 'react'
 import { Table } from 'vtex.styleguide'
-import type {
-  ReturnRequestItem,
-  RefundData,
-  Status,
-  Maybe,
-} from 'obidev.obi-return-app-sellers'
+
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl } from 'react-intl'
 
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
+import { RefundData, ReturnRequestItem, Status } from '../../../../../typings/ReturnRequest'
 
 type ItemStatus = 'new' | 'denied' | 'approved' | 'partiallyApproved'
 

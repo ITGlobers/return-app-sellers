@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import type { RouteComponentProps } from 'react-router'
 import { useQuery } from 'react-apollo'
-import type {
-  OrderToReturnSummary,
-  QueryOrderToReturnSummaryArgs,
-} from 'vtex.return-app'
+
 import { PageHeader, PageBlock } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
@@ -19,6 +16,7 @@ import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 import { useStoreSettings } from '../hooks/useStoreSettings'
 import { OrderDetailsLoader } from './components/loaders/OrderDetailsLoader'
+import { OrderToReturnSummary } from '../../../typings/OrdertoReturn'
 
 export type Page = 'form-details' | 'submit-form'
 

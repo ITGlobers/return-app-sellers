@@ -1,9 +1,9 @@
 import React from 'react'
-import type { Status } from 'obidev.obi-return-app-sellers'
 import { IconSuccess, IconClear } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
 
 import { timelineStatusMessageId } from '../../../../utils/requestStatus'
+import { Status } from '../../../../../typings/ReturnRequest'
 
 interface Props {
   status: Status

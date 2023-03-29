@@ -1,4 +1,3 @@
-import type { MutationCreateReturnRequestArgs } from 'obidev.obi-return-app-sellers'
 
 import { createReturnRequestService } from '../services/createReturnRequestService'
 

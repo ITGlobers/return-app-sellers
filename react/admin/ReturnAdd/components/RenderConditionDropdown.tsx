@@ -1,11 +1,11 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
 import { useIntl } from 'react-intl'
-import type { ItemCondition } from 'vtex.return-app'
 import { Dropdown } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { defaultReturnConditionsMessages } from '../../../common/utils/defaultReturnConditionsMessages'
+import { ItemCondition } from '../../../../typings/ReturnRequest'
 
 const CSS_HANDLES = ['conditionDropdwonContainer'] as const
 

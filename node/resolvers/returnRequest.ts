@@ -1,4 +1,3 @@
-import type { QueryReturnRequestArgs } from 'obidev.obi-return-app-sellers'
 
 import { returnRequestService } from '../services/returnRequestService'
 

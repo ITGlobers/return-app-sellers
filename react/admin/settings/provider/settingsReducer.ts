@@ -1,11 +1,7 @@
-import type {
-  CustomReturnReason,
-  PaymentOptions,
-  ReturnAppSettings,
-  ReturnOption,
-} from 'obidev.obi-return-app-sellers'
+import { CustomReturnReason, PaymentOptions, ReturnAppSettings, ReturnAppSettingsInput, ReturnOption } from "../../../../typings/ReturnAppSettings"
 
-export const initialSettingsState: ReturnAppSettings = {
+
+export const initialSettingsState: ReturnAppSettingsInput = {
   id: '' ,
   maxDays: 0,
   excludedCategories: [],

@@ -2,11 +2,7 @@ import React from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
-import type {
-  RefundPaymentDataInput,
-  PaymentType,
-  RefundPaymentMethod,
-} from 'vtex.return-app'
+
 import { Input, RadioGroup } from 'vtex.styleguide'
 
 import { useStoreSettings } from '../../hooks/useStoreSettings'
@@ -14,6 +10,8 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
 import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 import { isValidIBANNumber } from '../../utils/isValidIBANNumber'
+import { PaymentType } from '../../../../typings/ReturnAppSettings'
+import { RefundPaymentDataInput, RefundPaymentMethod } from '../../../../typings/ReturnRequest'
 
 interface Props {
   canRefundCard: boolean,

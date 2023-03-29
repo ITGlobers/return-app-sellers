@@ -4,7 +4,7 @@ import type {
   PriceTag,
   SellerDetail,
 } from '@vtex/clients'
-import type { ReturnRequestItemInput, ReturnRequestItem } from 'obidev.obi-return-app-sellers'
+import { ReturnRequestItemInput, ReturnRequestItem, ItemCondition } from '../../typings/ReturnRequest'
 
 import type { CatalogGQL } from '../clients/catalogGQL'
 import { translateItemName } from './translateItems'
@@ -105,7 +105,7 @@ export const createItemsToReturn = async ({
         refId: refId ?? '',
         productId,
         sellerName,
-        condition: item.condition ? item.condition : 'unspecified',
+        condition: item.condition ? item.condition : ItemCondition.Unspecified,
       }
     })
   )

@@ -1,8 +1,8 @@
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { GiftCard, Maybe, RefundPaymentData } from 'obidev.obi-return-app-sellers'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+import { GiftCard, Maybe, RefundPaymentData } from '../../../../typings/ReturnRequest'
 
 import { useReturnDetails } from '../../hooks/useReturnDetails'
 

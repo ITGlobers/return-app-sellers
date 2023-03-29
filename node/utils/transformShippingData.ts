@@ -1,5 +1,5 @@
 import type { ShippingDetail } from '@vtex/clients'
-import type { ShippingData } from 'obidev.obi-return-app-sellers'
+import { ShippingData , AddressType } from '../../typings/OrdertoReturn'
 
 export const transformShippingData = (
   shippingData: ShippingDetail
@@ -14,7 +14,7 @@ export const transformShippingData = (
    * TODO: Map other address types
    */
   const addressType =
-    address.addressType === 'pickup' ? 'PICKUP_POINT' : 'CUSTOMER_ADDRESS'
+    address.addressType === 'pickup' ? AddressType.PickupPoint : AddressType.CustomerAddress
 
   return {
     addressId: address.addressId ?? '',

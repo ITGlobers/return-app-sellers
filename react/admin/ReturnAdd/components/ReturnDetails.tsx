@@ -1,6 +1,5 @@
 import React from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
-import type { ShippingData } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { Divider, Button } from 'vtex.styleguide'
 import { useRuntime } from 'vtex.render-runtime'
@@ -13,6 +12,7 @@ import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
 import type { Page } from '../CreateReturnRequest'
+import { ShippingData } from '../../../../typings/OrdertoReturn'
 
 const CSS_HANDLES = [
   'returnDetailsContainer',

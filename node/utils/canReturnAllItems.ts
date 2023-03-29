@@ -1,14 +1,13 @@
 import type { OrderDetailResponse } from '@vtex/clients'
-import type {
-  ReturnRequestItemInput,
-  ReturnAppSettings,
-} from 'obidev.obi-return-app-sellers'
+
 import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'
 import type { CatalogGQL } from '../clients/catalogGQL'
 import type { Account } from '../clients/account'
 import { Order } from '../clients/orders'
+import { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 
 interface CanReturnAllItemsSetup {
   order: OrderDetailResponse

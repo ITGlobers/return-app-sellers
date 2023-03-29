@@ -2,16 +2,13 @@ import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, DatePicker, Button } from 'vtex.styleguide'
-import type {
-  QueryReturnRequestListArgs,
-  ReturnRequestList,
-  Status,
-} from 'obidev.obi-return-app-sellers'
+
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { StatusActionMenu } from './StatusActionMenu'
+import { ReturnRequestList, Status } from '../../../../typings/ReturnRequest'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 

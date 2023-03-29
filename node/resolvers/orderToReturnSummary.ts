@@ -1,10 +1,10 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-import type { OrderToReturnSummary } from 'obidev.obi-return-app-sellers'
 
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
+import { OrderToReturnSummary } from '../../typings/OrdertoReturn'
 
 export const orderToReturnSummary = async (
   _: unknown,

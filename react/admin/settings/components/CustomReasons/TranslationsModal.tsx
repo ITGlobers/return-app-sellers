@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import type { Tenant, Binding } from 'vtex.tenant-graphql'
 import { ModalDialog, Table, Input, Spinner, EmptyState } from 'vtex.styleguide'
-import type { CustomReturnReasonTranslation } from 'obidev.obi-return-app-sellers'
 import { FormattedMessage } from 'react-intl'
 
 import TENANT_INFO from './graphql/tenant.gql'
 import type { CustomReasonWithIndex } from './CustomReasons'
 import { useSettings } from '../../hooks/useSettings'
+import { CustomReturnReasonTranslation } from '../../../../../typings/ReturnAppSettings'
 
 const localesAvailable = (bindings: Binding[]): string[] => {
   const storefrontBindings = bindings.filter(

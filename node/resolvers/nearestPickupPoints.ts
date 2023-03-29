@@ -1,7 +1,4 @@
-import type {
-  QueryNearestPickupPointsArgs,
-  NearPickupPointQueryResponse,
-} from 'obidev.obi-return-app-sellers'
+import { NearPickupPointQueryResponse } from "../../typings/PickupPoint"
 
 export const nearestPickupPoints = async (
   _: unknown,

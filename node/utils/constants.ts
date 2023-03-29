@@ -1,5 +1,5 @@
-import type { OrderToReturnValidation } from 'obidev.obi-return-app-sellers'
 
+import { OrderToReturnValidation } from '../../typings/OrdertoReturn'
 import type {
   ReturnRequestConfirmation,
   ReturnRequestStatusUpdate,
@@ -11,8 +11,8 @@ export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,
   OrderToReturnValidation
 > = {
-  OUT_OF_MAX_DAYS: 'OUT_OF_MAX_DAYS',
-  ORDER_NOT_INVOICED: 'ORDER_NOT_INVOICED',
+  OUT_OF_MAX_DAYS: OrderToReturnValidation.OutOfMaxDays,
+  ORDER_NOT_INVOICED: OrderToReturnValidation.OrderNotInvoiced,
 }
 
 export const OMS_RETURN_REQUEST_CONFIRMATION = (

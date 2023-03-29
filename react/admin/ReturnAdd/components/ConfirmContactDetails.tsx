@@ -1,8 +1,8 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { CustomerProfileDataInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+import { CustomerProfileDataInput } from '../../../../typings/ReturnRequest'
 
 interface Props {
   contactDetails: CustomerProfileDataInput

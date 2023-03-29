@@ -1,8 +1,8 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import type { ReturnRequestItemInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+import { ReturnRequestItemInput } from '../../../../typings/ReturnRequest'
 
 import { defaultReturnConditionsMessages } from '../../../common/utils/defaultReturnConditionsMessages'
 

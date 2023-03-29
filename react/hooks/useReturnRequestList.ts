@@ -1,8 +1,7 @@
 import { useQuery } from 'react-apollo'
 import type {
   ReturnRequestList as ReturnRequestListResponse,
-  QueryReturnRequestListArgs,
-} from 'obidev.obi-return-app-sellers'
+} from '../../typings/ReturnRequest'
 
 import RETURN_REQUEST_LIST from '../graphql/getReturnRequestList.gql'
 

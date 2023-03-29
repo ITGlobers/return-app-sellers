@@ -1,8 +1,7 @@
-import type {
-  ReturnRequestItemInput,
-  CustomReturnReason,
-} from 'obidev.obi-return-app-sellers'
+
 import { ResolverError, UserInputError } from '@vtex/api'
+import { CustomReturnReason } from '../../typings/ReturnAppSettings'
+import { ReturnRequestItemInput } from '../../typings/ReturnRequest'
 
 import { isWithinMaxDaysToReturn } from './dateHelpers'
 

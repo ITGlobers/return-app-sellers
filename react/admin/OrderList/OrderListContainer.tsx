@@ -4,10 +4,8 @@ import { FormattedMessage } from 'react-intl'
 import { Layout, PageHeader, PageBlock } from 'vtex.styleguide'
 import ORDERS_AVAILABLE_TO_RETURN from '../graphql/getOrdersAvailableToReturn.gql'
 
-import type {
-  OrdersToReturnList,
-  QueryOrdersAvailableToReturnArgs,
-} from 'vtex.return-app'
+import { OrdersToReturnList} from '../../../typings/OrdertoReturn'
+
 import { useQuery } from 'react-apollo'
 import { OrderList } from './OrderList'
 import { useRuntime } from 'vtex.render-runtime'

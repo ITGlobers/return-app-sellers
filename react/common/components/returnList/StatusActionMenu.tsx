@@ -1,7 +1,7 @@
 import React from 'react'
 import { defineMessages, useIntl } from 'react-intl'
-import type { Status } from 'obidev.obi-return-app-sellers'
 import { ActionMenu } from 'vtex.styleguide'
+import { Status } from '../../../../typings/ReturnRequest'
 
 import type { FilterKeys } from './ListTableFilter'
 

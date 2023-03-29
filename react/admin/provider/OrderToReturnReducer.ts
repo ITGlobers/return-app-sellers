@@ -1,10 +1,5 @@
-import type {
-  CustomerProfileDataInput,
-  PickupReturnDataInput,
-  RefundPaymentDataInput,
-  ReturnRequestItemInput,
-  Maybe,
-} from 'vtex.return-app'
+import { CustomerProfileDataInput, PickupReturnDataInput, RefundPaymentDataInput, ReturnRequestItemInput } from "../../../typings/ReturnRequest"
+
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
