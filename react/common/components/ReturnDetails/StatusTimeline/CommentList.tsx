@@ -49,7 +49,7 @@ export const CommentList = ({ comments, isLast }: Props) => {
           ) : null}
           {contextDomain === 'store' ? (
             <FormattedMessage
-              id="store/return-app.return-request-details.status-timeline.comment"
+              id="return-app.return-request-details.status-timeline.comment"
               values={{
                 ts: new Date(comment.createdAt),
                 comment: comment.comment,

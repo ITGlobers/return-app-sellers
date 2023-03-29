@@ -1,6 +1,6 @@
 import type { IntlFormatters } from 'react-intl'
 
-import { defaultReturnReasonsMessages } from '../../store/utils/defaultReturnReasonsMessages'
+import { defaultReturnReasonsMessages } from '../../utils/defaultReturnReasonsMessages'
 
 export function getReasonOptions(
   formatMessage: IntlFormatters['formatMessage']

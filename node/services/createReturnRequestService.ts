@@ -1,6 +1,5 @@
 import type { ReturnRequestCreated, ReturnRequestInput } from 'obidev.obi-return-app-sellers'
 import { UserInputError, ResolverError } from '@vtex/api'
-import type { DocumentResponse } from '@vtex/clients'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
@@ -20,6 +19,7 @@ export const createReturnRequestService = async (
     clients: {
       oms,
       return: returnRequestClient,
+      order: orderRequestClient,
       returnSettings,
       account :accountClient,
       catalogGQL,
@@ -30,6 +30,7 @@ export const createReturnRequestService = async (
 
   const {
     orderId,
+    marketplaceOrderId,
     items,
     customerProfileData,
     pickupReturnData,
@@ -71,15 +72,12 @@ export const createReturnRequestService = async (
   }
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
-  const params = {
-    _page: 1,
-    _pageSize: 1,
-    _perPage:  1,
-    _id: orderId
-  }
-  
   const accountInfo = await accountClient.getInfo()  
-  const searchRMAPromise = await returnRequestClient.getReturnList(params , accountInfo)
+  const body = {
+    "fields":    ['id'] ,
+    "filter": `orderId=${marketplaceOrderId}`
+  }
+  const searchRMAPromise = await orderRequestClient.getOrdersList(body , accountInfo)
   const settingsPromise = returnSettings.getReturnSettings(accountInfo)
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
@@ -88,11 +86,9 @@ export const createReturnRequestService = async (
     searchRMAPromise,
     settingsPromise,
   ])
-
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
   }
-
   const {
     pagination: { total },
   } = searchRMA
@@ -135,7 +131,7 @@ export const createReturnRequestService = async (
   await canReturnAllItems(items, {
     order,
     excludedCategories,
-    returnRequestClient,
+    orderRequestClient,
     catalogGQL,
     accountClient
   })
@@ -166,7 +162,6 @@ export const createReturnRequestService = async (
     itemMetadata,
     catalogGQL,
   })
-
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
     totals,
@@ -223,14 +218,11 @@ export const createReturnRequestService = async (
       ? Boolean(automaticallyRefundPaymentMethod)
       : null
 
-  let rmaDocument: DocumentResponse
-
-
   try {
     const request = 
       {
         sellerName: accountInfo.accountName,
-        orderId,
+        orderId : marketplaceOrderId,
         refundableAmount,
         sequenceNumber,
         status: 'new',
@@ -262,7 +254,11 @@ export const createReturnRequestService = async (
           locale,
         },
       }
-    rmaDocument = await returnRequestClient.createReturn( request, accountInfo)
+
+  const rmaDocument = await returnRequestClient.createReturn( request, accountInfo)
+  
+  return { returnRequestId: rmaDocument.returnRequestId }
+
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
@@ -279,6 +275,5 @@ export const createReturnRequestService = async (
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
   }
-
-  return { returnRequestId: rmaDocument.DocumentId }
+  
 }

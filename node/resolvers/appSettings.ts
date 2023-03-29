@@ -23,6 +23,7 @@ const returnAppSettings = async (
 
   
   const accountInfo = await accountClient.getInfo()  
+  
   const settings = await returnSettingsClient.getReturnSettings(accountInfo)
   if (!settings) return null
 

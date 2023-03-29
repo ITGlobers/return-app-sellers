@@ -7,13 +7,13 @@ import { ResolverError } from '@vtex/api'
 
 import { createOrdersToReturnSummary } from './createOrdersToReturnSummary'
 import type { CatalogGQL } from '../clients/catalogGQL'
-import type { Return } from '../clients/return'
 import type { Account } from '../clients/account'
+import { Order } from '../clients/orders'
 
 interface CanReturnAllItemsSetup {
   order: OrderDetailResponse
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: Return
+  orderRequestClient: Order
   catalogGQL: CatalogGQL
   accountClient : Account
 
@@ -24,7 +24,7 @@ export const canReturnAllItems = async (
   {
     order,
     excludedCategories,
-    returnRequestClient,
+    orderRequestClient,
     catalogGQL,
     accountClient
   }: CanReturnAllItemsSetup
@@ -33,7 +33,7 @@ export const canReturnAllItems = async (
   const { invoicedItems, excludedItems, processedItems } =
     await createOrdersToReturnSummary(order, 'email', {
       excludedCategories,
-      returnRequestClient,
+      orderRequestClient,
       catalogGQL,
       accountClient
     })

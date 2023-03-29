@@ -1,12 +1,12 @@
-import type { InstanceOptions, IOContext } from '@vtex/api'
+import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
 
 const baseURL = 'myvtex.com/_v/return-request'
 
 const routes = {
-  returnByID: (parentAccountName: string , returnId: string) => `http://${parentAccountName}.${baseURL}/${returnId}`,
-  createReturn: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
-  returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
+  returnByID: (parentAccountName: string , returnId: string) => `http://nmanrique--${parentAccountName}.${baseURL}/${returnId}`,
+  createReturn: (parentAccountName: string) => `http://nmanrique--${parentAccountName}.${baseURL}`,
+  returnList: (parentAccountName: string) => `http://nmanrique--${parentAccountName}.${baseURL}`,
 }
 
 export class Return extends ExternalClient {
@@ -34,7 +34,7 @@ export class Return extends ExternalClient {
       return response
 
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error get')
     }
 
   } 
@@ -54,11 +54,11 @@ export class Return extends ExternalClient {
       return response
 
     } catch (error) {
-      console.error(error)
+      throw new ResolverError('Error getReturnList')
     }
 
-  } 
-
+  }
+  
   public async getReturnById ( returnId : any , accountInfo : any ) : Promise<any | undefined> {
     try {
       const response = await this.http.get(
@@ -73,7 +73,7 @@ export class Return extends ExternalClient {
       return response
 
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error getReturnById')
     }
 
   } 
@@ -94,7 +94,7 @@ export class Return extends ExternalClient {
       return response
 
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error updateReturn')
     }
 
   } 
@@ -114,7 +114,7 @@ export class Return extends ExternalClient {
       return response
 
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error createReturn')
     }
 
   } 

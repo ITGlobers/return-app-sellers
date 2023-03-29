@@ -1,11 +1,11 @@
-import type { InstanceOptions, IOContext } from '@vtex/api'
+import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
 
 const baseURL = 'myvtex.com/_v/returns/seller/settings'
 
 const routes = {
-  returnSettings: (parentAccountName: string , sellerName: string) => `http://${parentAccountName}.${baseURL}/${sellerName}`,
-  updateSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
+  returnSettings: (parentAccountName: string ) => `http://nmanrique--${parentAccountName}.${baseURL}/${parentAccountName}`,
+  updateSettings: (parentAccountName: string ) => `http://nmanrique--${parentAccountName}.${baseURL}`,
 }
 
 export class ReturnSettings extends ExternalClient {
@@ -16,7 +16,7 @@ export class ReturnSettings extends ExternalClient {
   public async getReturnSettings (accountInfo : any ) : Promise<any | undefined> {
     try {
 
-      const URI = routes.returnSettings(accountInfo.parentAccountName , accountInfo.accountName )
+      const URI = routes.returnSettings(accountInfo.parentAccountName )
       const response = await this.http.get(
         URI,
         {
@@ -29,7 +29,7 @@ export class ReturnSettings extends ExternalClient {
       return response
 
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error getReturnSettings')
     }
 
   } 
@@ -49,7 +49,7 @@ export class ReturnSettings extends ExternalClient {
       return response
 
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error saveReturnSettings')
     }
 
   } 

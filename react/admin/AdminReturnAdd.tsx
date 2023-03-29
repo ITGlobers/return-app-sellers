@@ -1,27 +1,24 @@
 import React from 'react'
+import type { RouteComponentProps } from 'react-router'
 
-// import { ReturnDetailsContainer } from './ReturnDetails/ReturnDetailsContainer'
 import { AlertProvider } from './provider/AlertProvider'
-import { ReturnAddContainer } from './ReturnAdd/ReturnAddContainer'
-// import { ReturnDetailsProvider } from '../common/provider/ReturnDetailsProvider'
-// import { UpdateRequestStatusProvider } from './provider/UpdateRequestStatusProvider'
+// import { ReturnAddContainer } from './ReturnAdd/ReturnAddContainer'
+import { StoreSettingsProvider } from './provider/StoreSettingsProvider'
+import { OrderToReturnProvider } from './provider/OrderToReturnProvider'
+import { CreateReturnRequest } from './ReturnAdd/CreateReturnRequest'
 
-interface CustomRouteProps {
-  params: {
-    id: string
-  }
-}
+type RouteProps = RouteComponentProps<{ orderId: string }>
 
-export const AdminReturnAdd = ({ params }: CustomRouteProps) => {
+export const AdminReturnAdd = (props: RouteProps) => {
   return (
     <AlertProvider>
-      {/* <ReturnDetailsProvider requestId={params.id}>
-        <UpdateRequestStatusProvider>
-          <ReturnDetailsContainer />
-        </UpdateRequestStatusProvider>
-      </ReturnDetailsProvider> */}
-        {params.id}
-      <ReturnAddContainer />
+      {/* <ReturnAddContainer> */}
+        <StoreSettingsProvider>
+          <OrderToReturnProvider>
+            <CreateReturnRequest {...props} />
+          </OrderToReturnProvider>
+        </StoreSettingsProvider>
+      {/* </ReturnAddContainer> */}
     </AlertProvider>
   )
 }

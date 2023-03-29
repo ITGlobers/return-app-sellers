@@ -7,6 +7,7 @@ import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
 import { Return} from './return'
+import { Order} from './orders'
 import { Account } from './account'
 import { ReturnSettings } from './appSettings'
 
@@ -45,6 +46,10 @@ export class Clients extends IOClients {
 
   public get return() {
     return this.getOrSet('return', Return)
+  }
+  
+  public get order() {
+    return this.getOrSet('order', Order)
   }
 
   public get returnSettings() {

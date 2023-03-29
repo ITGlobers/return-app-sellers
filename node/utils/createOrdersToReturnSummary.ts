@@ -14,14 +14,14 @@ import { transformOrderClientProfileData } from './transformOrderClientProfileDa
 import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
 import type { CatalogGQL } from '../clients/catalogGQL'
-import type { Return } from '../clients/return'
 import type { Account } from '../clients/account'
 import { handleTranlateItems } from './translateItems'
 import { ResolverError } from '@vtex/api'
+import { Order } from '../clients/orders'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: Return
+  orderRequestClient: Order
   catalogGQL: CatalogGQL
   accountClient : Account
 }
@@ -31,28 +31,23 @@ export const createOrdersToReturnSummary = async (
   email: string,
   {
     excludedCategories,
-    returnRequestClient,
+    orderRequestClient,
     catalogGQL,
     accountClient
   }: CreateOrdersToReturnSummarySetup
 ): Promise<OrderToReturnSummary> => {
   const { items, orderId, creationDate , marketplaceOrderId} = order
   const accountInfo = await accountClient.getInfo()  
-
-  const params = {
-    _page: 1,
-    _pageSize: 10,
-    _perPage:  10,
-    _orderId: marketplaceOrderId,
-    _sellerName: accountInfo.accountName
+  const body = {
+    "fields":  ["items", "refundData", "refundPaymentData"] ,
+    "filter": `orderId=${marketplaceOrderId} AND status <> cancelled`
   }
-  
-  const returnRequestSameOrder = await returnRequestClient.getReturnList(params , accountInfo)
+  const returnRequestSameOrder = await orderRequestClient.getOrdersList(body , accountInfo)
   const invoicesCreatedByReturnApp: string[] = []
   const committedItemsToReturn: Array<{ itemIndex: number; quantity: number }> =
     []
   try {
-      for (const returnRequest of returnRequestSameOrder.list) {
+      for (const returnRequest of returnRequestSameOrder?.data) {
       const { refundData, items: rmaItems } =
         (returnRequest as Pick<
           ReturnRequest,
@@ -175,6 +170,8 @@ export const createOrdersToReturnSummary = async (
 
   return {
     orderId,
+    sellerName: accountInfo.accountName,
+    marketplaceOrderId,
     creationDate,
     invoicedItems: await handleTranlateItems(invoicedItems, catalogGQL),
     processedItems,

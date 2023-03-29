@@ -78,7 +78,7 @@ const OrderlListTableSchema = ({
                 : {
                     onClick: () =>
                       navigate({
-                        to: `/admin/app/returns/requests/orders/add/${rowData.orderId}`,
+                        to: `/admin/app/seller/returns/orders/add/${rowData.orderId}`,
                       }),
                   })}
               variation="tertiary"

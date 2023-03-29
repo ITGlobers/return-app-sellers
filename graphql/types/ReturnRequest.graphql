@@ -1,6 +1,7 @@
 input ReturnRequestInput {
   orderId: String!
   sellerName: String!
+  marketplaceOrderId: String
   items: [ReturnRequestItemInput!]!
   customerProfileData: CustomerProfileDataInput!
   pickupReturnData: PickupReturnDataInput!

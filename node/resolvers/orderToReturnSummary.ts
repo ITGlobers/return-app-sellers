@@ -17,7 +17,7 @@ export const orderToReturnSummary = async (
     clients: {
       returnSettings,
       oms,
-      return: returnRequestClient,
+      order: orderRequestClient,
       catalogGQL,
       account :accountClient,
 
@@ -28,11 +28,9 @@ export const orderToReturnSummary = async (
   const accountInfo = await accountClient.getInfo()  
   const settings = await returnSettings.getReturnSettings(accountInfo)
 
-
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
   }
-
   const { maxDays, excludedCategories } = settings
 
   // For requests where orderId is an empty string
@@ -67,10 +65,9 @@ export const orderToReturnSummary = async (
       logger,
     }
   )
-
   return createOrdersToReturnSummary(order, customerEmail, {
     excludedCategories,
-    returnRequestClient,
+    orderRequestClient,
     catalogGQL,
     accountClient
   })

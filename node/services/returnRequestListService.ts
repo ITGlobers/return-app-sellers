@@ -48,7 +48,6 @@ export const returnRequestListService = async (
   const adjustedFilter = requireFilterByUser
   ? { ...filter, userId, userEmail }
   : filter
-
   const accountInfo = await accountClient.getInfo()  
   const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined  
   const rmaSearchResult = await returnClient.getReturnList(

@@ -52,7 +52,7 @@ export const ordersAvailableToReturn = async (
     clients: {
       returnSettings,
       oms,
-      return: returnRequestClient,
+      order: orderRequestClient,
       catalogGQL,
       account: accountClient
     },
@@ -100,11 +100,10 @@ export const ordersAvailableToReturn = async (
   for (const order of orders) {
     const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
       excludedCategories,
-      returnRequestClient,
+      orderRequestClient,
       catalogGQL,
       accountClient
     })
-
     orderSummaryPromises.push(orderToReturnSummary)
   }
 
