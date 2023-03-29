@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Внимание: Статусът на тази заявка ще бъде зададен като ОТКАЗАНА.</p><p>Това ще извести потребителя по имейл и ще му позволи да създаде нова заявка за възстановяване на сума с артикулите от отказаната заявка.</p><p>Ако не това е намерението ви, задайте заявката като ОТХВЪРЛЕНА.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>За съжаление, не е възможно да откажете тази заявка заради текущия ѝ статус.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Отказването на тази заявка ще позволи използването на текущите артикули в нова заявка за възстановяване.</p><p>Това действие е необратимо.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>За съжаление, трябва да се свържете с екипа по поддръжката, за да откажете тази заявка заради текущия ѝ статус.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>За съжаление, трябва да се свържете с екипа по поддръжката, за да откажете тази заявка заради текущия ѝ статус.</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Нова заявка",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Няма налични поръчки за връщане",
+  "return-app.request-return-order-list.table-header.creation-date": "Дата на създаване",
+  "return-app.request-return-order-list.table-header.items-to-return": "Артикули за връщане",
+  "return-app.request-return-order-list.table-header.order-id": "Поръчка ID",
+  "return-app.request-return-order-list.table-header.select-order": "Изберете поръчка",
+  "return-app.request-return-order-list.table-pagination.text-of": "от",
+  "return-app.request-return.orders.header": "Заявка за ново връщане",
+  "return-app.request-return.orders.header.subtitle": "Изберете поръчка, за да започнете процеса по заявка за връщане",
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN е невалиден"
 }

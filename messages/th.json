@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>ข้อควรทราบ: สถานะคำขอจะถูกตั้งค่าเป็น ยกเลิกแล้ว</p><p>โดยจะอีเมลแจ้งให้ผู้ใช้ทราบและอนุญาตให้สร้างคำขอการคืนครั้งใหม่สำหรับสินค้าในคำขอที่ยกเลิกแล้ว</p><p>หากไม่ต้องการทำเช่นนี้ ให้ตั้งค่าคำขอเป็น ปฏิเสธแล้ว</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>ขออภัย ไม่สามารถยกเลิกคำขอนี้ สืบเนื่องจากสถานะปัจจุบัน</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>การยกเลิกคำขอนี้จะทำให้สามารถใช้สินค้าปัจจุบันในคำขอสำหรับการคืนครั้งใหม่ได้</p><p>รายการนี้จะไม่สามารถเลิกทำได้</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>ขออภัย คุณต้องติดต่อทีมสนับสนุนเพื่อยกเลิกคำขอนี้ สืบเนื่องจากสถานะปัจจุบัน</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>ขออภัย คุณต้องติดต่อทีมสนับสนุนเพื่อยกเลิกคำขอนี้ สืบเนื่องจากสถานะปัจจุบัน</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Нова заявка",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Няма налични поръчки за връщане",
+  "return-app.request-return-order-list.table-header.creation-date": "Дата на създаване",
+  "return-app.request-return-order-list.table-header.items-to-return": "Артикули за връщане",
+  "return-app.request-return-order-list.table-header.order-id": "Поръчка ID",
+  "return-app.request-return-order-list.table-header.select-order": "Изберете поръчка",
+  "return-app.request-return-order-list.table-pagination.text-of": "от",
+  "return-app.request-return.orders.header": "Заявка за ново връщане",
+  "return-app.request-return.orders.header.subtitle": "Изберете поръчка, за да започнете процеса по заявка за връщане",
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN е невалиден"
 }

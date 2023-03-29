@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Attention : Le statut de cette demande sera défini sur ANNULÉ.</p><p>Ceci avertira l’utilisateur par email et lui permettra de créer une nouvelle demande de retour avec les éléments de la demande annulée.</p><p>Si ce n’est pas votre intention, définissez la requête comme REFUSÉ.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Désolé, il est impossible d’annuler cette demande en raison de son état actuel.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>L’annulation de cette requête permettra aux articles actuels d’être utilisés dans une nouvelle demande de retour.</p><p>Cette action est irréversible.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Désolé, vous devez contacter l’équipe d’assistance pour annuler cette demande en raison de son statut actuel.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Désolé, vous devez contacter l’équipe d’assistance pour annuler cette demande en raison de son statut actuel.</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Nouvelle Demande",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Aucune commande disponible pour retour",
+  "return-app.request-return-order-list.table-header.creation-date": "Date de création",
+  "return-app.request-return-order-list.table-header.items-to-return": "Articles disponibles pour retour",
+  "return-app.request-return-order-list.table-header.order-id": "ID de commande",
+  "return-app.request-return-order-list.table-header.select-order": "Sélectionner une commande",
+  "return-app.request-return-order-list.table-pagination.text-of": "de",
+  "return-app.request-return.orders.header": "Demander un nouveau retour",
+  "return-app.request-return.orders.header.subtitle": "Sélectionnez une commande pour commencer le processus de demande de retour",
+  "return-app.return-payment-methods.input-iban-invalid.error": "L'IBAN n'est pas valide"
 }

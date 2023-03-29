@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Attenzione: lo stato di questa richiesta sarà impostato su ANNULLATO.</p><p> L'utente verrà notificato via email e potrà creare una nuova richiesta di reso con gli articoli della richiesta annullata.</p><p>Se questa non è la tua intenzione, imposta lo stato della richiesta su RIFIUTATO.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Siamo spiacenti, non è possibile annullare questa richiesta a causa del suo stato attuale.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>L'annullamento di questa richiesta consentirà di utilizzare gli articoli attuali in una nuova richiesta di reso.</p><p>Questa azione è irreversibile.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Siamo spiacenti, è necessario contattare il team di assistenza per annullare questa richiesta a causa del suo stato attuale.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Siamo spiacenti, è necessario contattare il team di assistenza per annullare questa richiesta a causa del suo stato attuale.</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Nuova Richiesta",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Nessun ordine disponibile per il reso",
+  "return-app.request-return-order-list.table-header.creation-date": "Data di creazione",
+  "return-app.request-return-order-list.table-header.items-to-return": "Articoli disponibili per il reso",
+  "return-app.request-return-order-list.table-header.order-id": "ID ordine",
+  "return-app.request-return-order-list.table-header.select-order": "Seleziona ordine",
+  "return-app.request-return-order-list.table-pagination.text-of": "di",
+  "return-app.request-return.orders.header": "Richiedi un nuovo reso",
+  "return-app.request-return.orders.header.subtitle": "Seleziona un ordine per avviare il processo di richiesta di reso",
+  "return-app.return-payment-methods.input-iban-invalid.error": "L'IBAN non è valido"
 }
