@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Atenție: Statusul acestei cereri va fi setat ca ANULATĂ.</p><p>Astfel, utilizatorul va fi notificat prin e-mail și va putea crea o nouă cerere de retur cu articolele cererii anulate.</p><p>Dacă nu asta ai intenționat, setează cererea ca REFUZATĂ.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Ne pare rău, această cerere nu se poate anula din cauza statusului actual.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Anularea acestei cereri va permite ca articolele actuale să fie folosite într-o nouă cerere de retur.</p><p>Această acțiune e ireversibilă.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Ne pare rău, trebuie să contactezi echipa de asistență pentru a anula această cerere din cauza statusului actual.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Ne pare rău, trebuie să contactezi echipa de asistență pentru a anula această cerere din cauza statusului actual.</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Cerere Nouă",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Nu există comenzi disponibile pentru returnare",
+  "return-app.request-return-order-list.table-header.creation-date": "Data Creării",
+  "return-app.request-return-order-list.table-header.items-to-return": "Produse disponibile pentru returnare",
+  "return-app.request-return-order-list.table-header.order-id": "ID Comandă",
+  "return-app.request-return-order-list.table-header.select-order": "Selectați Comanda",
+  "return-app.request-return-order-list.table-pagination.text-of": "din",
+  "return-app.request-return.orders.header": "Solicitați o Nouă Returnare",
+  "return-app.request-return.orders.header.subtitle": "Selectați o comandă pentru a începe procesul de solicitare de returnare",
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN nu este valid"
 }

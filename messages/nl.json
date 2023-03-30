@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Let op: De status van dit verzoek wordt ingesteld op GEANNULEERD.</p><p>Dit stelt de gebruiker via e-mail op de hoogte en stelt hem in staat een nieuwe retouraanvraag te maken met de items van het geannuleerde verzoek.</p><p>Als dat niet uw bedoeling is, stel het verzoek dan in als GEWEIGERD.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Sorry, het is niet mogelijk om dit verzoek te annuleren vanwege de huidige status.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>Als u dit verzoek annuleert, kunnen de huidige items worden gebruikt in een nieuwe retouraanvraag.</p><p>Deze actie is onomkeerbaar.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Sorry, u moet contact opnemen met het ondersteuningsteam om dit verzoek te annuleren vanwege de huidige status.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Sorry, u moet contact opnemen met het ondersteuningsteam om dit verzoek te annuleren vanwege de huidige status.</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Nieuwe Aanvraag",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Geen bestellingen beschikbaar voor retour",
+  "return-app.request-return-order-list.table-header.creation-date": "Aanmaakdatum",
+  "return-app.request-return-order-list.table-header.items-to-return": "Artikelen beschikbaar voor retour",
+  "return-app.request-return-order-list.table-header.order-id": "Bestel-ID",
+  "return-app.request-return-order-list.table-header.select-order": "Selecteer bestelling",
+  "return-app.request-return-order-list.table-pagination.text-of": "van",
+  "return-app.request-return.orders.header": "Nieuwe retouraanvraag",
+  "return-app.request-return.orders.header.subtitle": "Selecteer een bestelling om het retouraanvraagproces te starten",
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN is niet geldig"
 }

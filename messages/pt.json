@@ -328,5 +328,15 @@
   "return-app.return-request-details.cancellation.modal.adminAllow": "<p>Atenção: o status desta solicitação será definido como CANCELADO.</p><p>Isso irá notificar o usuário por email e permitir a criação de uma nova solicitação de devolução com os itens do pedido cancelado.</p><p>Se essa não for a sua intenção, defina a solicitação como NEGADA.</p>",
   "return-app.return-request-details.cancellation.modal.adminRefuse": "<p>Não é possível cancelar este pedido devido ao seu status atual.</p>",
   "return-app.return-request-details.cancellation.modal.storeAllow": "<p>O cancelamento desta solicitação permitirá que os itens atuais sejam usados em uma nova solicitação de devolução.</p><p>Esta ação é irreversível.</p>",
-  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Devido ao status atual do pedido, você precisa entrar em contato com a equipe de suporte para cancelá-lo.</p>"
+  "return-app.return-request-details.cancellation.modal.storeRefuse": "<p>Devido ao status atual do pedido, você precisa entrar em contato com a equipe de suporte para cancelá-lo.</p>",
+  "admin/return-app.return-request-list.page-header.cta": "Nova Solicitação",
+  "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "Nenhum pedido disponível para devolução",
+  "return-app.request-return-order-list.table-header.creation-date": "Data de Criação",
+  "return-app.request-return-order-list.table-header.items-to-return": "Itens disponíveis para devolução",
+  "return-app.request-return-order-list.table-header.order-id": "ID do Pedido",
+  "return-app.request-return-order-list.table-header.select-order": "Selecionar Pedido",
+  "return-app.request-return-order-list.table-pagination.text-of": "de",
+  "return-app.request-return.orders.header": "Solicitar Nova Devolução",
+  "return-app.request-return.orders.header.subtitle": "Selecione um pedido para iniciar o processo de solicitação de devolução",
+  "return-app.return-payment-methods.input-iban-invalid.error": "O IBAN não é válido"
 }
