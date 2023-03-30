@@ -1,87 +1,34 @@
-import type { IOContext, InstanceOptions } from '@vtex/api'
-import { JanusClient } from '@vtex/api'
+import { IOContext, InstanceOptions, ExternalClient, ResolverError } from '@vtex/api'
 
-interface GiftCardInfo {
-  relationName: string
-  caption: string
-  expiringDate: string
-  balance: number
-  profileId: string
-  discount: boolean
+const baseURL = 'myvtex.com/_v/returns/seller/giftcard'
+
+const routes = {
+  createGiftcard: (parentAccountName: string ) => `http://nmanrique--${parentAccountName}.${baseURL}`,
 }
-
-interface CreateGiftCardResponse {
-  id: string
-  redemptionToken: string
-  redemptionCode: string
-  balance: number
-  relationName: string
-  emissionDate: string
-  expiringDate: string
-  caption: string
-  discount: boolean
-  transaction: {
-    href: string
-  }
-}
-
-interface UpdateGiftCard {
-  description: string
-  value: number
-}
-
-interface GiftCardCreditResponse {
-  id: string
-  redemptionCode: string
-  balance: number
-  emissionDate: string
-  expiringDate: string
-  multipleCredits: boolean
-  multipleRedemptions: boolean
-  restrictedToOwner: boolean
-  statusId: number
-}
-
-interface GiftCardResponse {
-  id: string
-  redemptionCode: string
-  redemptionToken: string
-  balance: number
-  emissionDate: string
-  expiringDate: string
-  discount: boolean
-  transaction: {
-    href: string
-  }
-}
-
-export class GiftCard extends JanusClient {
+export class GiftCard extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
-    super(ctx, {
-      ...options,
-      headers: {
-        VtexIdClientAutCookie: ctx.adminUserAuthToken ?? ctx.authToken,
-      },
-    })
+    super('', ctx, options)
   }
 
-  public createGiftCard = async (giftCardInfo: GiftCardInfo) =>
-    this.http.post<CreateGiftCardResponse>('/api/giftcards', giftCardInfo, {
-      metric: 'giftcard-create',
-    })
+  public async createGiftCard (   accountInfo : any , requestCreate :any  ) : Promise<any | undefined> {
+    try {
+      const response = await this.http.post(
+        routes.createGiftcard(accountInfo.parentAccountName),
+        requestCreate,
+        {
+          headers: {
+            VtexIdClientAutCookie: this.context.adminUserAuthToken || "",
+            'X-Vtex-Use-Https': 'true',
+          }
+        }
+      )
+      return response
 
-  public updateGiftCard = async (
-    giftCardId: string,
-    giftCardInfo: UpdateGiftCard
-  ) =>
-    this.http.post<GiftCardCreditResponse>(
-      `/api/gift-card-system/pvt/giftCards/${giftCardId}/credit`,
-      giftCardInfo,
-      { metric: 'giftcard-update' }
-    )
+    } catch (error) {
+      throw new ResolverError('Error saveReturnSettings')
+    }
 
-  public getGiftCard = async (giftCardId: string) =>
-    this.http.get<GiftCardResponse>(`/api/giftcards/${giftCardId}`, {
-      metric: 'giftcard-get',
-    })
+  } 
+ 
+
 }
