@@ -1,4 +1,4 @@
-import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type { MutationSaveReturnAppSettingsArgs, ReturnAppSettings } from '../../typings/ReturnAppSettings'
 
 import {
   validateMaxDaysCustomReasons,

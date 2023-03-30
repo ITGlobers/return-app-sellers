@@ -12,6 +12,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type QueryNearestPickupPointsArgs = {
+  lat: Scalars['String'];
+  long: Scalars['String'];
+};
+
 export type NearPickupPointQueryResponse = {
   __typename?: 'NearPickupPointQueryResponse';
   items: Array<CheckoutPickupPoint>;

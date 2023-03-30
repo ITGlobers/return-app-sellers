@@ -2,7 +2,7 @@ import { ResolverError } from '@vtex/api'
 
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
-import { GiftCard, Maybe, Status } from '../../typings/ReturnRequest'
+import { GiftCard, Maybe, ReturnRequest, Status } from '../../typings/ReturnRequest'
 
 const getOneYearLaterDate = (createdAt: string) => {
   const date = new Date(createdAt)

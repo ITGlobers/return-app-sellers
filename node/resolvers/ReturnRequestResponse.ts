@@ -1,3 +1,4 @@
+import { ReturnRequest } from "../../typings/ReturnRequest"
 
 type VtexProduct = 'admin' | 'store' | undefined
 

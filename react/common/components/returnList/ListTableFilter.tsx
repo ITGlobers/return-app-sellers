@@ -8,7 +8,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { StatusActionMenu } from './StatusActionMenu'
-import { ReturnRequestList, Status } from '../../../../typings/ReturnRequest'
+import { QueryReturnRequestListArgs, ReturnRequestList, Status } from '../../../../typings/ReturnRequest'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 

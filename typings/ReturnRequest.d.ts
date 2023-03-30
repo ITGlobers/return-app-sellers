@@ -12,6 +12,147 @@ export type Scalars = {
   Float: number;
 };
 
+
+export type MutationCreateReturnRequestArgs = {
+  returnRequest: ReturnRequestInput;
+};
+
+export type QueryReturnRequestArgs = {
+  requestId: Scalars['ID'];
+};
+
+export type QueryReturnRequestListArgs = {
+  filter?: Maybe<ReturnRequestFilters>;
+  page: Scalars['Int'];
+  perPage?: Maybe<Scalars['Int']>;
+};
+
+export type MutationUpdateReturnRequestStatusArgs = {
+  requestId: Scalars['ID'];
+  sellerName?: Maybe<Scalars['String']>;
+  status: Status;
+  comment?: Maybe<ReturnRequestCommentInput>;
+  refundData?: Maybe<RefundDataInput>;
+};
+
+export interface ReturnRequest {
+  orderId: string;
+  sellerName?: string;
+  refundableAmount: number;
+  sequenceNumber: string;
+  status:
+    | "new"
+    | "processing"
+    | "pickedUpFromClient"
+    | "pendingVerification"
+    | "packageVerified"
+    | "amountRefunded"
+    | "denied"
+    | "cancelled";
+  refundableAmountTotals: {
+    id: "items" | "shipping" | "tax";
+    value: number;
+    [k: string]: unknown;
+  }[];
+  customerProfileData: {
+    userId: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    [k: string]: unknown;
+  };
+  pickupReturnData: {
+    addressId: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    zipCode: string;
+    addressType: "PICKUP_POINT" | "CUSTOMER_ADDRESS";
+    returnLabel?: string;
+    [k: string]: unknown;
+  };
+  refundPaymentData: {
+    refundPaymentMethod: "bank" | "card" | "giftCard" | "sameAsPurchase";
+    iban?: string | null;
+    accountHolderName?: string | null;
+    automaticallyRefundPaymentMethod?: boolean | null;
+    [k: string]: unknown;
+  };
+  items: {
+    orderItemIndex: number;
+    id: string;
+    name: string;
+    localizedName?: string | null;
+    sellingPrice: number;
+    tax: number;
+    quantity: number;
+    imageUrl: string;
+    unitMultiplier: number;
+    sellerId: string;
+    sellerName?: string;
+    productId: string;
+    refId: string;
+    returnReason: {
+      reason: string;
+      otherReason?: string | null;
+      [k: string]: unknown;
+    };
+    condition: "unspecified" | "newWithBox" | "newWithoutBox" | "usedWithBox" | "usedWithoutBox";
+    [k: string]: unknown;
+  }[];
+  dateSubmitted: string;
+  refundData: {
+    invoiceNumber: string;
+    invoiceValue: number;
+    refundedItemsValue: number;
+    refundedShippingValue?: number;
+    giftCard?: {
+      id: string;
+      redemptionCode: string;
+      [k: string]: unknown;
+    };
+    items: {
+      orderItemIndex: number;
+      id: string;
+      price: number;
+      quantity: number;
+      restockFee: number;
+      [k: string]: unknown;
+    }[];
+    [k: string]: unknown;
+  } | null;
+  refundStatusData: {
+    status:
+      | "new"
+      | "processing"
+      | "pickedUpFromClient"
+      | "pendingVerification"
+      | "packageVerified"
+      | "amountRefunded"
+      | "denied"
+      | "cancelled";
+    submittedBy: string;
+    createdAt: string;
+    comments: {
+      comment: string;
+      createdAt: string;
+      role: "adminUser" | "storeUser";
+      submittedBy: string;
+      visibleForCustomer: boolean;
+      [k: string]: unknown;
+    }[];
+    [k: string]: unknown;
+  }[];
+  cultureInfoData: {
+    currencyCode: string;
+    locale: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+
+
 export type ReturnRequestInput = {
   orderId: Scalars['String'];
   sellerName: Scalars['String'];
@@ -36,13 +177,13 @@ export type ReturnReasonInput = {
   otherReason?: InputMaybe<Scalars['String']>;
 };
 
-export enum ItemCondition {
-  Unspecified = 'unspecified',
-  NewWithBox = 'newWithBox',
-  NewWithoutBox = 'newWithoutBox',
-  UsedWithBox = 'usedWithBox',
-  UsedWithoutBox = 'usedWithoutBox'
-}
+export type ItemCondition = 
+  | 'unspecified'
+  | 'newWithBox'
+  | 'newWithoutBox'
+  | 'usedWithBox'
+  | 'usedWithoutBox';
+
 
 export type CustomerProfileDataInput = {
   name: Scalars['String'];
@@ -60,10 +201,10 @@ export type PickupReturnDataInput = {
   addressType: AddressType;
 };
 
-export enum AddressType {
-  PickupPoint = 'PICKUP_POINT',
-  CustomerAddress = 'CUSTOMER_ADDRESS'
-}
+
+export type AddressType = 
+  | 'PICKUP_POINT'
+  | 'CUSTOMER_ADDRESS';
 
 export type RefundPaymentDataInput = {
   refundPaymentMethod: RefundPaymentMethod;
@@ -71,12 +212,12 @@ export type RefundPaymentDataInput = {
   accountHolderName?: InputMaybe<Scalars['String']>;
 };
 
-export enum RefundPaymentMethod {
-  Bank = 'bank',
-  Card = 'card',
-  GiftCard = 'giftCard',
-  SameAsPurchase = 'sameAsPurchase'
-}
+export type RefundPaymentMethod =
+  | 'bank'
+  | 'card'
+  | 'giftCard'
+  | 'sameAsPurchase';
+
 
 export type ReturnRequestResponse = {
   __typename?: 'ReturnRequestResponse';
@@ -98,16 +239,16 @@ export type ReturnRequestResponse = {
   cultureInfoData: CultureInfoData;
 };
 
-export enum Status {
-  new = 'new',
-  processing = 'processing',
-  pickedUpFromClient = 'pickedUpFromClient',
-  pendingVerification = 'pendingVerification',
-  packageVerified = 'packageVerified',
-  amountRefunded = 'amountRefunded',
-  denied = 'denied',
-  cancelled = 'cancelled'
-}
+export type Status = 
+  | 'new'
+  | 'processing'
+  | 'pickedUpFromClient'
+  | 'pendingVerification'
+  | 'packageVerified'
+  | 'amountRefunded'
+  | 'denied'
+  | 'cancelled';
+
 
 export type CustomerProfileData = {
   __typename?: 'CustomerProfileData';
@@ -250,16 +391,14 @@ export type RefundableAmountTotal = {
   value: Scalars['Int'];
 };
 
-export enum RefundableAmountId {
-  Items = 'items',
-  Shipping = 'shipping',
-  Tax = 'tax'
-}
+export type RefundableAmountId =
+  | 'items'
+  | 'shipping'
+  | 'tax';
 
-export enum UserRole {
-  AdminUser = 'adminUser',
-  StoreUser = 'storeUser'
-}
+  export type UserRole =
+  | 'adminUser'
+  | 'storeUser';
 
 export type CultureInfoData = {
   __typename?: 'CultureInfoData';

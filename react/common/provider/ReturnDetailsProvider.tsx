@@ -4,7 +4,7 @@ import type { ApolloError } from 'apollo-client'
 import { useQuery } from 'react-apollo'
 
 import GET_REQUEST_DETAILS from '../graphql/getRequestDetails.gql'
-import { ReturnRequestResponse } from '../../../typings/ReturnRequest'
+import { QueryReturnRequestArgs, ReturnRequestResponse } from '../../../typings/ReturnRequest'
 
 interface ReturnDetailsSetupInterface {
   data?: { returnRequestDetails: ReturnRequestResponse }

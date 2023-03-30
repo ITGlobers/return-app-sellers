@@ -12,6 +12,19 @@ export type Scalars = {
   Float: number;
 };
 
+
+export type QueryOrdersAvailableToReturnArgs = {
+  page: Scalars['Int'];
+  storeUserEmail?: Maybe<Scalars['String']>;
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  filters?: Maybe<OrdersFilters>;
+};
+
+export type QueryOrderToReturnSummaryArgs = {
+  orderId: Scalars['ID'];
+  storeUserEmail?: Maybe<Scalars['String']>;
+};
+
 export type OrdersToReturnList = {
   __typename?: 'OrdersToReturnList';
   list?: Maybe<Array<Maybe<OrderToReturnSummary>>>;
@@ -79,14 +92,13 @@ export type ExcludedReason = {
   value: Scalars['String'];
 };
 
-export enum ExcludedReasonEnum {
-  ExcludedCategory = 'EXCLUDED_CATEGORY'
-}
+export type ExcludedReasonEnum =
+  | 'EXCLUDED_CATEGORY'
 
-export enum OrderToReturnValidation {
-  OutOfMaxDays = 'OUT_OF_MAX_DAYS',
-  OrderNotInvoiced = 'ORDER_NOT_INVOICED'
-}
+export type OrderToReturnValidation = 
+  | 'OUT_OF_MAX_DAYS'
+  | 'ORDER_NOT_INVOICED';
+
 
 export type ClientProfileData = {
   __typename?: 'ClientProfileData';
@@ -111,8 +123,3 @@ export type PaymentData = {
   __typename?: 'PaymentData';
   canRefundCard: Scalars['Boolean'];
 };
-
-export enum AddressType {
-  PickupPoint = 'PICKUP_POINT',
-  CustomerAddress = 'CUSTOMER_ADDRESS'
-}

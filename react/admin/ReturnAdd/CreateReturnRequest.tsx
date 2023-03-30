@@ -16,7 +16,7 @@ import { formatItemsToReturn } from '../utils/formatItemsToReturn'
 import { setInitialPickupAddress } from '../utils/setInitialPickupAddress'
 import { useStoreSettings } from '../hooks/useStoreSettings'
 import { OrderDetailsLoader } from './components/loaders/OrderDetailsLoader'
-import { OrderToReturnSummary } from '../../../typings/OrdertoReturn'
+import { OrderToReturnSummary, QueryOrderToReturnSummaryArgs } from '../../../typings/OrdertoReturn'
 
 export type Page = 'form-details' | 'submit-form'
 

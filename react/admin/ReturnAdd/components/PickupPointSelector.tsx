@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl'
 import NEAREST_PICKUP_POINTS from '../../graphql/nearestPickupPoints.gql'
 import { useReturnRequest } from '../../hooks/useReturnRequest'
 
-import { PickupPoint , NearPickupPointQueryResponse} from '../../../../typings/PickupPoint'
+import { PickupPoint , NearPickupPointQueryResponse, QueryNearestPickupPointsArgs} from '../../../../typings/PickupPoint'
 interface Props {
   geoCoordinates: GeoCoordinates
   isAdmin: boolean

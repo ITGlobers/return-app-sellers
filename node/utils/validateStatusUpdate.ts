@@ -2,15 +2,15 @@ import { ResolverError, UserInputError } from '@vtex/api'
 import { Status } from '../../typings/ReturnRequest'
 
 const statusAllowed: Record<Status, Status[]> = {
-  new: [Status.new, Status.processing, Status.denied, Status.cancelled],
-  processing: [Status.processing, Status.pickedUpFromClient, Status.denied, Status.cancelled],
-  pickedUpFromClient: [Status.pickedUpFromClient, Status.pendingVerification, Status.denied],
-  pendingVerification: [Status.pendingVerification, Status.packageVerified],
+  new: ['new', 'processing', 'denied', 'cancelled'],
+  processing: ['processing', 'pickedUpFromClient', 'denied', 'cancelled'],
+  pickedUpFromClient: ['pickedUpFromClient', 'pendingVerification', 'denied'],
+  pendingVerification: ['pendingVerification', 'packageVerified'],
   // In this step, when sending the items to the resolver, it will assign the status denied or packageVerified based on the items sent.
-  packageVerified: [Status.packageVerified, Status.amountRefunded],
-  amountRefunded: [Status.amountRefunded],
-  denied: [Status.denied],
-  cancelled: [Status.cancelled],
+  packageVerified: ['packageVerified', 'amountRefunded'],
+  amountRefunded: ['amountRefunded'],
+  denied: ['denied'],
+  cancelled: ['cancelled'],
 }
 
 export const validateStatusUpdate = (

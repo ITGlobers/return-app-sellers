@@ -12,6 +12,21 @@ export type Scalars = {
   Float: number;
 };
 
+
+export type MutationSaveReturnAppSettingsArgs = {
+  settings: ReturnAppSettingsInput;
+};
+
+export type MutationSaveReturnAppSettingsArgs = {
+  settings: ReturnAppSettingsInput;
+};
+
+export type QueryReturnSettingsListArgs = {
+  filter?: Maybe<ReturnSettingsFilters>;
+  page: Scalars['Int'];
+  perPage?: Maybe<Scalars['Int']>;
+};
+
 export type ReturnAppSettings = {
   __typename?: 'ReturnAppSettings';
   id?: Maybe<Scalars['String']>;

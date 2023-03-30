@@ -1,4 +1,5 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
+import { ReturnRequest } from '../../typings/ReturnRequest'
 
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {

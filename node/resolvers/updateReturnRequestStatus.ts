@@ -1,4 +1,5 @@
 
+import { MutationUpdateReturnRequestStatusArgs, ReturnRequest } from '../../typings/ReturnRequest'
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
 
 export const updateReturnRequestStatus = (

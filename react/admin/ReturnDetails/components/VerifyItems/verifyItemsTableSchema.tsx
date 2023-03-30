@@ -6,7 +6,7 @@ import { NumericStepper, InputCurrency } from 'vtex.styleguide'
 import type { RefundItemMap, UpdateItemsChange } from './VerifyItemsPage'
 import { AlignItemRight } from '../AlignItemRight'
 import { ProductActionStatus } from './ProductActionStatus'
-import { CultureInfoData, ReturnRequestItemInput } from '../../../../../typings/ReturnRequest'
+import { CultureInfoData, ReturnRequestItem, ReturnRequestItemInput } from '../../../../../typings/ReturnRequest'
 
 export const verifyItemsTableSchema = (
   refundItemMap: RefundItemMap,

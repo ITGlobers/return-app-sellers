@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl'
 
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
-import { RefundData, ReturnRequestItem, Status } from '../../../../../typings/ReturnRequest'
+import { Maybe, RefundData, ReturnRequestItem, Status } from '../../../../../typings/ReturnRequest'
 
 type ItemStatus = 'new' | 'denied' | 'approved' | 'partiallyApproved'
 

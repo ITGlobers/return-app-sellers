@@ -17,6 +17,7 @@ import { ConfirmComment } from './ConfirmComment'
 import { validateNewReturnRequestFields } from '../../utils/validateNewReturnRequestFields'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
 import { ReturnRequestCreated } from '../../../../typings/ProductReturned'
+import { MutationCreateReturnRequestArgs } from '../../../../typings/ReturnRequest'
 
 interface Props {
   onPageChange: (page: Page) => void

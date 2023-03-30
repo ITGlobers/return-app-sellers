@@ -1,4 +1,4 @@
-import { NearPickupPointQueryResponse } from "../../typings/PickupPoint"
+import { NearPickupPointQueryResponse, QueryNearestPickupPointsArgs } from "../../typings/PickupPoint"
 
 export const nearestPickupPoints = async (
   _: unknown,

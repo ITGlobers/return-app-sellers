@@ -1,5 +1,6 @@
 
 import { ForbiddenError } from '@vtex/api'
+import { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
 
 
 export const returnRequestListService = async (

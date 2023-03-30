@@ -1,5 +1,5 @@
 import { ResolverError } from '@vtex/api'
-import { Maybe, ReturnRequestCommentInput, Status } from '../../typings/ReturnRequest'
+import { Maybe, ReturnRequest, ReturnRequestCommentInput, Status } from '../../typings/ReturnRequest'
 
 
 export const createOrUpdateStatusPayload = ({

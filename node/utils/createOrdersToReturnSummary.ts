@@ -12,7 +12,8 @@ import { handleTranlateItems } from './translateItems'
 import { ResolverError } from '@vtex/api'
 import { Order } from '../clients/orders'
 import { ReturnAppSettings } from '../../typings/ReturnAppSettings'
-import { ExcludedItem, ExcludedReasonEnum, InvoicedItem, OrderToReturnSummary, ProcessedItem } from '../../typings/OrdertoReturn'
+import { ExcludedItem, InvoicedItem, OrderToReturnSummary, ProcessedItem } from '../../typings/OrdertoReturn'
+import { ReturnRequest } from '../../typings/ReturnRequest'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
@@ -143,7 +144,7 @@ export const createOrdersToReturnSummary = async (
       excludedItems.push({
         itemIndex: currentLength - 1,
         reason: {
-          key: ExcludedReasonEnum.ExcludedCategory ,
+          key: 'EXCLUDED_CATEGORY',
           value: JSON.stringify(excludedCategory),
         },
       })

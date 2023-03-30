@@ -9,7 +9,7 @@ import { validateStatusUpdate } from '../utils/validateStatusUpdate'
 import { createOrUpdateStatusPayload } from '../utils/createOrUpdateStatusPayload'
 import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
-import { RefundItemInput, Status } from '../../typings/ReturnRequest'
+import { MutationUpdateReturnRequestStatusArgs, RefundItemInput, ReturnRequest, Status } from '../../typings/ReturnRequest'
 
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.

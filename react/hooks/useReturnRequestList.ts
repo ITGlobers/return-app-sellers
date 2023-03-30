@@ -1,5 +1,6 @@
 import { useQuery } from 'react-apollo'
 import type {
+  QueryReturnRequestListArgs,
   ReturnRequestList as ReturnRequestListResponse,
 } from '../../typings/ReturnRequest'
 
