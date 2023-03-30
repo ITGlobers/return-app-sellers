@@ -88,8 +88,7 @@ export const updateRequestStatusService = async (
       return : returnClient ,
       account : accountClient,
       oms,
-      giftCard: giftCardClient,
-      
+      giftCard: giftCardClient     
     }
   } = ctx
 
@@ -189,6 +188,7 @@ export const updateRequestStatusService = async (
     clients: {
       omsClient: oms,
       giftCardClient,
+      accountClient
     },
   })
 

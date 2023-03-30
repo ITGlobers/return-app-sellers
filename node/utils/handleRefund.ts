@@ -3,16 +3,7 @@ import { ResolverError } from '@vtex/api'
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
 import { GiftCard, Maybe, ReturnRequest, Status } from '../../typings/ReturnRequest'
-
-const getOneYearLaterDate = (createdAt: string) => {
-  const date = new Date(createdAt)
-  const year = date.getFullYear()
-  const month = date.getMonth()
-  const day = date.getDate()
-  const oneYearLater = new Date(year + 1, month, day)
-
-  return oneYearLater.toISOString()
-}
+import { Account } from '../clients/account'
 
 interface HandleRefundProps {
   currentStatus: Status
@@ -25,6 +16,7 @@ interface HandleRefundProps {
   clients: {
     omsClient: OMSCustom
     giftCardClient: GiftCardClient
+    accountClient: Account
   }
 }
 
@@ -49,35 +41,27 @@ export const handleRefund = async ({
     return null
   }
 
-  const { omsClient, giftCardClient } = clients
+  const { omsClient, giftCardClient , accountClient } = clients
+
 
   const { refundPaymentMethod, automaticallyRefundPaymentMethod } =
     refundPaymentData ?? {}
 
   if (refundPaymentMethod === 'giftCard') {
     try {
-      const { id, redemptionCode } = await giftCardClient.createGiftCard({
-        relationName: refundInvoice?.invoiceNumber as string,
-        caption: 'Gift Card from Return Request',
-        expiringDate: getOneYearLaterDate(createdAt),
-        balance: 0,
-        profileId: userEmail,
-        discount: true,
-      })
-
-      const giftCardIdSplit = id.split('_')
-
-      const giftCardId = giftCardIdSplit[giftCardIdSplit.length - 1]
-
-      await giftCardClient.updateGiftCard(giftCardId, {
-        description: 'Initial Charge',
-        value: refundInvoice?.invoiceValue as number,
-      })
-
-      return {
-        giftCard: { id: giftCardId, redemptionCode },
+      const createGiftCardRequest = {
+        createdAt,
+        invoiceNumber: refundInvoice?.invoiceNumber as string,
+        invoiceValue: refundInvoice?.invoiceValue as number,
+        userEmail,
       }
+      console.log(JSON.stringify( createGiftCardRequest))
+      const accountInfo = await accountClient.getInfo()  
+      const giftCard = await giftCardClient.createGiftCard(accountInfo , createGiftCardRequest)
+     
+      return giftCard
     } catch (error) {
+      console.log(error)
       throw new ResolverError('Error creating/updating gift card')
     }
   }
