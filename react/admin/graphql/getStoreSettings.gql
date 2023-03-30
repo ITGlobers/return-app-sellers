@@ -1,5 +1,5 @@
 query storeAppSettings {
-  returnAppSettings @context(provider: "obidev.obi-return-app-sellers") {
+  returnAppSettings @context(provider: "obidev.return-app-sellers") {
     termsUrl
     customReturnReasons {
       reason
