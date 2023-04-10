@@ -4,6 +4,7 @@ import { CustomReturnReason, PaymentOptions, ReturnAppSettings, ReturnAppSetting
 export const initialSettingsState: ReturnAppSettingsInput = {
   id: '' ,
   maxDays: 0,
+  enableStatusSelection: true,
   excludedCategories: [],
   termsUrl: '',
   paymentOptions: {

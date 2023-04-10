@@ -17,10 +17,6 @@ export type MutationSaveReturnAppSettingsArgs = {
   settings: ReturnAppSettingsInput;
 };
 
-export type MutationSaveReturnAppSettingsArgs = {
-  settings: ReturnAppSettingsInput;
-};
-
 export type QueryReturnSettingsListArgs = {
   filter?: Maybe<ReturnSettingsFilters>;
   page: Scalars['Int'];
@@ -31,6 +27,7 @@ export type ReturnAppSettings = {
   __typename?: 'ReturnAppSettings';
   id?: Maybe<Scalars['String']>;
   maxDays: Scalars['Int'];
+  enableStatusSelection: Maybe<Scalars['Boolean']>;
   excludedCategories: Array<Scalars['String']>;
   paymentOptions: PaymentOptions;
   termsUrl: Scalars['String'];
@@ -76,6 +73,7 @@ export type ReturnOption = {
 export type ReturnAppSettingsInput = {
   id?: InputMaybe<Scalars['String']>;
   maxDays: Scalars['Int'];
+  enableStatusSelection: Maybe<Scalars['Boolean']>;
   excludedCategories: Array<Scalars['String']>;
   paymentOptions: PaymentOptionsInput;
   termsUrl: Scalars['String'];

@@ -78,7 +78,7 @@ export const createReturnRequestService = async (
     "filter": `orderId=${marketplaceOrderId}`
   }
   const searchRMAPromise = await orderRequestClient.getOrdersList(body , accountInfo)
-  const settingsPromise = returnSettings.getReturnSettings(accountInfo)
+  const settingsPromise = returnSettings.getReturnSettingsMket(accountInfo)
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
   const [order, searchRMA, settings] = await Promise.all([
