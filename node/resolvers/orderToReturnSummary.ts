@@ -26,7 +26,7 @@ export const orderToReturnSummary = async (
   } = ctx
 
   const accountInfo = await accountClient.getInfo()  
-  const settings = await returnSettings.getReturnSettings(accountInfo)
+  const settings = await returnSettings.getReturnSettingsMket(accountInfo)
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)

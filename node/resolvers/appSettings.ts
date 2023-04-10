@@ -24,7 +24,7 @@ const returnAppSettings = async (
   
   const accountInfo = await accountClient.getInfo()  
   
-  const settings = await returnSettingsClient.getReturnSettings(accountInfo)
+  const settings = await returnSettingsClient.getReturnSettingsMket(accountInfo)
   if (!settings) return null
 
   return settings

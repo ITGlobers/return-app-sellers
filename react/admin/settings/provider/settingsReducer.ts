@@ -8,6 +8,7 @@ import type {
 export const initialSettingsState: ReturnAppSettings = {
   id: '' ,
   maxDays: 0,
+  enableStatusSelection: true,
   excludedCategories: [],
   termsUrl: '',
   paymentOptions: {

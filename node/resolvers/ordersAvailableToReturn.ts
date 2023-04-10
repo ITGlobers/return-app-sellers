@@ -3,6 +3,7 @@ import type { OrdersToReturnList, OrderToReturnSummary } from 'obidev.obi-return
 
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { getCurrentDate, substractDays } from '../utils/dateHelpers'
+import { STATUS_INVOICED, STATUS_PAYMENT_APPROVE } from '../utils/constants'
 
 const ONE_MINUTE = 60 * 1000
 
@@ -17,11 +18,13 @@ function pacer(callsPerMinute: number) {
 const createParams = ({
   maxDays,
   page = 1,
-  filter
+  filter,
+  enableStatusSelection
 }: {
   maxDays: number
   page: number
   filter:any
+  enableStatusSelection: boolean
 }) => {
   const currentDate = getCurrentDate()
   const creationDate = filter?.createdIn ?  
@@ -34,7 +37,7 @@ const createParams = ({
   return {
     q: filter?.orderId,
     orderBy: 'creationDate,desc' as const,
-    f_status: 'invoiced' as const,
+    f_status: enableStatusSelection ? STATUS_INVOICED : STATUS_PAYMENT_APPROVE ,
     f_creationDate: creationDate,
     page,
     per_page: 10 as const,
@@ -60,13 +63,13 @@ export const ordersAvailableToReturn = async (
   const { page, storeUserEmail , filter} = args
 
   const accountInfo = await accountClient.getInfo()  
-  const settings = await returnSettings.getReturnSettings(accountInfo)
+  const settings = await returnSettings.getReturnSettingsMket(accountInfo)
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured')
   }
-
-  const { maxDays, excludedCategories } = settings
+  console.log(settings)
+  const { maxDays, excludedCategories , enableStatusSelection } = settings
   const { email } = userProfile ?? {}
 
   const userEmail = storeUserEmail ?? email
@@ -77,7 +80,7 @@ export const ordersAvailableToReturn = async (
  
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
-    createParams({ maxDays, page , filter })
+    createParams({ maxDays, page , filter , enableStatusSelection })
   )
 
 
