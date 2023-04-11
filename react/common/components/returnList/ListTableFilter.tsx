@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react'
 import React, { useState } from 'react'
+import axios from 'axios'
 import { FormattedMessage } from 'react-intl'
 import { Input, DatePicker, Button } from 'vtex.styleguide'
 import type {
@@ -53,7 +54,7 @@ const ListTableFilter = (props: Props) => {
 
   const { refetch, loading, isDisabled } = props
 
-  const { route } = useRuntime()
+  const { route, account, workspace } = useRuntime()
   const [isFiltering, setIsFiltering] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
 
@@ -112,6 +113,37 @@ const ListTableFilter = (props: Props) => {
       ...filters,
       [key]: value,
     })
+  }
+
+  const downloadCSV = async () => {
+    try {
+      if ('createdIn' in selectedFilters) {
+        const { from, to } = selectedFilters.createdIn as FilterDates
+
+        const response = await axios.get(
+          `https://${workspace}--${account}.myvtex.com/_v/return-request/export`,
+          {
+            params: {
+              _dateSubmitted: `${from},${to}`,
+            },
+          }
+        )
+
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+
+        link.href = url
+        link.setAttribute('download', 'requests.csv')
+        document.body.appendChild(link)
+        link.click()
+
+        if (link.parentNode) {
+          link.parentNode.removeChild(link)
+        }
+      }
+    } catch (error) {
+      console.error('Error al descargar el archivo CSV:', error)
+    }
   }
 
   return (
@@ -222,6 +254,17 @@ const ListTableFilter = (props: Props) => {
             variation="danger"
           >
             <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
+          </Button>
+        </div>
+        <div className="mh2">
+          <Button
+            id="custom-excel-button"
+            size="small"
+            onClick={downloadCSV}
+            disabled={!createdIn || loading}
+            variation="primary"
+          >
+            <FormattedMessage id="return-app.return-request-list.table-filters.export-returns" />
           </Button>
         </div>
       </div>
