@@ -1,6 +1,7 @@
 query storeAppSettings {
   returnAppSettings @context(provider: "vtex.return-app") {
     termsUrl
+    orderStatus
     customReturnReasons {
       reason
       maxDays
