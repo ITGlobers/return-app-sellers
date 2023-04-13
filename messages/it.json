@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-pagination.text-of": "di",
   "return-app.request-return.orders.header": "Richiedi un nuovo reso",
   "return-app.request-return.orders.header.subtitle": "Seleziona un ordine per avviare il processo di richiesta di reso",
-  "return-app.return-payment-methods.input-iban-invalid.error": "L'IBAN non è valido"
+  "return-app.return-payment-methods.input-iban-invalid.error": "L'IBAN non è valido",
+  "return-app.return-request-list.table-filters.export-returns": "ESPORTA"
 }

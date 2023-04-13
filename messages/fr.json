@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-pagination.text-of": "de",
   "return-app.request-return.orders.header": "Demander un nouveau retour",
   "return-app.request-return.orders.header.subtitle": "Sélectionnez une commande pour commencer le processus de demande de retour",
-  "return-app.return-payment-methods.input-iban-invalid.error": "L'IBAN n'est pas valide"
+  "return-app.return-payment-methods.input-iban-invalid.error": "L'IBAN n'est pas valide",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTER"
 }
