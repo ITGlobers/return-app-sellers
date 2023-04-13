@@ -1,17 +1,23 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ResolverError, ExternalClient } from '@vtex/api'
 
+const defaultAccount = 'obidev'
+const workspace = 'nmanrique'
 const baseURL = 'myvtex.com/_v/return-request'
 
 const routes = {
   returnByID: (parentAccountName: string, returnId: string) =>
-    `http://nmanrique--${parentAccountName}.${baseURL}/${returnId}`,
+    `http://${workspace}--${
+      parentAccountName ?? defaultAccount
+    }.${baseURL}/${returnId}`,
   createReturn: (parentAccountName: string) =>
-    `http://nmanrique--${parentAccountName}.${baseURL}`,
+    `http://${workspace}--${parentAccountName ?? defaultAccount}.${baseURL}`,
   returnList: (parentAccountName: string) =>
-    `http://nmanrique--${parentAccountName}.${baseURL}`,
+    `http://${workspace}--${parentAccountName ?? defaultAccount}.${baseURL}`,
   exportReturns: (parentAccountName: string) =>
-    `http://jmartinez--${parentAccountName}.${baseURL}/export`,
+    `http://${workspace}--${
+      parentAccountName ?? defaultAccount
+    }.${baseURL}/export`,
 }
 
 export class Return extends ExternalClient {
@@ -52,6 +58,8 @@ export class Return extends ExternalClient {
     params: any,
     accountInfo: any
   ): Promise<any | undefined> {
+    console.info('route: ', routes.returnList(accountInfo.parentAccountName))
+    console.info('params: ', params)
     try {
       const response = await this.http.get(
         routes.returnList(accountInfo.parentAccountName),
