@@ -33,6 +33,7 @@ export type ReturnAppSettings = {
   termsUrl: Scalars['String'];
   customReturnReasons?: Maybe<Array<CustomReturnReason>>;
   options?: Maybe<ReturnOption>;
+  orderStatus: Scalars['String'];
 };
 
 export type PaymentOptions = {
@@ -79,6 +80,7 @@ export type ReturnAppSettingsInput = {
   termsUrl: Scalars['String'];
   customReturnReasons?: InputMaybe<Array<CustomReturnReasonInput>>;
   options?: InputMaybe<ReturnOptionInput>;
+  orderStatus: Scalars['String'];
 };
 
 export type PaymentOptionsInput = {
