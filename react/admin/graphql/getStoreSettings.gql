@@ -1,6 +1,7 @@
 query storeAppSettings {
   returnAppSettings @context(provider: "obidev.return-app-sellers") {
     termsUrl
+    orderStatus
     customReturnReasons {
       reason
       maxDays

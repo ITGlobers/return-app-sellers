@@ -1,5 +1,4 @@
 import { ResolverError } from '@vtex/api'
-
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
 import { GiftCard, Maybe, ReturnRequest, Status } from '../../typings/ReturnRequest'
@@ -55,7 +54,6 @@ export const handleRefund = async ({
         invoiceValue: refundInvoice?.invoiceValue as number,
         userEmail,
       }
-      console.log(JSON.stringify( createGiftCardRequest))
       const accountInfo = await accountClient.getInfo()  
       const giftCard = await giftCardClient.createGiftCard(accountInfo , createGiftCardRequest)
      
