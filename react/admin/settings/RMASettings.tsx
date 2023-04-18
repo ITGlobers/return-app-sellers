@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import type { FormEvent, ReactElement } from 'react'
 import type {
   PaymentOptions as PaymentOptionsInterface,
-  PaymentType,
-} from 'obidev.obi-return-app-sellers'
+  PaymentType
+} from '../../../typings/ReturnAppSettings'
+
 import { FormattedMessage } from 'react-intl'
 import {
   Layout,
@@ -22,6 +23,7 @@ import { PaymentOptions } from './components/PaymentOptions'
 import { RequiredOptions } from './components/RequiredOptions'
 import { WarningModal } from './components/WarningModal'
 import { useSettings } from './hooks/useSettings'
+
 
 export interface ModalWarningState {
   openModal: boolean

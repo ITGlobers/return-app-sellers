@@ -1,9 +1,4 @@
-import type {
-  PaymentOptionsInput,
-  PaymentTypeInput,
-  CustomReturnReasonInput,
-  PaymentOptions,
-} from 'obidev.obi-return-app-sellers'
+import { CustomReturnReasonInput, PaymentOptions, PaymentOptionsInput, PaymentTypeInput } from "../../typings/ReturnAppSettings"
 
 export const validatePaymentOptions = (
   paymentOptions: PaymentOptionsInput

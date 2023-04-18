@@ -1,7 +1,4 @@
-import type {
-  ReturnAppSettings,
-  MutationSaveReturnAppSettingsArgs,
-} from 'obidev.obi-return-app-sellers'
+import type { MutationSaveReturnAppSettingsArgs, ReturnAppSettings } from '../../typings/ReturnAppSettings'
 
 import {
   validateMaxDaysCustomReasons,

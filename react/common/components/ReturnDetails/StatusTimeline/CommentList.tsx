@@ -1,8 +1,8 @@
 import React from 'react'
-import type { RefundStatusComment, UserRole } from 'obidev.obi-return-app-sellers'
 import { useRuntime } from 'vtex.render-runtime'
 import { FormattedMessage } from 'react-intl'
 import { Tag } from 'vtex.styleguide'
+import { RefundStatusComment, UserRole } from '../../../../../typings/ReturnRequest'
 
 interface Props {
   comments: RefundStatusComment[]

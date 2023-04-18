@@ -1,7 +1,6 @@
-import type {
-  QueryReturnRequestListArgs
-} from 'obidev.obi-return-app-sellers'
+
 import { ForbiddenError } from '@vtex/api'
+import { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
 
 
 export const returnRequestListService = async (

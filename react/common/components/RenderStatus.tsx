@@ -1,5 +1,4 @@
 import React from 'react'
-import type { Status } from 'obidev.obi-return-app-sellers'
 import { FormattedMessage } from 'react-intl'
 import {
   IconClock,
@@ -9,6 +8,7 @@ import {
   IconSuccess,
   IconExternalLinkMini,
 } from 'vtex.styleguide'
+import { Status } from '../../../typings/ReturnRequest'
 
 const status = {
   new: 'new',

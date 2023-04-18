@@ -1,7 +1,7 @@
-import type { Status, Maybe, ReturnRequest, GiftCard } from 'obidev.obi-return-app-sellers'
 import { ResolverError } from '@vtex/api'
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
+import { GiftCard, Maybe, ReturnRequest, Status } from '../../typings/ReturnRequest'
 import { Account } from '../clients/account'
 
 interface HandleRefundProps {
@@ -59,6 +59,7 @@ export const handleRefund = async ({
      
       return giftCard
     } catch (error) {
+      console.log(error)
       throw new ResolverError('Error creating/updating gift card')
     }
   }

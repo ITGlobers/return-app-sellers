@@ -1,4 +1,3 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from 'obidev.obi-return-app-sellers'
 import { UserInputError, ResolverError } from '@vtex/api'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
@@ -10,7 +9,8 @@ import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
-
+import { ReturnRequestInput } from '../../typings/ReturnRequest'
+import { ReturnRequestCreated } from '../../typings/ProductReturned'
 export const createReturnRequestService = async (
   ctx: Context,
   args: ReturnRequestInput

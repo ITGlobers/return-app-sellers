@@ -1,4 +1,5 @@
-import type { OrderToReturnValidation } from 'vtex.return-app'
+import { OrderToReturnValidation } from "../../../typings/OrdertoReturn";
+
 
 export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,

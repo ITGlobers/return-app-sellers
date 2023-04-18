@@ -2,10 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
-import type {
-  MutationCreateReturnRequestArgs,
-  ReturnRequestCreated,
-} from 'vtex.return-app'
+
 import { useCssHandles } from 'vtex.css-handles'
 import { Card, Button, Alert } from 'vtex.styleguide'
 
@@ -19,6 +16,8 @@ import { ConfirmPaymentMethods } from './ConfirmPaymentMethods'
 import { ConfirmComment } from './ConfirmComment'
 import { validateNewReturnRequestFields } from '../../utils/validateNewReturnRequestFields'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
+import { ReturnRequestCreated } from '../../../../typings/ProductReturned'
+import { MutationCreateReturnRequestArgs } from '../../../../typings/ReturnRequest'
 
 interface Props {
   onPageChange: (page: Page) => void

@@ -2,11 +2,8 @@ import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, DatePicker, Button } from 'vtex.styleguide'
-import type {
-  QueryReturnRequestListArgs,
-  ReturnRequestList,
-  Status,
-} from 'vtex.return-app'
+import { QueryReturnRequestListArgs, ReturnRequestList, Status } from '../../../typings/ReturnRequest'
+
 import type { ApolloQueryResult } from 'apollo-client'
 import { useCssHandles } from 'vtex.css-handles'
 

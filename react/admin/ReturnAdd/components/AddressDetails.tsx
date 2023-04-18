@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { Input, Tooltip, Toggle, IconInfo } from 'vtex.styleguide'
-import type { AddressType, ShippingData } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { useReturnRequest } from '../../hooks/useReturnRequest'
@@ -11,6 +10,7 @@ import { CustomMessage } from './layout/CustomMessage'
 import { PickupPointSelector } from './PickupPointSelector'
 import type { OrderDetailsState } from '../../provider/OrderToReturnReducer'
 import { setInitialPickupAddress } from '../../utils/setInitialPickupAddress'
+import { AddressType, ShippingData } from '../../../../typings/OrdertoReturn'
 
 const messages = defineMessages({
   addressInput: {

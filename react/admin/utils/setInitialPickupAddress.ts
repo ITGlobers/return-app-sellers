@@ -1,5 +1,5 @@
-import type { ShippingData } from 'vtex.return-app'
 
+import { ShippingData } from '../../../typings/OrdertoReturn'
 import type { OrderDetailsState } from '../provider/OrderToReturnReducer'
 
 export const setInitialPickupAddress = (

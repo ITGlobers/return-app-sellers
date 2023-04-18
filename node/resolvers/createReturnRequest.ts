@@ -1,5 +1,5 @@
-import type { MutationCreateReturnRequestArgs } from 'obidev.obi-return-app-sellers'
 
+import { MutationCreateReturnRequestArgs } from '../../typings/ReturnRequest'
 import { createReturnRequestService } from '../services/createReturnRequestService'
 
 export const createReturnRequest = async (

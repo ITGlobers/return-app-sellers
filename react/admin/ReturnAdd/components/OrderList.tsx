@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime/'
 import { Table, Button } from 'vtex.styleguide'
+import { OrdersToReturnList, OrderToReturnSummary } from '../../../../typings/OrdertoReturn'
 
 import { createItemsSummary } from '../../utils/createItemsSummary'
 

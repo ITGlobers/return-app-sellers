@@ -1,5 +1,5 @@
-import type { InvoicedItem } from 'obidev.obi-return-app-sellers'
 
+import { InvoicedItem } from '../../typings/OrdertoReturn'
 import type { CatalogGQL } from '../clients/catalogGQL'
 
 /**

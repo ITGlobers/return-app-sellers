@@ -1,5 +1,5 @@
-import type { OrderToReturnValidation } from 'obidev.obi-return-app-sellers'
 
+import { OrderToReturnValidation } from '../../typings/OrdertoReturn'
 import type {
   ReturnRequestConfirmation,
   ReturnRequestStatusUpdate,

@@ -1,6 +1,7 @@
-import type {
+import {
   InstanceOptions,
   IOContext,
+  ResolverError,
 } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
 
@@ -30,7 +31,7 @@ export class Account extends JanusClient {
         })
       return response
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error getInfo')
     }
   }
 }

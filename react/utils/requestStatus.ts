@@ -1,9 +1,6 @@
-import type {
-  Status,
-  RefundStatusData,
-  RefundStatusComment,
-} from 'obidev.obi-return-app-sellers'
+
 import { defineMessages } from 'react-intl'
+import { RefundStatusComment, RefundStatusData, Status } from '../../typings/ReturnRequest'
 
 const statusSequence: Status[] = [
   'new',

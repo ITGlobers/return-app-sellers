@@ -1,12 +1,7 @@
 import type { FC } from 'react'
 import React, { createContext } from 'react'
-import type {
-  Status,
-  ReturnRequestCommentInput,
-  RefundDataInput,
-  ReturnRequestResponse,
-  MutationUpdateReturnRequestStatusArgs,
-} from 'obidev.obi-return-app-sellers'
+import type { MutationUpdateReturnRequestStatusArgs, RefundDataInput, ReturnRequestCommentInput, ReturnRequestResponse, Status } from '../../../typings/ReturnRequest'
+
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 

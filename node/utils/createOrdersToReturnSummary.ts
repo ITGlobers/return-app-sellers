@@ -1,12 +1,5 @@
 import type { OrderDetailResponse } from '@vtex/clients'
-import type {
-  OrderToReturnSummary,
-  InvoicedItem,
-  ExcludedItem,
-  ProcessedItem,
-  ReturnAppSettings,
-  ReturnRequest,
-} from 'obidev.obi-return-app-sellers'
+
 
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
@@ -18,6 +11,9 @@ import type { Account } from '../clients/account'
 import { handleTranlateItems } from './translateItems'
 import { ResolverError } from '@vtex/api'
 import { Order } from '../clients/orders'
+import { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import { ExcludedItem, InvoicedItem, OrderToReturnSummary, ProcessedItem } from '../../typings/OrdertoReturn'
+import { ReturnRequest } from '../../typings/ReturnRequest'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']

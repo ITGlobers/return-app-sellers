@@ -1,5 +1,5 @@
-import type { QueryReturnRequestListArgs } from 'obidev.obi-return-app-sellers'
 
+import { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
 import { returnRequestListService } from '../services/returnRequestListService'
 
 export const returnRequestList = (

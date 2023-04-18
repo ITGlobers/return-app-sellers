@@ -1,8 +1,8 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import type { RefundPaymentDataInput } from 'vtex.return-app'
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
+import { RefundPaymentDataInput } from '../../../../typings/ReturnRequest'
 
 import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethodsMessages'
 

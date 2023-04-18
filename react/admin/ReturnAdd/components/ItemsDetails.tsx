@@ -1,5 +1,4 @@
 import React from 'react'
-import type { ItemCondition } from 'vtex.return-app'
 import { NumericStepper } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { FormattedMessage } from 'react-intl'
@@ -10,6 +9,7 @@ import { CustomMessage } from './layout/CustomMessage'
 import { RenderConditionDropdown } from './RenderConditionDropdown'
 import { RenderReasonDropdown } from './RenderReasonDropdown'
 import { useStoreSettings } from '../../hooks/useStoreSettings'
+import { ItemCondition } from '../../../../typings/ReturnRequest'
 
 interface Props {
   itemToReturn: ItemToReturn
