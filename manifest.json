@@ -22,8 +22,7 @@
     "docs": "0.x",
     "store": "0.x",
     "node": "6.x",
-    "graphql": "1.x",
-    "masterdata": "1.x"
+    "graphql": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
