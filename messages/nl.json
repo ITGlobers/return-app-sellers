@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-pagination.text-of": "van",
   "return-app.request-return.orders.header": "Nieuwe retouraanvraag",
   "return-app.request-return.orders.header.subtitle": "Selecteer een bestelling om het retouraanvraagproces te starten",
-  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN is niet geldig"
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN is niet geldig",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTEREN"
 }

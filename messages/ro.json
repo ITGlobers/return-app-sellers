@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-pagination.text-of": "din",
   "return-app.request-return.orders.header": "Solicitați o Nouă Returnare",
   "return-app.request-return.orders.header.subtitle": "Selectați o comandă pentru a începe procesul de solicitare de returnare",
-  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN nu este valid"
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN nu este valid",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTĂ"
 }

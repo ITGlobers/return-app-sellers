@@ -33,7 +33,7 @@
       "name": "outbound-access",
       "attrs": {
         "host": "*.myvtex.com",
-        "path": "/_v/return-request"
+        "path": "/_v/return-request/*"
       }
     },
     {

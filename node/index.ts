@@ -4,10 +4,11 @@ import type {
   RecorderState,
   ParamsContext,
 } from '@vtex/api'
-import { Service, LRUCache } from '@vtex/api'
+import { method, Service, LRUCache } from '@vtex/api'
 
 import { Clients } from './clients'
 import { mutations, queries, resolvers } from './resolvers'
+import { exportRequests } from './middlewares/exportRequests'
 import { schemaDirectives } from './directives'
 
 const TIMEOUT_MS = 10000
@@ -39,7 +40,11 @@ declare global {
 
 export default new Service<Clients, State, ParamsContext>({
   clients,
-  routes: {},
+  routes: {
+    exportRequests: method({
+      GET: [exportRequests],
+    }),
+  },
   graphql: {
     resolvers: {
       ...resolvers,

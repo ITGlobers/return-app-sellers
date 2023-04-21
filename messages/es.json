@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-header.select-order": "Seleccionar pedido",
   "return-app.request-return-order-list.table-pagination.text-of": "de",
   "return-app.request-return-order-list.table-empty-state-label.no-orders-available": "No hay pedidos disponibles para devolución",
-  "return-app.return-payment-methods.input-iban-invalid.error": "El IBAN no es válido"
+  "return-app.return-payment-methods.input-iban-invalid.error": "El IBAN no es válido",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORTAR"
 }

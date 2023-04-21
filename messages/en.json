@@ -340,5 +340,6 @@
   "return-app.return-order-details.error.out-of-max-days": "The order exceeds the maximum return period",
   "return-app.return-order-details.error.order-not-found": "Order not found",
   "return-app.return-order-details.error.forbidden": "You don't have access to this order",
-  "return-app.return-order-details.error.unknown": "Something failed, please try again."
+  "return-app.return-order-details.error.unknown": "Something failed, please try again.",
+  "return-app.return-request-list.table-filters.export-returns": "EXPORT"
 }

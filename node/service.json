@@ -4,5 +4,10 @@
   "timeout": 5000,
   "minReplicas": 2,
   "maxReplicas": 4,
-  "routes": {}
+  "routes": {
+    "exportRequests": {
+      "path": "/_v/return-request/export",
+      "public": true
+    }
+  }
 }

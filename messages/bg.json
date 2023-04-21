@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-pagination.text-of": "от",
   "return-app.request-return.orders.header": "Заявка за ново връщане",
   "return-app.request-return.orders.header.subtitle": "Изберете поръчка, за да започнете процеса по заявка за връщане",
-  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN е невалиден"
+  "return-app.return-payment-methods.input-iban-invalid.error": "IBAN е невалиден",
+  "return-app.return-request-list.table-filters.export-returns": "ЕКСПОРТИРАЙ"
 }
