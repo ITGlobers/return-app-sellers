@@ -1,9 +1,9 @@
 {
   "extensions": {
-    "my-account-portal/routes/obidev.return-app-sellers": {
+    "my-account-portal/routes/vtexromania.return-app-sellers": {
       "component": "ExtensionRouter"
     },
-    "my-account-portal/menu-links-after/obidev.return-app-sellers": {
+    "my-account-portal/menu-links-after/vtexromania.return-app-sellers": {
       "component": "ExtensionLinks"
     }
   }
