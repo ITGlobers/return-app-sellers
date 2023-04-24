@@ -4,7 +4,7 @@ import { ExternalClient } from '@vtex/api'
 const baseURL = 'myvtex.com/_v/returns/seller/orders'
 
 const routes = {
-  returnList: (parentAccountName: string) => `http://nmanrique--${parentAccountName}.${baseURL}`,
+  returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
 }
 
 export class Order extends ExternalClient {
