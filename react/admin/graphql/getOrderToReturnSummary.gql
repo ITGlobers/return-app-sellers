@@ -1,6 +1,6 @@
 query orderToReturnSummary($orderId: ID!) {
   orderToReturnSummary(orderId: $orderId)
-    @context(provider: "vtexromania.return-app-sellers") {
+    @context(provider: "itglobers.return-app-sellers") {
     orderId
     sellerName
     marketplaceOrderId

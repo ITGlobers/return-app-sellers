@@ -1,5 +1,5 @@
 query returnAppSettings {
-  returnAppSettings @context(provider: "vtexromania.return-app-sellers") {
+  returnAppSettings @context(provider: "itglobers.return-app-sellers") {
     id
     maxDays
     orderStatus

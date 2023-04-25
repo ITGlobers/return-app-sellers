@@ -1,4 +1,4 @@
 mutation saveAppSettings($settings: ReturnAppSettingsInput!) {
   saveReturnAppSettings(settings: $settings)
-    @context(provider: "vtexromania.return-app-sellers")
+    @context(provider: "itglobers.return-app-sellers")
 }
