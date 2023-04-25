@@ -1,6 +1,6 @@
 query ordersAvailableToReturn($filter: ReturnRequestFilters, $page: Int!) {
   ordersAvailableToReturn(filter: $filter, page: $page) 
-  @context(provider: "obidev.return-app-sellers") {
+  @context(provider: "vtexromania.return-app-sellers") {
     list {
       orderId
       creationDate

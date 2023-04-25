@@ -5,9 +5,9 @@ const baseURL = 'myvtex.com/_v/returns/seller/settings'
 const baseURLMket = 'myvtex.com/_v/returns/settings'
 
 const routes = {
-  returnSettingMket: (parentAccountName: string ) => `http://nmanrique--${parentAccountName}.${baseURLMket}`,
-  returnSettings: (parentAccountName: string ) => `http://nmanrique--${parentAccountName}.${baseURL}/${parentAccountName}`,
-  updateSettings: (parentAccountName: string ) => `http://nmanrique--${parentAccountName}.${baseURL}`,
+  returnSettingMket: (parentAccountName: string ) => `http://${parentAccountName}.${baseURLMket}`,
+  returnSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}/${parentAccountName}`,
+  updateSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
 }
 
 export class ReturnSettings extends ExternalClient {
