@@ -33,11 +33,11 @@ const createParams = ({
 }) => {
   const currentDate = getCurrentDate()
   const orderStatusName = orderStatus?.replace('f_','')
-
+  
   let creationDate = `${orderStatusName}:[${substractDays(
     currentDate,
-    maxDays
-  )} TO ${currentDate}]`
+    maxDays || 0
+    )} TO ${currentDate}]`
 
   if (filter) {
     const { createdIn } = filter
@@ -47,7 +47,6 @@ const createParams = ({
   }
 
   return {
-    // clientEmail: userEmail,
     orderBy: 'creationDate,desc' as const,
     f_status: enableStatusSelection ? STATUS_INVOICED : `${STATUS_INVOICED},${STATUS_PAYMENT_APPROVE}`,
     [orderStatus]: creationDate,
