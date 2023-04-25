@@ -17,30 +17,42 @@ function pacer(callsPerMinute: number) {
 const createParams = ({
   maxDays,
   page = 1,
+  enableStatusSelection,
   filter,
-  enableStatusSelection
+  orderStatus = 'f_creationDate',
 }: {
   maxDays: number
   page: number
-  filter:any
-  enableStatusSelection: boolean
+  orderStatus?: string | any
+  filter?: {
+    orderId: string
+    sellerName: string
+    createdIn: { from: string; to: string }
+  },
+  enableStatusSelection : boolean | undefined | null
 }) => {
   const currentDate = getCurrentDate()
-  const creationDate = filter?.createdIn ?  
-  `creationDate:[${filter.createdIn.from} TO ${filter.createdIn.to}]` :  
-  `creationDate:[${substractDays(
+  const orderStatusName = orderStatus?.replace('f_','')
+
+  let creationDate = `${orderStatusName}:[${substractDays(
     currentDate,
     maxDays
   )} TO ${currentDate}]`
 
+  if (filter) {
+    const { createdIn } = filter
+    creationDate = createdIn
+      ? `${orderStatusName}:[${createdIn.from} TO ${createdIn.to}]`
+      : creationDate
+  }
+
   return {
-    q: filter?.orderId,
+    // clientEmail: userEmail,
     orderBy: 'creationDate,desc' as const,
-    f_status: enableStatusSelection ? STATUS_INVOICED : STATUS_PAYMENT_APPROVE ,
-    f_creationDate: creationDate,
+    f_status: enableStatusSelection ? STATUS_INVOICED : `${STATUS_INVOICED},${STATUS_PAYMENT_APPROVE}`,
+    [orderStatus]: creationDate,
     page,
-    per_page: 10 as const,
-    
+    per_page: 10 as const
   }
 }
 
@@ -67,8 +79,8 @@ export const ordersAvailableToReturn = async (
   if (!settings) {
     throw new ResolverError('Return App settings is not configured')
   }
-  console.log(settings)
-  const { maxDays, excludedCategories , enableStatusSelection } = settings
+  
+  const { maxDays, excludedCategories, orderStatus, enableStatusSelection } = settings
   const { email } = userProfile ?? {}
 
   const userEmail = storeUserEmail ?? email
@@ -79,7 +91,7 @@ export const ordersAvailableToReturn = async (
  
   // Fetch order associated to the user email
   const { list, paging } = await oms.listOrdersWithParams(
-    createParams({ maxDays, page , filter , enableStatusSelection })
+    createParams({ maxDays, page, filter, orderStatus, enableStatusSelection })
   )
 
 

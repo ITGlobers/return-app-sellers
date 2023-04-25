@@ -25,13 +25,17 @@ type InputInvoiceFields = Omit<
   'invoiceKey' | 'invoiceUrl' | 'courier' | 'trackingNumber' | 'trackingUrl'
 >
 
+
 interface OrderListParams {
   orderBy: 'creationDate,desc'
   f_status: string
-  f_creationDate: string
+  f_creationDate?: string
+  f_authorizedDate?: string
+  f_invoicedDate?: string
   page: number
   per_page: 10
 }
+
 
 export class OMSCustom extends OMS {
   constructor(ctx: IOContext, options?: InstanceOptions) {
