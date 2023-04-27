@@ -11,6 +11,9 @@ import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
 import { ReturnRequestInput } from '../../typings/ReturnRequest'
 import { ReturnRequestCreated } from '../../typings/ProductReturned'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
+
 export const createReturnRequestService = async (
   ctx: Context,
   args: ReturnRequestInput
@@ -23,6 +26,7 @@ export const createReturnRequestService = async (
       returnSettings,
       account :accountClient,
       catalogGQL,
+      settingsAccount
     },
     state: { userProfile, appkey },
     vtex: { logger },
@@ -72,7 +76,14 @@ export const createReturnRequestService = async (
   }
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
-  const accountInfo = await accountClient.getInfo()  
+  const accountInfo = await accountClient.getInfo()
+
+  let appConfig: Settings = DEFAULT_SETTINGS
+
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
   const body = {
     "fields":    ['id'] ,
     "filter": `orderId=${marketplaceOrderId}`
@@ -255,7 +266,13 @@ export const createReturnRequestService = async (
         },
       }
 
-  const rmaDocument = await returnRequestClient.createReturn( request, accountInfo)
+  const payload = {
+    createRequest: request,
+    parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+    auth: appConfig
+  }
+
+  const rmaDocument = await returnRequestClient.createReturn(payload)
   
   return { returnRequestId: rmaDocument.returnRequestId }
 

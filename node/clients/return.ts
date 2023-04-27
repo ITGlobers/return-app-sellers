@@ -9,25 +9,45 @@ const routes = {
   returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
 }
 
+interface Auth {
+  parentAccountName?: string
+  appKey?: string
+  appToken?: string
+}
+
 export class Return extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
     super('', ctx, options)
   }
 
-  public async get ( id : string ,  accountInfo : any , param : [String]) : Promise<any | undefined> {
+  public async get (props: {
+    id: string,
+    parentAccountName: string,
+    param: string[],
+    auth: Auth
+  }) : Promise<any | undefined> {
+    const {
+      id,
+      parentAccountName,
+      param,
+      auth
+    } = props;
+
     try {
       const params = {
         _orderId : id,
         _filter: param[0] 
       }
       const response = await this.http.get(
-        routes.returnList(accountInfo.parentAccountName),
+        routes.returnList(parentAccountName),
         
         {
           params,
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
+            'X-VTEX-API-AppKey': auth?.appKey,
+            'X-VTEX-API-AppToken': auth?.appToken
           }
         }
       )
@@ -39,15 +59,27 @@ export class Return extends ExternalClient {
 
   } 
 
-  public async getReturnList ( params : any ,  accountInfo : any ) : Promise<any | undefined> {
+  public async getReturnList (props: {
+    params: any,
+    parentAccountName: string,
+    auth: Auth
+  }) : Promise<any | undefined> {
+    const {
+      params,
+      parentAccountName,
+      auth
+    } = props;
+
     try {
       const response = await this.http.get(
-        routes.returnList(accountInfo.parentAccountName),
+        routes.returnList(parentAccountName),
         {
           params,
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
+            'X-VTEX-API-AppKey': auth?.appKey,
+            'X-VTEX-API-AppToken': auth?.appToken
           }
         }
       )
@@ -59,17 +91,30 @@ export class Return extends ExternalClient {
 
   }
   
-  public async getReturnById ( returnId : any , accountInfo : any ) : Promise<any | undefined> {
+  public async getReturnById (props: {
+    returnId: any,
+    parentAccountName: string,
+    auth: Auth
+  }) : Promise<any | undefined> {
+    const {
+      returnId,
+      parentAccountName,
+      auth
+    } = props;
+
     try {
       const response = await this.http.get(
-        routes.returnByID(accountInfo.parentAccountName , returnId),
+        routes.returnByID(parentAccountName , returnId),
         {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
+            'X-VTEX-API-AppKey': auth?.appKey,
+            'X-VTEX-API-AppToken': auth?.appToken
           }
         }
       )
+
       return response
 
     } catch (error) {
@@ -79,15 +124,29 @@ export class Return extends ExternalClient {
   } 
 
   
-  public async updateReturn ( returnId : any , updatedRequest:any ,  accountInfo : any ) : Promise<any | undefined> {
+  public async updateReturn (props: {
+    returnId: any,
+    updatedRequest: any,
+    parentAccountName: string
+    auth: Auth
+  }) : Promise<any | undefined> {
+    const {
+      returnId,
+      updatedRequest,
+      parentAccountName,
+      auth
+    } = props;
+
     try {
       const response = await this.http.put(
-        routes.returnByID(accountInfo.parentAccountName , returnId),
+        routes.returnByID(parentAccountName , returnId),
         updatedRequest,
         {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
+            'X-VTEX-API-AppKey': auth?.appKey,
+            'X-VTEX-API-AppToken': auth?.appToken
           }
         }
       )
@@ -99,15 +158,27 @@ export class Return extends ExternalClient {
 
   } 
 
-  public async createReturn ( createRequest:any , accountInfo : any  ) : Promise<any | undefined> {
+  public async createReturn (props: {
+    createRequest: any,
+    parentAccountName: string
+    auth: Auth
+  }) : Promise<any | undefined> {
+    const {
+      createRequest,
+      parentAccountName,
+      auth
+    } = props
+
     try {
       const response = await this.http.post(
-        routes.createReturn(accountInfo.parentAccountName ),
+        routes.createReturn(parentAccountName ),
         createRequest,
         {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken  || "",
             'X-Vtex-Use-Https': 'true',
+            'X-VTEX-API-AppKey': auth?.appKey,
+            'X-VTEX-API-AppToken': auth?.appToken
           }
         }
       )

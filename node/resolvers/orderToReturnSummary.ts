@@ -5,6 +5,8 @@ import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { OrderToReturnSummary } from '../../typings/OrdertoReturn'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -20,13 +22,22 @@ export const orderToReturnSummary = async (
       order: orderRequestClient,
       catalogGQL,
       account :accountClient,
-
+      settingsAccount
     },
     vtex: { logger },
   } = ctx
 
-  const accountInfo = await accountClient.getInfo()  
-  const settings = await returnSettings.getReturnSettingsMket(accountInfo)
+  const accountInfo = await accountClient.getInfo()
+  
+  let appConfig: Settings = DEFAULT_SETTINGS
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
+  const settings = await returnSettings.getReturnSettingsMket({
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)

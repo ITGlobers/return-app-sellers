@@ -1,4 +1,6 @@
 import type { MutationSaveReturnAppSettingsArgs, ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 import {
   validateMaxDaysCustomReasons,
@@ -14,14 +16,24 @@ const returnAppSettings = async (
   const {
     clients: { 
       returnSettings : returnSettingsClient,
-      account : accountClient ,
+      account : accountClient,
+      settingsAccount
     },
   } = ctx
 
   
-  const accountInfo = await accountClient.getInfo()  
+  const accountInfo = await accountClient.getInfo()
+
+  let appConfig: Settings = DEFAULT_SETTINGS
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
   
-  const settings = await returnSettingsClient.getReturnSettingsMket(accountInfo)
+  const settings = await returnSettingsClient.getReturnSettingsMket({
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
   if (!settings) return null
 
   return settings
@@ -35,7 +47,8 @@ const saveReturnAppSettings = async (
   const {
     clients: { 
       returnSettings : returnSettingsClient,
-      account : accountClient 
+      account : accountClient,
+      settingsAccount
     },
   } = ctx
 
@@ -53,18 +66,30 @@ const saveReturnAppSettings = async (
     paymentOptions: validatePaymentOptions(args.settings.paymentOptions),
   }
 
-  const accountInfo = await accountClient.getInfo()  
+  const accountInfo = await accountClient.getInfo()
+  let appConfig: Settings = DEFAULT_SETTINGS
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
+  const parentAccountName = accountInfo?.parentAccountName || appConfig?.parentAccountName
+  
   const requestSettings = {
     settings :
     {
       sellerId: accountInfo.accountName,
-      parentAccount: accountInfo.parentAccountName ,
+      parentAccount: parentAccountName,
       ...settings,
-
     }
-
   }
-  await returnSettingsClient.saveReturnSettings(accountInfo , requestSettings)
+
+  const payload = {
+    parentAccountName,
+    settings: requestSettings,
+    auth: appConfig
+  }
+
+  await returnSettingsClient.saveReturnSettings(payload)
   return true
 }
 

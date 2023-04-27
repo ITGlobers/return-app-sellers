@@ -10,6 +10,7 @@ import { Return} from './return'
 import { Order} from './orders'
 import { Account } from './account'
 import { ReturnSettings } from './appSettings'
+import { SettingsClient } from './settings'
 
 
 export class Clients extends IOClients {
@@ -54,6 +55,10 @@ export class Clients extends IOClients {
 
   public get returnSettings() {
     return this.getOrSet('returnSettings', ReturnSettings)
+  }
+
+  public get settingsAccount() {
+    return this.getOrSet('settingsAccount', SettingsClient)
   }
   
 }

@@ -86,5 +86,23 @@
     },
     "free": true
   },
+  "settingsSchema": {
+    "title": "Return App Config",
+    "type": "object",
+    "properties": {
+      "parentAccountName": {
+        "title": "Parent Account Name",
+        "type": "string"
+      },
+      "appKey": {
+        "title": "App Key",
+        "type": "string"
+      },
+      "appToken": {
+        "title": "App Token",
+        "type": "string"
+      }
+    }
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

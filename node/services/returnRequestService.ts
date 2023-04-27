@@ -1,17 +1,31 @@
 import { ResolverError, ForbiddenError } from '@vtex/api'
 import { ReturnRequest } from '../../typings/ReturnRequest'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const returnRequestService = async (ctx: Context, requestId: string) => {
   const {
-    clients: { return : returnClient ,   account : accountClient },
+    clients: { return : returnClient ,   account : accountClient, settingsAccount },
     state: { userProfile, appkey },
   } = ctx
   const { userId, role } = userProfile ?? {}
   const userIsAdmin = Boolean(appkey) || role === 'admin'
 
-  const accountInfo = await accountClient.getInfo()  
+  const accountInfo = await accountClient.getInfo()
+  
+  let appConfig: Settings = DEFAULT_SETTINGS
 
-  const returnRequestResult = await returnClient.getReturnById(requestId, accountInfo)
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
+  const payload = {
+    returnId: requestId,
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  }
+  
+  const returnRequestResult = await returnClient.getReturnById(payload)
 
   if (!returnRequestResult) {
     // Code error 'E_HTTP_404' to match the one when failing to find and order by OMS
