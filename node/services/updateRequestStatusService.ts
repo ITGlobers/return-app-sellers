@@ -11,6 +11,9 @@ import { createRefundData } from '../utils/createRefundData'
 import { handleRefund } from '../utils/handleRefund'
 import { MutationUpdateReturnRequestStatusArgs, RefundItemInput, ReturnRequest, Status } from '../../typings/ReturnRequest'
 
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
+
 // A partial update on MD requires all required field to be sent. https://vtex.slack.com/archives/C8EE14F1C/p1644422359807929
 // And the request to update fails when we pass the auto generated ones.
 // If any new field is added to the ReturnRequest as required, it has to be added here too.
@@ -88,7 +91,8 @@ export const updateRequestStatusService = async (
       return : returnClient ,
       account : accountClient,
       oms,
-      giftCard: giftCardClient     
+      giftCard: giftCardClient,
+      settingsAccount
     }
   } = ctx
 
@@ -107,13 +111,22 @@ export const updateRequestStatusService = async (
       'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
     )
   }
-  const accountInfo = await accountClient.getInfo()  
 
+  const accountInfo = await accountClient.getInfo()
 
-  const returnRequest = (await returnClient.getReturnById(
-    requestId , 
-    accountInfo
-    )) as ReturnRequest
+  let appConfig: Settings = DEFAULT_SETTINGS
+
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
+  const payload = {
+    returnId: requestId,
+    parentAccountName: accountInfo?.parentAccount || appConfig.parentAccountName,
+    auth: appConfig
+  }
+
+  const returnRequest = (await returnClient.getReturnById(payload)) as ReturnRequest
 
   if (!returnRequest) {
     throw new NotFoundError(`Request ${requestId} not found`)
@@ -187,9 +200,9 @@ export const updateRequestStatusService = async (
     userEmail: returnRequest.customerProfileData?.email as string,
     clients: {
       omsClient: oms,
-      giftCardClient,
-      accountClient
+      giftCardClient
     },
+    accountInfo: accountInfo?.parentAccount ? accountInfo : appConfig
   })
 
   const giftCard = refundReturn?.giftCard
@@ -205,7 +218,12 @@ export const updateRequestStatusService = async (
   }
 
   try {
-    await returnClient.updateReturn(requestId, updatedRequest , accountInfo)
+    await returnClient.updateReturn({
+      returnId: requestId,
+      updatedRequest,
+      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      auth: appConfig
+    })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 

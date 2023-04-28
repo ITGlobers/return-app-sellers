@@ -1,13 +1,11 @@
 import type { OrderDetailResponse } from '@vtex/clients'
-
-
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
 import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
+import type { Catalog } from '../clients/catalog'
 import type { CatalogGQL } from '../clients/catalogGQL'
-import type { Account } from '../clients/account'
 import { handleTranlateItems } from './translateItems'
 import { ResolverError } from '@vtex/api'
 import { Order } from '../clients/orders'
@@ -18,27 +16,32 @@ import { ReturnRequest } from '../../typings/ReturnRequest'
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
   orderRequestClient: Order
+  catalog: Catalog
   catalogGQL: CatalogGQL
-  accountClient : Account
 }
 
 export const createOrdersToReturnSummary = async (
   order: OrderDetailResponse,
   email: string,
+  accountInfo: any,
   {
     excludedCategories,
     orderRequestClient,
+    catalog,
     catalogGQL,
-    accountClient
   }: CreateOrdersToReturnSummarySetup
 ): Promise<OrderToReturnSummary> => {
   const { items, orderId, creationDate , marketplaceOrderId} = order
-  const accountInfo = await accountClient.getInfo()  
+
   const body = {
     "fields":  ["items", "refundData", "refundPaymentData"] ,
     "filter": `orderId=${marketplaceOrderId} AND status <> cancelled`
   }
-  const returnRequestSameOrder = await orderRequestClient.getOrdersList(body , accountInfo)
+  const returnRequestSameOrder = await orderRequestClient.getOrdersList({
+    body,
+    parentAccountName: accountInfo?.parentAccountName,
+    auth: accountInfo
+  })
   const invoicesCreatedByReturnApp: string[] = []
   const committedItemsToReturn: Array<{ itemIndex: number; quantity: number }> =
     []
@@ -169,7 +172,7 @@ export const createOrdersToReturnSummary = async (
     sellerName: accountInfo.accountName,
     marketplaceOrderId,
     creationDate,
-    invoicedItems: await handleTranlateItems(invoicedItems, catalogGQL),
+    invoicedItems: await handleTranlateItems(invoicedItems, catalog, catalogGQL, accountInfo.isSellerPortal),
     processedItems,
     excludedItems,
     clientProfileData: transformOrderClientProfileData(

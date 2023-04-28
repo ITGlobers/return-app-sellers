@@ -11,6 +11,9 @@ import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
 import { ReturnRequestInput } from '../../typings/ReturnRequest'
 import { ReturnRequestCreated } from '../../typings/ProductReturned'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
+
 export const createReturnRequestService = async (
   ctx: Context,
   args: ReturnRequestInput
@@ -22,7 +25,9 @@ export const createReturnRequestService = async (
       order: orderRequestClient,
       returnSettings,
       account :accountClient,
+      catalog,
       catalogGQL,
+      settingsAccount
     },
     state: { userProfile, appkey },
     vtex: { logger },
@@ -72,13 +77,32 @@ export const createReturnRequestService = async (
   }
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
-  const accountInfo = await accountClient.getInfo()  
+  const accountInfo = await accountClient.getInfo()
+
+  let appConfig: Settings = DEFAULT_SETTINGS
+  let isSellerPortal: boolean = false
+
+  if(!accountInfo?.parentAccountName){
+    isSellerPortal = true
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
   const body = {
     "fields":    ['id'] ,
     "filter": `orderId=${marketplaceOrderId}`
   }
-  const searchRMAPromise = await orderRequestClient.getOrdersList(body , accountInfo)
-  const settingsPromise = returnSettings.getReturnSettingsMket(accountInfo)
+
+  const searchRMAPromise = await orderRequestClient.getOrdersList({
+    body,
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
+  const settingsPromise = returnSettings.getReturnSettingsMket({
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
   const [order, searchRMA, settings] = await Promise.all([
@@ -132,8 +156,9 @@ export const createReturnRequestService = async (
     order,
     excludedCategories,
     orderRequestClient,
+    catalog,
     catalogGQL,
-    accountClient
+    accountInfo: isSellerPortal ? {...appConfig, isSellerPortal: true} : {...accountInfo, isSellerPortal: false}
   })
 
   // Validate maxDays for custom reasons.
@@ -160,7 +185,9 @@ export const createReturnRequestService = async (
     orderItems,
     sellers,
     itemMetadata,
+    catalog,
     catalogGQL,
+    isSellerPortal
   })
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
@@ -255,7 +282,14 @@ export const createReturnRequestService = async (
         },
       }
 
-  const rmaDocument = await returnRequestClient.createReturn( request, accountInfo)
+  
+  const payload = {
+    createRequest: request,
+    parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+    auth: appConfig
+  }
+
+  const rmaDocument = await returnRequestClient.createReturn(payload)
   
   return { returnRequestId: rmaDocument.returnRequestId }
 

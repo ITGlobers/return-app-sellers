@@ -3,6 +3,8 @@ import {OrdersToReturnList, OrderToReturnSummary} from "../../typings/OrdertoRet
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { getCurrentDate, substractDays } from '../utils/dateHelpers'
 import { STATUS_INVOICED, STATUS_PAYMENT_APPROVE } from '../utils/constants'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 const ONE_MINUTE = 60 * 1000
 
@@ -66,14 +68,25 @@ export const ordersAvailableToReturn = async (
       returnSettings,
       oms,
       order: orderRequestClient,
+      catalog,
       catalogGQL,
-      account: accountClient
+      account: accountClient,
+      settingsAccount,
     },
   } = ctx
   const { page, storeUserEmail , filter} = args
 
-  const accountInfo = await accountClient.getInfo()  
-  const settings = await returnSettings.getReturnSettingsMket(accountInfo)
+  const accountInfo = await accountClient.getInfo()
+
+  let appConfig: Settings = DEFAULT_SETTINGS
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+  
+  const settings = await returnSettings.getReturnSettingsMket({
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
 
   if (!settings) {
     throw new ResolverError('Return App settings is not configured')
@@ -111,12 +124,17 @@ export const ordersAvailableToReturn = async (
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
   
   for (const order of orders) {
-    const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
-      excludedCategories,
-      orderRequestClient,
-      catalogGQL,
-      accountClient
-    })
+    const orderToReturnSummary = createOrdersToReturnSummary(
+      order,
+      userEmail,
+      accountInfo?.parentAccountName ? {...accountInfo, isSellerPortal: false} : {...appConfig, isSellerPortal: true, accountName: accountInfo.accountName} , 
+      {
+        excludedCategories,
+        orderRequestClient,
+        catalog,
+        catalogGQL,
+      }
+    )
     orderSummaryPromises.push(orderToReturnSummary)
   }
 
