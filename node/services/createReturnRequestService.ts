@@ -25,6 +25,7 @@ export const createReturnRequestService = async (
       order: orderRequestClient,
       returnSettings,
       account :accountClient,
+      catalog,
       catalogGQL,
       settingsAccount
     },
@@ -79,8 +80,10 @@ export const createReturnRequestService = async (
   const accountInfo = await accountClient.getInfo()
 
   let appConfig: Settings = DEFAULT_SETTINGS
+  let isSellerPortal: boolean = false
 
   if(!accountInfo?.parentAccountName){
+    isSellerPortal = true
     appConfig = await settingsAccount.getSettings(ctx)
   }
 
@@ -88,8 +91,18 @@ export const createReturnRequestService = async (
     "fields":    ['id'] ,
     "filter": `orderId=${marketplaceOrderId}`
   }
-  const searchRMAPromise = await orderRequestClient.getOrdersList(body , accountInfo)
-  const settingsPromise = returnSettings.getReturnSettingsMket(accountInfo)
+
+  const searchRMAPromise = await orderRequestClient.getOrdersList({
+    body,
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
+  const settingsPromise = returnSettings.getReturnSettingsMket({
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
   const [order, searchRMA, settings] = await Promise.all([
@@ -143,8 +156,9 @@ export const createReturnRequestService = async (
     order,
     excludedCategories,
     orderRequestClient,
+    catalog,
     catalogGQL,
-    accountClient
+    accountInfo: isSellerPortal ? {...appConfig, isSellerPortal: true} : {...accountInfo, isSellerPortal: false}
   })
 
   // Validate maxDays for custom reasons.
@@ -171,7 +185,9 @@ export const createReturnRequestService = async (
     orderItems,
     sellers,
     itemMetadata,
+    catalog,
     catalogGQL,
+    isSellerPortal
   })
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
@@ -266,6 +282,7 @@ export const createReturnRequestService = async (
         },
       }
 
+  
   const payload = {
     createRequest: request,
     parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,

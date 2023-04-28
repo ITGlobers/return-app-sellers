@@ -200,9 +200,9 @@ export const updateRequestStatusService = async (
     userEmail: returnRequest.customerProfileData?.email as string,
     clients: {
       omsClient: oms,
-      giftCardClient,
-      accountClient
+      giftCardClient
     },
+    accountInfo: accountInfo?.parentAccount ? accountInfo : appConfig
   })
 
   const giftCard = refundReturn?.giftCard

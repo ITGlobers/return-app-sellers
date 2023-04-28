@@ -38,8 +38,8 @@ export class ReturnSettings extends ExternalClient {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken,
             'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey,
-            'X-VTEX-API-AppToken': auth?.appToken
+            'X-VTEX-API-AppKey': auth?.appKey || '',
+            'X-VTEX-API-AppToken': auth?.appToken || ''
           }
         }
       )
@@ -69,8 +69,8 @@ export class ReturnSettings extends ExternalClient {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken,
             'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey,
-            'X-VTEX-API-AppToken': auth?.appToken
+            'X-VTEX-API-AppKey': auth?.appKey || '',
+            'X-VTEX-API-AppToken': auth?.appToken || ''
           }
         }
       )
@@ -99,10 +99,10 @@ export class ReturnSettings extends ExternalClient {
         settings,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken || "",
+            VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
             'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey,
-            'X-VTEX-API-AppToken': auth?.appToken
+            'X-VTEX-API-AppKey': auth?.appKey || '',
+            'X-VTEX-API-AppToken': auth?.appToken || ''
           }
         }
       )

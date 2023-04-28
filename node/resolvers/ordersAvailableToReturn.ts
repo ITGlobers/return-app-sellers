@@ -68,9 +68,10 @@ export const ordersAvailableToReturn = async (
       returnSettings,
       oms,
       order: orderRequestClient,
+      catalog,
       catalogGQL,
       account: accountClient,
-      settingsAccount
+      settingsAccount,
     },
   } = ctx
   const { page, storeUserEmail , filter} = args
@@ -123,12 +124,17 @@ export const ordersAvailableToReturn = async (
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
   
   for (const order of orders) {
-    const orderToReturnSummary = createOrdersToReturnSummary(order, userEmail, {
-      excludedCategories,
-      orderRequestClient,
-      catalogGQL,
-      accountClient
-    })
+    const orderToReturnSummary = createOrdersToReturnSummary(
+      order,
+      userEmail,
+      accountInfo?.parentAccountName ? {...accountInfo, isSellerPortal: false} : {...appConfig, isSellerPortal: true, accountName: accountInfo.accountName} , 
+      {
+        excludedCategories,
+        orderRequestClient,
+        catalog,
+        catalogGQL,
+      }
+    )
     orderSummaryPromises.push(orderToReturnSummary)
   }
 

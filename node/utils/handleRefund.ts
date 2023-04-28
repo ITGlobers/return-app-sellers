@@ -2,7 +2,6 @@ import { ResolverError } from '@vtex/api'
 import type { OMSCustom } from '../clients/oms'
 import type { GiftCard as GiftCardClient } from '../clients/giftCard'
 import { GiftCard, Maybe, ReturnRequest, Status } from '../../typings/ReturnRequest'
-import { Account } from '../clients/account'
 
 interface HandleRefundProps {
   currentStatus: Status
@@ -15,8 +14,8 @@ interface HandleRefundProps {
   clients: {
     omsClient: OMSCustom
     giftCardClient: GiftCardClient
-    accountClient: Account
-  }
+  },
+  accountInfo: any
 }
 
 export const handleRefund = async ({
@@ -28,6 +27,7 @@ export const handleRefund = async ({
   refundInvoice,
   clients,
   userEmail,
+  accountInfo
 }: HandleRefundProps): Promise<Maybe<{ giftCard: GiftCard }>> => {
   // To avoid handling the amountRefunded after it has been already done, we check the previous status.
   // If the current status is already amountRefunded, it means the refund has already been done and we don't need to do it again.
@@ -40,7 +40,7 @@ export const handleRefund = async ({
     return null
   }
 
-  const { omsClient, giftCardClient , accountClient } = clients
+  const { omsClient, giftCardClient } = clients
 
 
   const { refundPaymentMethod, automaticallyRefundPaymentMethod } =
@@ -54,12 +54,15 @@ export const handleRefund = async ({
         invoiceValue: refundInvoice?.invoiceValue as number,
         userEmail,
       }
-      const accountInfo = await accountClient.getInfo()  
-      const giftCard = await giftCardClient.createGiftCard(accountInfo , createGiftCardRequest)
+      
+      const giftCard = await giftCardClient.createGiftCard({
+        parentAccountName: accountInfo.parentAccountName,
+        requestCreate: createGiftCardRequest,
+        auth: accountInfo
+      })
      
       return giftCard
     } catch (error) {
-      console.log(error)
       throw new ResolverError('Error creating/updating gift card')
     }
   }

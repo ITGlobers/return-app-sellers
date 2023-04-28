@@ -20,9 +20,10 @@ export const orderToReturnSummary = async (
       returnSettings,
       oms,
       order: orderRequestClient,
+      catalog,
       catalogGQL,
       account :accountClient,
-      settingsAccount
+      settingsAccount,
     },
     vtex: { logger },
   } = ctx
@@ -70,16 +71,21 @@ export const orderToReturnSummary = async (
     {
       userProfile,
       appkey,
-      inputEmail: storeUserEmail,
+      inputEmail: storeUserEmail || clientProfileData?.email,
     },
     {
       logger,
     }
   )
-  return createOrdersToReturnSummary(order, customerEmail, {
+  
+  return createOrdersToReturnSummary(
+    order,
+    customerEmail,
+    accountInfo?.parentAccountName ? {...accountInfo, isSellerPortal: false} : {...appConfig, isSellerPortal: true, accountName: accountInfo.accountName},
+    {
     excludedCategories,
     orderRequestClient,
-    catalogGQL,
-    accountClient
+    catalog,
+    catalogGQL
   })
 }
