@@ -34,22 +34,27 @@ const createParams = ({
   const currentDate = getCurrentDate()
   const orderStatusName = orderStatus?.replace('f_','')
   
+  let query = '';
   let creationDate = `${orderStatusName}:[${substractDays(
     currentDate,
     maxDays || 0
     )} TO ${currentDate}]`
 
   if (filter) {
-    const { createdIn } = filter
+    const { orderId, createdIn } = filter
+    query = orderId || ''
     creationDate = createdIn
       ? `${orderStatusName}:[${createdIn.from} TO ${createdIn.to}]`
       : creationDate
+
+      console.info(creationDate, "Date", query, "Query")
   }
 
   return {
     orderBy: 'creationDate,desc' as const,
     f_status: enableStatusSelection ? STATUS_INVOICED : `${STATUS_INVOICED},${STATUS_PAYMENT_APPROVE}`,
     [orderStatus]: creationDate,
+    q: query,
     page,
     per_page: 10 as const
   }
