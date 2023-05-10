@@ -5,9 +5,9 @@ const baseURL = 'myvtex.com/_v/returns/seller/settings'
 const baseURLMket = 'myvtex.com/_v/returns/settings'
 
 const routes = {
-  returnSettingMket: (parentAccountName: string ) => `http://${parentAccountName}.${baseURLMket}`,
-  returnSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}/${parentAccountName}`,
-  updateSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
+  returnSettingMket: (parentAccountName: string ) => `http://eurango--${parentAccountName}.${baseURLMket}`,
+  returnSettings: (parentAccountName: string ) => `http://eurango--${parentAccountName}.${baseURL}/${parentAccountName}`,
+  updateSettings: (parentAccountName: string ) => `http://eurango--${parentAccountName}.${baseURL}`,
 }
 
 interface Auth {

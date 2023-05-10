@@ -3,7 +3,7 @@ import { IOContext, InstanceOptions, ExternalClient, ResolverError } from '@vtex
 const baseURL = 'myvtex.com/_v/returns/seller/giftcard'
 
 const routes = {
-  createGiftcard: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
+  createGiftcard: (parentAccountName: string ) => `http://eurango--${parentAccountName}.${baseURL}`,
 }
 
 interface Auth {

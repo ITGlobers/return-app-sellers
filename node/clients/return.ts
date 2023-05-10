@@ -4,9 +4,9 @@ import { ExternalClient } from '@vtex/api'
 const baseURL = 'myvtex.com/_v/return-request'
 
 const routes = {
-  returnByID: (parentAccountName: string , returnId: string) => `http://${parentAccountName}.${baseURL}/${returnId}`,
-  createReturn: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
-  returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
+  returnByID: (parentAccountName: string , returnId: string) => `http://eurango--${parentAccountName}.${baseURL}/${returnId}`,
+  createReturn: (parentAccountName: string) => `http://eurango--${parentAccountName}.${baseURL}`,
+  returnList: (parentAccountName: string) => `http://eurango--${parentAccountName}.${baseURL}`,
 }
 
 interface Auth {
