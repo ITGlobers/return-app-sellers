@@ -92,6 +92,7 @@
     "properties": {
       "parentAccountName": {
         "title": "Parent Account Name",
+        "description": "Use only for seller portal accounts",
         "type": "string"
       },
       "appKey": {
