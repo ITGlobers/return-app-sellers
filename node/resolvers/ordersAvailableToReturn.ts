@@ -48,6 +48,15 @@ const createParams = ({
       : creationDate
   }
 
+  if(orderStatus === 'partial-invoiced') {
+    return {
+      orderBy: 'creationDate,desc' as const,
+      f_status: 'invoiced,payment-approved,handling',
+      page,
+      per_page: 20 as const
+    }
+  }
+
   return {
     orderBy: 'creationDate,desc' as const,
     f_status: enableStatusSelection ? STATUS_INVOICED : `${STATUS_INVOICED},${STATUS_PAYMENT_APPROVE}`,
@@ -124,21 +133,58 @@ export const ordersAvailableToReturn = async (
   const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
   
   for (const order of orders) {
-    const orderToReturnSummary = createOrdersToReturnSummary(
-      order,
-      userEmail,
-      accountInfo?.parentAccountName ? {...accountInfo, isSellerPortal: false} : {...appConfig, isSellerPortal: true, accountName: accountInfo.accountName} , 
-      {
-        excludedCategories,
-        orderRequestClient,
-        catalog,
-        catalogGQL,
+    if(orderStatus === 'partial-invoiced' && order.status !== 'invoiced'){
+      const currentDate = getCurrentDate()
+      const startDate = substractDays(currentDate, maxDays || 0 )
+      const endDate = currentDate
+
+      const deliveredDate = order.packageAttachment.packages.filter((item: any) => {
+        if(item?.courierStatus?.deliveredDate){
+          return item.courierStatus.deliveredDate
+        }
+      })
+      if(deliveredDate.length > 0){
+        const haspackage = deliveredDate.map((delivered: any) => {
+          if(delivered.courierStatus.deliveredDate >= startDate && delivered.courierStatus.deliveredDate <= endDate){
+            return delivered
+          }
+        });
+        
+        if(haspackage.length > 0){
+          const orderToReturnSummary = createOrdersToReturnSummary(
+            order,
+            userEmail,
+            accountInfo?.parentAccountName ? {...accountInfo, isSellerPortal: false} : {...appConfig, isSellerPortal: true, accountName: accountInfo.accountName} , 
+            {
+              excludedCategories,
+              orderRequestClient,
+              catalog,
+              catalogGQL,
+            }
+          )
+          orderSummaryPromises.push(orderToReturnSummary)
+        }
       }
-    )
-    orderSummaryPromises.push(orderToReturnSummary)
+    } else {
+      const orderToReturnSummary = createOrdersToReturnSummary(
+        order,
+        userEmail,
+        accountInfo?.parentAccountName ? {...accountInfo, isSellerPortal: false} : {...appConfig, isSellerPortal: true, accountName: accountInfo.accountName} , 
+        {
+          excludedCategories,
+          orderRequestClient,
+          catalog,
+          catalogGQL,
+        }
+      )
+      orderSummaryPromises.push(orderToReturnSummary)
+    }
   }
 
   const orderList = await Promise.all(orderSummaryPromises)
 
-  return { list: orderList, paging }
+  return { list: orderList, paging: {
+    ...paging,
+    perPage: orderList?.length || 0
+  } }
 }

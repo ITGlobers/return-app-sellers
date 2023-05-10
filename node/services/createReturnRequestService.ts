@@ -137,6 +137,7 @@ export const createReturnRequestService = async (
     customReturnReasons,
     paymentOptions,
     options: settingsOptions,
+    orderStatus
   } = settings
 
   isUserAllowed({
@@ -149,6 +150,7 @@ export const createReturnRequestService = async (
     creationDate,
     maxDays,
     status,
+    orderStatus
   })
 
   // Validate if all items are available to be returned

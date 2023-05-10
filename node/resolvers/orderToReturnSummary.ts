@@ -24,8 +24,9 @@ export const orderToReturnSummary = async (
       catalogGQL,
       account :accountClient,
       settingsAccount,
+      profile
     },
-    vtex: { logger },
+    vtex: { logger, adminUserAuthToken },
   } = ctx
 
   const accountInfo = await accountClient.getInfo()
@@ -43,7 +44,7 @@ export const orderToReturnSummary = async (
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
   }
-  const { maxDays, excludedCategories } = settings
+  const { maxDays, excludedCategories, orderStatus } = settings
 
   // For requests where orderId is an empty string
   if (!orderId) {
@@ -53,6 +54,8 @@ export const orderToReturnSummary = async (
   const order = await oms.order(orderId)
 
   const { creationDate, clientProfileData, status } = order
+
+  let userEmail = ''
 
   isUserAllowed({
     requesterUser: userProfile,
@@ -64,7 +67,63 @@ export const orderToReturnSummary = async (
     creationDate,
     maxDays,
     status,
+    orderStatus
   })
+  
+  if(userProfile?.role === 'admin'){
+    try {
+      const profileUnmask = await profile.getProfileUnmask(clientProfileData?.userProfileId, adminUserAuthToken, accountInfo?.parentAccountName || appConfig.parentAccountName)
+  
+      if(profileUnmask?.[0]?.document?.email){
+        const currenProfile = profileUnmask?.[0]?.document
+        userEmail = currenProfile.email
+
+        order.clientProfileData = {
+          ...order.clientProfileData,
+          email: userEmail,
+          firstName: currenProfile?.firstName,
+          lastName: currenProfile?.lastName,
+          phone: currenProfile?.homePhone,
+        }
+
+      } else {
+        const response = await profile.searchEmailByUserId(clientProfileData?.userProfileId, adminUserAuthToken, accountInfo?.parentAccountName || appConfig.parentAccountName)
+        
+        if(response.length > 0){
+          const currenProfile = response?.[0]
+          userEmail = currenProfile?.email
+  
+          order.clientProfileData = {
+            ...order.clientProfileData,
+            email: userEmail,
+            firstName: currenProfile?.email?.firstName,
+            lastName: currenProfile?.email?.lastName,
+            phone: currenProfile?.email?.phone,
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      const addressUnmask = await profile.getAddressUnmask(clientProfileData?.userProfileId, adminUserAuthToken, accountInfo?.parentAccountName || appConfig.parentAccountName)
+      
+      if(addressUnmask?.[0]?.document){
+        const address = addressUnmask?.[0]?.document
+
+        order.shippingData.address = {
+          ...order.shippingData.address,
+          receiverName: address.receiverName,
+          city: address.locality,
+          postalCode: address.postalCode,
+          street: address.route,
+          number: address.streetNumber
+        }
+      }
+
+    } catch (error) {}
+  }
 
   const customerEmail = getCustomerEmail(
     clientProfileData,
