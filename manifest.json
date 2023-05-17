@@ -91,7 +91,7 @@
     "type": "object",
     "properties": {
       "parentAccountName": {
-        "title": "Parent Account Name",
+        "title": "Marketplace Account Name",
         "description": "Use only for seller portal accounts",
         "type": "string"
       }
