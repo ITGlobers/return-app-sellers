@@ -94,14 +94,6 @@
         "title": "Parent Account Name",
         "description": "Use only for seller portal accounts",
         "type": "string"
-      },
-      "appKey": {
-        "title": "App Key",
-        "type": "string"
-      },
-      "appToken": {
-        "title": "App Token",
-        "type": "string"
       }
     }
   },
