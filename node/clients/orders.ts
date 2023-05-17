@@ -1,10 +1,10 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
 
-const baseURL = 'myvtex.com/_v/returns/seller/orders'
+const baseURL = 'myvtex.com/_v/returns/seller/orderList'
 
 const routes = {
-  returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
+  returnList: (parentAccountName: string) => `http://eurango--${parentAccountName}.${baseURL}`,
 }
 
 interface Auth {
@@ -29,11 +29,14 @@ export class Order extends ExternalClient {
       parentAccountName,
       auth
     } = props
-
+    
     try {
       const response = await this.http.post(
         routes.returnList(parentAccountName),
-        body,
+        {
+          ...body,
+          sellerName: this.context.account
+        },
         {
           headers: {
             VtexIdClientAutCookie: this.context.adminUserAuthToken  || '',
@@ -46,7 +49,7 @@ export class Order extends ExternalClient {
       return response
 
     } catch (error) {
-      throw new ResolverError('Error getSameOrder')
+      throw new ResolverError('Error getOrdersList')
     }
 
   } 

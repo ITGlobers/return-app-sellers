@@ -139,13 +139,16 @@ export const ordersAvailableToReturn = async (
       const endDate = currentDate
 
       const deliveredDate = order.packageAttachment.packages.filter((item: any) => {
-        if(item?.courierStatus?.deliveredDate){
-          return item.courierStatus.deliveredDate
+        if(item?.courierStatus?.deliveredDate || item?.issuanceDate){
+          return item
         }
       })
+
       if(deliveredDate.length > 0){
         const haspackage = deliveredDate.map((delivered: any) => {
-          if(delivered.courierStatus.deliveredDate >= startDate && delivered.courierStatus.deliveredDate <= endDate){
+          const currentDeliveredDate = delivered?.courierStatus?.deliveredDate ||delivered?.issuanceDate
+
+          if(currentDeliveredDate && currentDeliveredDate >= startDate && currentDeliveredDate <= endDate){
             return delivered
           }
         });

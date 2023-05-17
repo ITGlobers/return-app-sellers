@@ -50,7 +50,7 @@ export const returnRequestListService = async (
   : filter
   
   let accountInfo = await accountClient.getInfo()
-
+  
   let appConfig: Settings = DEFAULT_SETTINGS
 
   if(!accountInfo?.parentAccountName){

@@ -74,7 +74,9 @@ export const handleRefund = async ({
 
   if (refundPayment) {
     try {
-      await omsClient.createInvoice(orderId, {
+      const order = await omsClient.order(orderId)
+
+      await omsClient.createInvoice(order.orderId, {
         type: 'Input',
         issuanceDate: createdAt,
         invoiceNumber: refundInvoice?.invoiceNumber as string,

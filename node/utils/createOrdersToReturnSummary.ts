@@ -35,7 +35,7 @@ export const createOrdersToReturnSummary = async (
 
   const body = {
     "fields":  ["items", "refundData", "refundPaymentData"] ,
-    "filter": `orderId=${marketplaceOrderId} AND status <> cancelled`
+    "filter": `orderId=${marketplaceOrderId} AND status <> cancelled`,
   }
   const returnRequestSameOrder = await orderRequestClient.getOrdersList({
     body,

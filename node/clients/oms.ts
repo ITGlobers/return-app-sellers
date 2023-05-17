@@ -6,7 +6,7 @@ const baseURL = '/api/oms'
 
 const routes = {
   orders: `${baseURL}/pvt/orders`,
-  invoice: (orderId: string) => `${baseURL}/pvt/orders/SLR-${orderId}/invoice`,
+  invoice: (orderId: string) => `${baseURL}/pvt/orders/${orderId}/invoice`,
 }
 
 interface OrderList {
