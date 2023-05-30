@@ -73,7 +73,7 @@ export const orderToReturnSummary = async (
   if(userProfile?.role === 'admin'){
     try {
       const profileUnmask = await profile.getProfileUnmask(clientProfileData?.userProfileId, adminUserAuthToken, accountInfo?.parentAccountName || appConfig.parentAccountName)
-  
+
       if(profileUnmask?.[0]?.document?.email){
         const currenProfile = profileUnmask?.[0]?.document
         userEmail = currenProfile.email
@@ -88,7 +88,7 @@ export const orderToReturnSummary = async (
 
       } else {
         const response = await profile.searchEmailByUserId(clientProfileData?.userProfileId, adminUserAuthToken, accountInfo?.parentAccountName || appConfig.parentAccountName)
-        
+
         if(response.length > 0){
           const currenProfile = response?.[0]
           userEmail = currenProfile?.email
@@ -102,9 +102,7 @@ export const orderToReturnSummary = async (
           }
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
 
     try {
       const addressUnmask = await profile.getAddressUnmask(clientProfileData?.userProfileId, adminUserAuthToken, accountInfo?.parentAccountName || appConfig.parentAccountName)

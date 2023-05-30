@@ -39,7 +39,7 @@ export class Return extends ExternalClient {
         _filter: param[0],
         _sellerName: this.context.account
       }
-      console.log('params: ', params)
+      
       const response = await this.http.get(
         routes.returnList(parentAccountName),
         
