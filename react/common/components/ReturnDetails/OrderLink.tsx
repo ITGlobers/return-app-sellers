@@ -12,13 +12,12 @@ export const OrderLink = () => {
   } = useRuntime()
 
   if (!data) return null
-
   const isAdmin = domain === 'admin'
-  const { orderId } = data.returnRequestDetails
-
+  const { orderId, sellerOrderId } = data.returnRequestDetails
+  
   const targetHref = isAdmin
-    ? `/admin/checkout/#/orders/SLR-${orderId}`
-    : `/account/#/orders/SLR-${orderId}`
+    ? `/admin/orders/${sellerOrderId}`
+    : `/account/#/orders/${sellerOrderId}`
 
   return (
     <Link href={targetHref} target="_blank">

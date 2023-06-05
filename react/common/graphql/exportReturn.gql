@@ -1,0 +1,6 @@
+query exportReturn($dateSubmitted: String!) {
+  exportReturn(dateSubmitted: $dateSubmitted)
+    @context(provider: "itglobers.return-app-sellers") {
+    file
+  }
+}

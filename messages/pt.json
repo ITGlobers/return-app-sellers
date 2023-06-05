@@ -338,5 +338,6 @@
   "return-app.request-return-order-list.table-pagination.text-of": "de",
   "return-app.request-return.orders.header": "Solicitar Nova Devolução",
   "return-app.request-return.orders.header.subtitle": "Selecione um pedido para iniciar o processo de solicitação de devolução",
-  "return-app.return-payment-methods.input-iban-invalid.error": "O IBAN não é válido"
+  "return-app.return-payment-methods.input-iban-invalid.error": "O IBAN não é válido",
+  "return-app.return-request-list.table-filters.export-returns": "Exportar"
 }

@@ -223,6 +223,7 @@ export type ReturnRequestResponse = {
   __typename?: 'ReturnRequestResponse';
   id: Scalars['ID'];
   orderId: Scalars['String'];
+  sellerOrderId: Scalars['String'];
   refundableAmount: Scalars['Int'];
   sequenceNumber: Scalars['String'];
   createdIn: Scalars['String'];

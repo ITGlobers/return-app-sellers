@@ -7,6 +7,7 @@ const routes = {
   returnByID: (parentAccountName: string , returnId: string) => `http://${parentAccountName}.${baseURL}/${returnId}`,
   createReturn: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
   returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
+  export: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}/export`,
 }
 
 interface Auth {
@@ -190,5 +191,34 @@ export class Return extends ExternalClient {
       throw new ResolverError('Error createReturn')
     }
 
-  } 
+  }
+  
+  public async exportReturn(props: {
+    dateSubmitted: string,
+    parentAccountName: string,
+  }) : Promise<any | undefined> {
+    const {
+      dateSubmitted,
+      parentAccountName,
+    } = props;
+
+    try {
+      const response = await this.http.get(
+        routes.export(parentAccountName),
+        {
+          params: {
+            _dateSubmitted: dateSubmitted,
+            _sellerName: this.context.account
+          }
+        }
+      )
+
+      return response
+
+    } catch (error) {
+      throw new ResolverError('Error exportReturn')
+    }
+
+  }
+
 }
