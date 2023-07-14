@@ -1,42 +1,39 @@
-import {
-  ResolverError,
-} from '@vtex/api'
+import { ResolverError } from '@vtex/api'
 
-import { MutationUpdateReturnRequestStatusArgs, ReturnRequest } from '../../typings/ReturnRequest'
-
+import type {
+  ParamsUpdateReturnRequestStatus,
+  ReturnRequest,
+} from '../../typings/ReturnRequest'
 import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const updateRequestStatusService = async (
   ctx: Context,
-  args: MutationUpdateReturnRequestStatusArgs
+  params: ParamsUpdateReturnRequestStatus
 ): Promise<ReturnRequest> => {
   const {
-    clients: {
-      return : returnClient ,
-      account : accountClient,
-      settingsAccount
-    }
+    clients: { return: returnClient, account: accountClient, settingsAccount },
   } = ctx
+
   let updatedRequest: any = null
-  
-  const { requestId } = args
+
+  const { requestId } = params
 
   const accountInfo = await accountClient.getInfo()
 
   let appConfig: Settings = DEFAULT_SETTINGS
 
-  if(!accountInfo?.parentAccountName){
+  if (!accountInfo?.parentAccountName) {
     appConfig = await settingsAccount.getSettings(ctx)
   }
-
 
   try {
     updatedRequest = await returnClient.updateReturn({
       returnId: requestId,
-      updatedRequest: args,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
-      auth: appConfig
+      updatedRequest: params,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      auth: appConfig,
     })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

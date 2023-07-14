@@ -27,7 +27,7 @@ export type QueryReturnRequestListArgs = {
   perPage?: Maybe<Scalars['Int']>;
 };
 
-export type MutationUpdateReturnRequestStatusArgs = {
+export type ParamsUpdateReturnRequestStatus = {
   requestId: Scalars['ID'];
   sellerName?: Maybe<Scalars['String']>;
   status: Status;
