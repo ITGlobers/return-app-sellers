@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl'
 import { ActionMenu } from 'vtex.styleguide'
 
 import type { FilterKeys } from './ListTableFilter'
-import { Status } from '../../../typings/ReturnRequest'
+import type { Status } from '../../../typings/ReturnRequest'
 
 interface Props {
   handleOnChange: (key: FilterKeys, value: string) => void
@@ -35,8 +35,8 @@ const keyedStatusMessages = defineMessages({
   denied: {
     id: 'return-app.return-request-list.table.status.denied',
   },
-  cancelled: {
-    id: 'return-app.return-request-list.table.status.cancelled',
+  canceled: {
+    id: 'return-app.return-request-list.table.status.canceled',
   },
   amountRefunded: {
     id: 'return-app.return-request-list.table.status.refunded',
