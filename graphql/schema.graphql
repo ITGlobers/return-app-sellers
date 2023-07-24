@@ -31,7 +31,6 @@ type Query {
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
   nearestPickupPoints(lat: String!, long: String!): NearPickupPointQueryResponse
-  exportReturn(dateSubmitted: String!): ExportReturnResponse
 }
 
 type Mutation {

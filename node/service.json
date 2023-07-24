@@ -15,6 +15,10 @@
           "principals": ["*"]
         }
       ]
+    },
+    "exportReturns": {
+      "path": "/_v/return-request/export",
+      "public": true
     }
   }
 }

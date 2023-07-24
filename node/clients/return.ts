@@ -1,5 +1,6 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ResolverError, ExternalClient } from '@vtex/api'
+import axios from 'axios'
 
 const baseURL = 'myvtex.com/_v/return-request'
 
@@ -22,7 +23,13 @@ interface Auth {
 
 export class Return extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
-    super('', ctx, options)
+    super('', ctx, {
+      ...(options ?? {}),
+      headers: {
+        ...(options?.headers ?? {}),
+        'Content-Type': 'application/json',
+      },
+    })
   }
 
   public async get(props: {
@@ -182,10 +189,14 @@ export class Return extends ExternalClient {
     const { dateSubmitted, parentAccountName } = props
 
     try {
-      const response = await this.http.get(routes.export(parentAccountName), {
+      const response = await axios.get(routes.export(parentAccountName), {
+        headers: {
+          ...this.options?.headers,
+        },
         params: {
           _dateSubmitted: dateSubmitted,
           _sellerName: this.context.account,
+          _onlyData: true,
         },
       })
 

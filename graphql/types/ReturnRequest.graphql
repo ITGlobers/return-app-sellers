@@ -96,6 +96,7 @@ enum Status {
   amountRefunded
   denied
   canceled
+  cancelled
 }
 
 type CustomerProfileData {
@@ -247,8 +248,4 @@ enum UserRole {
 type CultureInfoData {
   currencyCode: String!
   locale: String!
-}
-
-type ExportReturnResponse {
-  file: String
 }

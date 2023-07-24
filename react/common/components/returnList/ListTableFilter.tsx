@@ -1,15 +1,17 @@
 import type { FormEvent } from 'react'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, DatePicker, Button } from 'vtex.styleguide'
-// import axios from 'axios'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
+
 import { StatusActionMenu } from './StatusActionMenu'
-import { useLazyQuery } from 'react-apollo'
-import EXPORT_RETURN from '../../graphql/exportReturn.gql'
-import { QueryReturnRequestListArgs, ReturnRequestList, Status } from '../../../../typings/ReturnRequest'
+import type {
+  QueryReturnRequestListArgs,
+  ReturnRequestList,
+  Status,
+} from '../../../../typings/ReturnRequest'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 
@@ -54,12 +56,10 @@ const ListTableFilter = (props: Props) => {
   const { route } = useRuntime()
   const [isFiltering, setIsFiltering] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
-  
+
   const { createdIn } = filters
   const fromDate = createdIn ? new Date(createdIn.from) : ''
   const toDate = createdIn ? new Date(createdIn.to) : ''
-
-  const [exportReturnQuery, { data }] = useLazyQuery(EXPORT_RETURN)
 
   // Used solely for refetch's variables
   const selectedFilters: any = Object.keys(filters)
@@ -82,41 +82,6 @@ const ListTableFilter = (props: Props) => {
     setIsFiltering(false)
     setFilters(initialFilters)
     refetch({ filter: undefined, page: 1 })
-  }
-
-  useEffect(() =>{
-    if(data?.exportReturn?.file){
-      const url = window.URL.createObjectURL(new Blob([data.exportReturn.file]))
-      const link = document.createElement('a')
-  
-      link.href = url
-      link.setAttribute('download', `return-requests-${(new Date().toJSON().slice(0,10))}.csv`)
-      document.body.appendChild(link)
-      link.click()
-  
-      if (link.parentNode) {
-        link.parentNode.removeChild(link)
-      }
-    }
-  },[data?.exportReturn])
-
-  const downloadCSV = async () => {
-    try {
-      if ('createdIn' in selectedFilters) {
-
-        const {createdIn} = selectedFilters
-
-        const { from, to } = createdIn as FilterDates
-
-        await exportReturnQuery({
-          variables: {
-            dateSubmitted: `${from},${to}`,
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Error al descargar el archivo CSV:', error)
-    }
   }
 
   const handleOnChange = (key: FilterKeys, value: string) => {
@@ -263,7 +228,7 @@ const ListTableFilter = (props: Props) => {
           <Button
             id="custom-excel-button"
             size="small"
-            onClick={downloadCSV}
+            href={`/_v/return-request/export/?dateSubmitted=${createdIn?.from},${createdIn?.to}`}
             disabled={!createdIn || loading}
             variation="primary"
           >

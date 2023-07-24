@@ -11,6 +11,7 @@ import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
 import { updateRequestStatus } from './middlewares/updateRequestStatus'
 import { errorHandler } from './middlewares/errorHandler'
+import { exportReturns } from './middlewares/exportReturns'
 
 const TIMEOUT_MS = 10000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -44,6 +45,9 @@ export default new Service<Clients, State, ParamsContext>({
   routes: {
     returnRequest: method({
       PUT: [errorHandler, updateRequestStatus],
+    }),
+    exportReturns: method({
+      GET: [errorHandler, exportReturns],
     }),
   },
   graphql: {
