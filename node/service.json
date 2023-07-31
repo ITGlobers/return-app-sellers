@@ -7,14 +7,7 @@
   "routes": {
     "returnRequest": {
       "path": "/_v/return-request/:requestId",
-      "public": false,
-      "policies": [
-        {
-          "effect": "allow",
-          "actions": ["put"],
-          "principals": ["*"]
-        }
-      ]
+      "public": true
     },
     "exportReturns": {
       "path": "/_v/return-request/export",
