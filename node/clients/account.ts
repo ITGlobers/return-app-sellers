@@ -14,18 +14,19 @@ export class Account extends JanusClient {
     })
   }
 
-  public async getInfo(): Promise<any | undefined> {
+  public async getInfo(vtexidclientautcookie?: any): Promise<any | undefined> {
     try {
       const response = await this.http.get(routes.getMket(), {
         headers: {
           VtexIdClientAutCookie:
-            this.context.adminUserAuthToken ?? this.context.authToken ?? '',
+            vtexidclientautcookie ?? this.context.adminUserAuthToken ?? this.context.authToken ?? ''
         },
       })
 
       return response
     } catch (error) {
-      throw new ResolverError('Error getInfo')
+      const message = error?.response?.data?.Message ?? error.message
+      throw new ResolverError(message ?? 'Error getInfo marketplace, please try again with another token')
     }
   }
 }

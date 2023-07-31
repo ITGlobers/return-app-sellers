@@ -125,7 +125,7 @@ export class Return extends ExternalClient {
     updatedRequest: any
     parentAccountName: string
     auth: Auth
-  }): Promise<any | undefined> {
+  }, vtexidclientautcookie?: any): Promise<any | undefined> {
     const { returnId, updatedRequest, parentAccountName, auth } = props
 
     try {
@@ -135,7 +135,7 @@ export class Return extends ExternalClient {
         {
           headers: {
             VtexIdClientAutCookie:
-              this.context.adminUserAuthToken ?? this.context.authToken ?? '',
+              vtexidclientautcookie ?? this.context.adminUserAuthToken ?? this.context.authToken ?? '',
             'X-Vtex-Use-Https': 'true',
             'X-VTEX-API-AppKey': auth?.appKey ?? '',
             'X-VTEX-API-AppToken': auth?.appToken ?? '',

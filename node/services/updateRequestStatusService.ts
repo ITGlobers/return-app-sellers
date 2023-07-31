@@ -19,7 +19,13 @@ export const updateRequestStatusService = async (
 
   const { requestId } = params
 
-  const accountInfo = await accountClient.getInfo()
+  const vtexidclientautcookie = ctx.request.headers.vtexidclientautcookie
+
+  if (!vtexidclientautcookie) {
+    throw new Error("headers.vtexidclientautcookie is required");
+  }
+
+  const accountInfo = await accountClient.getInfo(vtexidclientautcookie)
 
   let appConfig: Settings = DEFAULT_SETTINGS
 
@@ -34,7 +40,7 @@ export const updateRequestStatusService = async (
       parentAccountName:
         accountInfo?.parentAccountName || appConfig?.parentAccountName,
       auth: appConfig,
-    })
+    }, vtexidclientautcookie)
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
