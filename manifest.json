@@ -1,7 +1,7 @@
 {
-  "vendor": "itglobers",
+  "vendor": "vtexromania",
   "name": "return-app-sellers",
-  "version": "0.1.0",
+  "version": "0.5.2-hkignore",
   "title": "Return app seller",
   "description": "Return app seller",
   "dependencies": {
