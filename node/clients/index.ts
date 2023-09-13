@@ -6,13 +6,13 @@ import { GiftCard } from './giftCard'
 import Checkout from './checkout'
 import { VtexId } from './vtexId'
 import { CatalogGQL } from './catalogGQL'
-import { Return} from './return'
-import { Order} from './orders'
+import { Return } from './return'
+import { Order } from './orders'
 import { Account } from './account'
 import { ReturnSettings } from './appSettings'
 import { SettingsClient } from './settings'
 import { ProfileClient } from './profile'
-
+import Scheduler from './scheduler'
 
 export class Clients extends IOClients {
   public get oms() {
@@ -22,6 +22,7 @@ export class Clients extends IOClients {
   public get account() {
     return this.getOrSet('account', Account)
   }
+
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
   }
@@ -49,7 +50,7 @@ export class Clients extends IOClients {
   public get return() {
     return this.getOrSet('return', Return)
   }
-  
+
   public get order() {
     return this.getOrSet('order', Order)
   }
@@ -65,5 +66,8 @@ export class Clients extends IOClients {
   public get profile() {
     return this.getOrSet('profile', ProfileClient)
   }
-  
+
+  public get scheduler() {
+    return this.getOrSet('scheduler', Scheduler)
+  }
 }

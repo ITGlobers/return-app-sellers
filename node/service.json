@@ -12,6 +12,16 @@
     "exportReturns": {
       "path": "/_v/return-request/export",
       "public": true
+    },
+    "ping": {
+      "path": "/_v/ping",
+      "public": true
+    }
+  },
+  "events": {
+    "keepAlive": {
+      "sender": "apps",
+      "topics": ["setup"]
     }
   }
 }
