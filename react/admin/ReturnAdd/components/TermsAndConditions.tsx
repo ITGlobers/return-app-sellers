@@ -15,9 +15,10 @@ const CSS_HANDLES = [
 
 type Props = {
   isAdmin: boolean
+  setIsChecked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const TermsAndConditions = ({  }: Props) => {
+export const TermsAndConditions = ({ setIsChecked }: Props) => {
   const {
     termsAndConditions,
     inputErrors,
@@ -30,6 +31,7 @@ export const TermsAndConditions = ({  }: Props) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target
 
+    setIsChecked(checked)
     toogleTermsAndConditions(checked)
   }
 
@@ -48,7 +50,7 @@ export const TermsAndConditions = ({  }: Props) => {
         key="formAgreeCheckbox"
         label={
           <FormattedMessage
-            id={`return-app.return-order-details.terms-and-conditions.form-agree`}
+            id="return-app.return-order-details.terms-and-conditions.form-agree"
             values={{
               link: (
                 <span>
@@ -58,7 +60,7 @@ export const TermsAndConditions = ({  }: Props) => {
                     target="_blank"
                     href={data?.termsUrl}
                   >
-                    <FormattedMessage id={`return-app.return-order-details.terms-and-conditions.link`} />
+                    <FormattedMessage id="return-app.return-order-details.terms-and-conditions.link" />
                   </a>
                 </span>
               ),
@@ -73,7 +75,7 @@ export const TermsAndConditions = ({  }: Props) => {
         <CustomMessage
           status="error"
           message={
-            <FormattedMessage id={`return-app.return-terms-and-conditions.checkbox.error`} />
+            <FormattedMessage id="return-app.return-terms-and-conditions.checkbox.error" />
           }
         />
       ) : null}

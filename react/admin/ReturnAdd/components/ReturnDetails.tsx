@@ -12,7 +12,7 @@ import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
 import type { Page } from '../CreateReturnRequest'
-import { ShippingData } from '../../../../typings/OrdertoReturn'
+import type { ShippingData } from '../../../../typings/OrdertoReturn'
 
 const CSS_HANDLES = [
   'returnDetailsContainer',
@@ -28,18 +28,13 @@ interface Props {
   shippingData: ShippingData
 }
 
-export const ReturnDetails = (
-  props: any & Props
-) => {
+export const ReturnDetails = (props: any & Props) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
 
-  const {
-    onPageChange,
-    items,
-    creationDate,
-    canRefundCard,
-    shippingData
-  } = props
+  const { onPageChange, items, creationDate, canRefundCard, shippingData } =
+    props
+
+  const [isChecked, setIsChecked] = React.useState(false)
 
   const handles = useCssHandles(CSS_HANDLES)
   const {
@@ -62,7 +57,7 @@ export const ReturnDetails = (
       <div className={`${handles.returnDetailsContainer} mb5`}>
         <div className="w-100 mt4">
           <div className="f4 mb5 fw5">
-            <FormattedMessage id={`return-app.return-order-details.section-products`} />
+            <FormattedMessage id="return-app.return-order-details.section-products" />
           </div>
         </div>
         <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
@@ -71,7 +66,7 @@ export const ReturnDetails = (
           >
             <div>
               <div className="c-muted-2 f6">
-                <FormattedMessage id={`return-app.return-order-details.page-header.order-id`} />
+                <FormattedMessage id="return-app.return-order-details.page-header.order-id" />
               </div>
               <div className="w-100 mt2">
                 <div className="f4 fw5 c-on-base">{orderId}</div>
@@ -83,7 +78,7 @@ export const ReturnDetails = (
           >
             <div>
               <div className="c-muted-2 f6">
-                <FormattedMessage id={`return-app.return-order-details.page-header.creation-date`} />
+                <FormattedMessage id="return-app.return-order-details.page-header.creation-date" />
               </div>
               <div className="w-100 mt2">
                 <div className="f4 fw5 c-on-base">
@@ -100,7 +95,7 @@ export const ReturnDetails = (
         </div>
       </div>
       <div className="t-body lh-copy c-muted-1 mb3 ml3 w-two-thirds-ns w-100">
-        <FormattedMessage id={`return-app.return-order-details.page-header.subtitle`} />
+        <FormattedMessage id="return-app.return-order-details.page-header.subtitle" />
       </div>
       <div className="overflow-scroll">
         <ItemsList items={items} creationDate={creationDate} isAdmin />
@@ -110,7 +105,7 @@ export const ReturnDetails = (
       </div>
       <div className="w-100">
         <div className="f4 fw5">
-          <FormattedMessage id={`return-app.return-order-details.section-details`} />
+          <FormattedMessage id="return-app.return-order-details.section-details" />
         </div>
       </div>
       <div className="flex-ns flex-wrap flex-row">
@@ -123,14 +118,18 @@ export const ReturnDetails = (
       </div>
       <div className="w-100">
         <div className="f4 fw5">
-          <FormattedMessage id={`return-app.return-order-details.section-payment`} />
+          <FormattedMessage id="return-app.return-order-details.section-payment" />
         </div>
       </div>
       <PaymentMethods canRefundCard={canRefundCard} isAdmin />
-      <TermsAndConditions isAdmin />
+      <TermsAndConditions setIsChecked={setIsChecked} isAdmin />
       <div className="flex justify-center mt6">
-        <Button onClick={handleFieldsValidation} block={phone}>
-          <FormattedMessage id={`return-app.return-order-details.button.next`} />
+        <Button
+          onClick={handleFieldsValidation}
+          block={phone}
+          disabled={!isChecked}
+        >
+          <FormattedMessage id="return-app.return-order-details.button.next" />
         </Button>
       </div>
     </>
