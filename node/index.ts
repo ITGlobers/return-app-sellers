@@ -13,7 +13,6 @@ import { updateRequestStatus } from './middlewares/updateRequestStatus'
 import { errorHandler } from './middlewares/errorHandler'
 import { exportReturns } from './middlewares/exportReturns'
 import { ping } from './middlewares/ping'
-import { keepAlivePing } from './events/keepAlive'
 
 const TIMEOUT_MS = 10000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -44,7 +43,6 @@ declare global {
 
 export default new Service<Clients, State, ParamsContext>({
   clients,
-  events: { keepAlivePing },
   routes: {
     ping: method({
       GET: [ping],

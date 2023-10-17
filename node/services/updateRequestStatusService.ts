@@ -19,11 +19,7 @@ export const updateRequestStatusService = async (
 
   const { requestId } = params
 
-  const vtexidclientautcookie = ctx.request.headers.vtexidclientautcookie
-
-  if (!vtexidclientautcookie) {
-    throw new Error("headers.vtexidclientautcookie is required");
-  }
+  const { vtexidclientautcookie } = ctx.request.headers
 
   const accountInfo = await accountClient.getInfo(vtexidclientautcookie)
 
@@ -34,13 +30,16 @@ export const updateRequestStatusService = async (
   }
 
   try {
-    updatedRequest = await returnClient.updateReturn({
-      returnId: requestId,
-      updatedRequest: params,
-      parentAccountName:
-        accountInfo?.parentAccountName || appConfig?.parentAccountName,
-      auth: appConfig,
-    }, vtexidclientautcookie)
+    updatedRequest = await returnClient.updateReturn(
+      {
+        returnId: requestId,
+        updatedRequest: params,
+        parentAccountName:
+          accountInfo?.parentAccountName || appConfig?.parentAccountName,
+        auth: appConfig,
+      },
+      vtexidclientautcookie
+    )
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 

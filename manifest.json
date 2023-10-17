@@ -1,7 +1,7 @@
 {
   "vendor": "vtexromania",
   "name": "return-app-sellers",
-  "version": "0.5.2-hkignore",
+  "version": "0.5.3-hkignore",
   "title": "Return app seller",
   "description": "Return app seller",
   "dependencies": {

@@ -120,12 +120,15 @@ export class Return extends ExternalClient {
     }
   }
 
-  public async updateReturn(props: {
-    returnId: any
-    updatedRequest: any
-    parentAccountName: string
-    auth: Auth
-  }, vtexidclientautcookie?: any): Promise<any | undefined> {
+  public async updateReturn(
+    props: {
+      returnId: any
+      updatedRequest: any
+      parentAccountName: string
+      auth: Auth
+    },
+    vtexidclientautcookie?: any
+  ): Promise<any | undefined> {
     const { returnId, updatedRequest, parentAccountName, auth } = props
 
     try {
@@ -135,7 +138,10 @@ export class Return extends ExternalClient {
         {
           headers: {
             VtexIdClientAutCookie:
-              vtexidclientautcookie ?? this.context.adminUserAuthToken ?? this.context.authToken ?? '',
+              this.context.adminUserAuthToken ??
+              this.context.authToken ??
+              vtexidclientautcookie ??
+              '',
             'X-Vtex-Use-Https': 'true',
             'X-VTEX-API-AppKey': auth?.appKey ?? '',
             'X-VTEX-API-AppToken': auth?.appToken ?? '',

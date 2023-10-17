@@ -19,14 +19,21 @@ export class Account extends JanusClient {
       const response = await this.http.get(routes.getMket(), {
         headers: {
           VtexIdClientAutCookie:
-            vtexidclientautcookie ?? this.context.adminUserAuthToken ?? this.context.authToken ?? ''
+            this.context.adminUserAuthToken ??
+            this.context.authToken ??
+            vtexidclientautcookie ??
+            '',
         },
       })
 
       return response
     } catch (error) {
       const message = error?.response?.data?.Message ?? error.message
-      throw new ResolverError(message ?? 'Error getInfo marketplace, please try again with another token')
+
+      throw new ResolverError(
+        message ??
+          'Error getInfo marketplace, please try again with another token'
+      )
     }
   }
 }
