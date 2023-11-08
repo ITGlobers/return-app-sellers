@@ -1,13 +1,13 @@
 import type { ReactElement } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import type { CustomReturnReason } from 'obidev.obi-return-app-sellers'
 import {
   ButtonWithIcon,
   IconPlusLines,
   Table,
   ModalDialog,
 } from 'vtex.styleguide'
+import { CustomReturnReason } from '../../../../../typings/ReturnAppSettings'
 
 import { useSettings } from '../../hooks/useSettings'
 import { CustomReasonModal } from './CustomReasonModal'

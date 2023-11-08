@@ -4,5 +4,24 @@
   "timeout": 5000,
   "minReplicas": 2,
   "maxReplicas": 4,
-  "routes": {}
+  "routes": {
+    "returnRequest": {
+      "path": "/_v/return-request/:requestId",
+      "public": true
+    },
+    "exportReturns": {
+      "path": "/_v/return-request/export",
+      "public": true
+    },
+    "ping": {
+      "path": "/_v/ping",
+      "public": true
+    }
+  },
+  "events": {
+    "keepAlive": {
+      "sender": "apps",
+      "topics": ["setup"]
+    }
+  }
 }

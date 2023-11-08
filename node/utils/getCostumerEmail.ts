@@ -29,35 +29,8 @@ export const getCustomerEmail = (
     logger: Logger
   }
 ): string => {
-  const requesterIsStoreUser =
-    clientProfileData.userProfileId === userProfile?.userId
 
-  // when the requester is the owner of the order, we can use the email parsed from the session cookie
-  if (userProfile && requesterIsStoreUser) return userProfile.email
-
-  // Case: Request made by an admin user for a store user (e.g. via GraphQL IDE or endpoint using auth cookie)
-  if (userProfile && userProfile.role === 'admin' && !requesterIsStoreUser) {
-    if (!inputEmail) {
-      throw new ResolverError(
-        'Missing Store user email. Store user email is required when using admin user makes the request',
-        400
-      )
-    }
-
-    return inputEmail
-  }
-
-  // When the request is made via integration using the endpoint, store user email is a required param.
-  if (appkey) {
-    if (!inputEmail) {
-      throw new ResolverError(
-        'Missing Store user email. Store user email is required when using appkey',
-        400
-      )
-    }
-
-    return inputEmail
-  }
+  if (userProfile ) return inputEmail || userProfile.email
 
   logger.error({
     message: 'Could not parse store user email',

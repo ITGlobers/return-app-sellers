@@ -4,11 +4,15 @@ import type {
   RecorderState,
   ParamsContext,
 } from '@vtex/api'
-import { Service, LRUCache } from '@vtex/api'
+import { Service, LRUCache, method } from '@vtex/api'
 
 import { Clients } from './clients'
 import { mutations, queries, resolvers } from './resolvers'
 import { schemaDirectives } from './directives'
+import { updateRequestStatus } from './middlewares/updateRequestStatus'
+import { errorHandler } from './middlewares/errorHandler'
+import { exportReturns } from './middlewares/exportReturns'
+import { ping } from './middlewares/ping'
 
 const TIMEOUT_MS = 10000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -39,7 +43,17 @@ declare global {
 
 export default new Service<Clients, State, ParamsContext>({
   clients,
-  routes: {},
+  routes: {
+    ping: method({
+      GET: [ping],
+    }),
+    returnRequest: method({
+      PUT: [errorHandler, updateRequestStatus],
+    }),
+    exportReturns: method({
+      GET: [errorHandler, exportReturns],
+    }),
+  },
   graphql: {
     resolvers: {
       ...resolvers,

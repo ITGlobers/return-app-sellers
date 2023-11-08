@@ -1,6 +1,7 @@
 input ReturnRequestInput {
   orderId: String!
   sellerName: String!
+  marketplaceOrderId: String
   items: [ReturnRequestItemInput!]!
   customerProfileData: CustomerProfileDataInput!
   pickupReturnData: PickupReturnDataInput!
@@ -71,6 +72,7 @@ type ReturnRequestResponse {
   orderId: String!
   refundableAmount: Int!
   sequenceNumber: String!
+  sellerOrderId: String
   createdIn: String!
   status: Status!
   dateSubmitted: String!
@@ -93,6 +95,7 @@ enum Status {
   packageVerified
   amountRefunded
   denied
+  canceled
   cancelled
 }
 

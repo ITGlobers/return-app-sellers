@@ -1,8 +1,8 @@
 import type { ChangeEvent, FormEvent } from 'react'
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import type { CustomReturnReason } from 'obidev.obi-return-app-sellers'
 import { Modal, Input, Button } from 'vtex.styleguide'
+import { CustomReturnReason } from '../../../../../typings/ReturnAppSettings'
 
 import { useSettings } from '../../hooks/useSettings'
 import type { CustomReasonWithIndex } from './CustomReasons'

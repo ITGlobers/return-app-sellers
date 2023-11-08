@@ -1,5 +1,6 @@
-import type { RefundPaymentDataInput, PaymentOptions } from 'obidev.obi-return-app-sellers'
 import { ResolverError } from '@vtex/api'
+import { PaymentOptions } from '../../typings/ReturnAppSettings'
+import { RefundPaymentDataInput } from '../../typings/ReturnRequest'
 
 import { isValidIBANNumber } from './isValidIBANNumber'
 

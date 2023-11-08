@@ -1,9 +1,9 @@
 {
   "extensions": {
-    "my-account-portal/routes/obidev.obi-return-app-sellers": {
+    "my-account-portal/routes/itglobers.return-app-sellers": {
       "component": "ExtensionRouter"
     },
-    "my-account-portal/menu-links-after/obidev.obi-return-app-sellers": {
+    "my-account-portal/menu-links-after/itglobers.return-app-sellers": {
       "component": "ExtensionLinks"
     }
   }

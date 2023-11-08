@@ -1,4 +1,4 @@
-import type { ReturnRequestItem, Status } from 'obidev.obi-return-app-sellers'
+import type { ReturnRequestItem, Status } from '../../typings/ReturnRequest'
 
 export type ReturnRequestConfirmation = string
 

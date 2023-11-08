@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { OrdersToReturnList, OrderToReturnSummary } from 'vtex.return-app'
+import { OrderToReturnSummary , OrdersToReturnList} from '../../../typings/OrdertoReturn'
 import { FormattedMessage, FormattedDate } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
@@ -78,7 +78,7 @@ const OrderlListTableSchema = ({
                 : {
                     onClick: () =>
                       navigate({
-                        to: `/admin/app/returns/orders/add/${rowData.orderId}`,
+                        to: `/admin/app/seller/returns/orders/add/${rowData.orderId}`,
                       }),
                   })}
               variation="tertiary"
@@ -151,7 +151,7 @@ export const OrderList = ({ orders, handlePagination, refetch, isLoading }: Prop
       <Table
         fullWidth
         emptyStateLabel={
-          <FormattedMessage id="store/return-app.return-order-list.table-empty-state-label.no-orders-available" />
+          <FormattedMessage id="return-app.request-return-order-list.table-empty-state-label.no-orders-available" />
         }
         schema={OrderlListTableSchema({
           navigate,

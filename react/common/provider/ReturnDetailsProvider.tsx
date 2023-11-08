@@ -2,12 +2,9 @@ import type { FC } from 'react'
 import React, { createContext } from 'react'
 import type { ApolloError } from 'apollo-client'
 import { useQuery } from 'react-apollo'
-import type {
-  ReturnRequestResponse,
-  QueryReturnRequestArgs,
-} from 'obidev.obi-return-app-sellers'
 
 import GET_REQUEST_DETAILS from '../graphql/getRequestDetails.gql'
+import { QueryReturnRequestArgs, ReturnRequestResponse } from '../../../typings/ReturnRequest'
 
 interface ReturnDetailsSetupInterface {
   data?: { returnRequestDetails: ReturnRequestResponse }

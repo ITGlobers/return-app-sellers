@@ -1,15 +1,15 @@
-import type {
-  QueryReturnRequestListArgs
-} from 'obidev.obi-return-app-sellers'
-import { ForbiddenError } from '@vtex/api'
 
+import { ForbiddenError } from '@vtex/api'
+import { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const returnRequestListService = async (
   ctx: Context,
   args: QueryReturnRequestListArgs
 ) => {
   const {
-    clients: { return : returnClient , account : accountClient},
+    clients: { return : returnClient , account : accountClient, settingsAccount},
     request: { header },
     state: { userProfile, appkey },
   } = ctx
@@ -48,11 +48,19 @@ export const returnRequestListService = async (
   const adjustedFilter = requireFilterByUser
   ? { ...filter, userId, userEmail }
   : filter
+  
+  let accountInfo = await accountClient.getInfo()
+  
+  let appConfig: Settings = DEFAULT_SETTINGS
 
-  const accountInfo = await accountClient.getInfo()  
-  const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined  
-  const rmaSearchResult = await returnClient.getReturnList(
-    {
+  if(!accountInfo?.parentAccountName){
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+  
+  const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined
+
+  const payload = {
+    params: {
       _page: page,
       _pageSize: perPage && perPage <= 100 ? perPage : 25,
       _perPage:  perPage,
@@ -64,8 +72,11 @@ export const returnRequestListService = async (
       _userEmail: adjustedFilter?.userEmail,
       _sellerName: accountInfo.accountName
     },
-    accountInfo,
-  )
+    parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+    auth: appConfig
+  }
+  
+  const rmaSearchResult = await returnClient.getReturnList(payload)
 
   const { list, paging } = rmaSearchResult
   

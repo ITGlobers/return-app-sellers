@@ -13,6 +13,10 @@
   },
   "admin.app.return-add": {
     "component": "AdminReturnAdd",
-    "path": "/admin/app/seller/returns/orders/add/:id/"
+    "path": "/admin/app/seller/returns/orders/add/:orderId/"
+  },
+  "admin.app.return-settings": {
+    "component": "AdminReturnSettings",
+    "path": "/admin/app/seller/returns/settings/"
   }
 }

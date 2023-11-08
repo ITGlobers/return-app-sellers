@@ -1,0 +1,27 @@
+query storeAppSettings {
+  returnAppSettings @context(provider: "itglobers.return-app-sellers") {
+    termsUrl
+    orderStatus
+    customReturnReasons {
+      reason
+      maxDays
+      translations {
+        locale
+        translation
+      }
+    }
+    paymentOptions {
+      enablePaymentMethodSelection
+      allowedPaymentTypes {
+        bank
+        card
+        giftCard
+      }
+    }
+    options {
+      enableOtherOptionSelection
+      enablePickupPoints
+      enableSelectItemCondition
+    }
+  }
+}

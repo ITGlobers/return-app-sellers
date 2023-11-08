@@ -5,6 +5,7 @@ type Query {
   storeUserEmail: If not passed, resolver will try to parse it from session cookie.
   """
   ordersAvailableToReturn(
+    filter: ReturnRequestFilters
     page: Int!
     storeUserEmail: String
   ): OrdersToReturnList

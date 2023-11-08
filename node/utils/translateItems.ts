@@ -1,5 +1,6 @@
-import type { InvoicedItem } from 'obidev.obi-return-app-sellers'
 
+import { InvoicedItem } from '../../typings/OrdertoReturn'
+import type { Catalog } from '../clients/catalog'
 import type { CatalogGQL } from '../clients/catalogGQL'
 
 /**
@@ -8,10 +9,19 @@ import type { CatalogGQL } from '../clients/catalogGQL'
 export const translateItemName = async (
   id: string,
   originalName: string,
-  catalogClient: CatalogGQL
+  catalog: Catalog,
+  catalogGQL: CatalogGQL,
+  isSellerPortal: boolean
 ) => {
   try {
-    const skuName = await catalogClient.getSKUTranslation(id)
+    let skuName: string | undefined
+
+    if(isSellerPortal){
+      skuName = await catalog.getSKUByID(id)
+    } else {
+      skuName = await catalogGQL.getSKUTranslation(id)
+    }
+
     const isLocalized = skuName && skuName !== originalName
 
     return isLocalized ? skuName : null
@@ -23,7 +33,9 @@ export const translateItemName = async (
 
 export function handleTranlateItems(
   items: InvoicedItem[],
-  catalogClient: CatalogGQL
+  catalog: Catalog,
+  CatalogGQL: CatalogGQL,
+  isSellerPortal: boolean
 ): Promise<InvoicedItem[]> {
   return Promise.all(
     items.map(async (item: InvoicedItem) => {
@@ -32,7 +44,9 @@ export function handleTranlateItems(
         localizedName: await translateItemName(
           item.id,
           item.name,
-          catalogClient
+          catalog,
+          CatalogGQL,
+          isSellerPortal
         ),
       }
     })

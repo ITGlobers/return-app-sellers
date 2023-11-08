@@ -1,5 +1,5 @@
-import type { PickupReturnDataInput } from 'obidev.obi-return-app-sellers'
 import { ResolverError, UserInputError } from '@vtex/api'
+import { PickupReturnDataInput } from '../../typings/ReturnRequest'
 
 export const validateCanUsedropoffPoints = (
   pickupReturnData: PickupReturnDataInput,

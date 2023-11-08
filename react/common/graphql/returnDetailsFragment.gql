@@ -2,6 +2,7 @@ fragment ReturnDetailsAdminFragment on ReturnRequestResponse {
   id
   status
   orderId
+  sellerOrderId
   refundableAmount
   items {
     orderItemIndex
