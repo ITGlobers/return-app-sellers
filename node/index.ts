@@ -13,6 +13,9 @@ import { updateRequestStatus } from './middlewares/updateRequestStatus'
 import { errorHandler } from './middlewares/errorHandler'
 import { exportReturns } from './middlewares/exportReturns'
 import { ping } from './middlewares/ping'
+import { auth } from './middlewares/auth'
+import { createGoodwill } from './middlewares/goodwill/createGoodwill'
+import { getGoodwills } from './middlewares/goodwill/getGoodwills'
 
 const TIMEOUT_MS = 10000
 const catalogMemoryCache = new LRUCache<string, any>({ max: 5000 })
@@ -49,6 +52,10 @@ export default new Service<Clients, State, ParamsContext>({
     }),
     returnRequest: method({
       PUT: [errorHandler, updateRequestStatus],
+    }),
+    goodwill: method({
+      POST: [errorHandler, auth, createGoodwill],
+      GET: [errorHandler, auth, getGoodwills],
     }),
     exportReturns: method({
       GET: [errorHandler, exportReturns],

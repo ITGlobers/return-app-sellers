@@ -13,6 +13,7 @@ import { ReturnSettings } from './appSettings'
 import { SettingsClient } from './settings'
 import { ProfileClient } from './profile'
 import Scheduler from './scheduler'
+import { Goodwill } from './goodwill'
 
 export class Clients extends IOClients {
   public get oms() {
@@ -70,4 +71,10 @@ export class Clients extends IOClients {
   public get scheduler() {
     return this.getOrSet('scheduler', Scheduler)
   }
+
+  public get goodwill() {
+    return this.getOrSet('goodwill', Goodwill)
+  }
+
+
 }
