@@ -138,9 +138,9 @@ export class Return extends ExternalClient {
         {
           headers: {
             VtexIdClientAutCookie:
+              vtexidclientautcookie ??
               this.context.adminUserAuthToken ??
               this.context.authToken ??
-              vtexidclientautcookie ??
               '',
             'X-Vtex-Use-Https': 'true',
             'X-VTEX-API-AppKey': auth?.appKey ?? '',
@@ -151,13 +151,8 @@ export class Return extends ExternalClient {
 
       return response
     } catch (error) {
-      console.error(error)
-
-      if (error.response?.status === 500) {
-        throw new ResolverError(error.response?.data?.error)
-      }
-
-      throw new ResolverError('Error updateReturn')
+      console.log(error.response)
+      throw new ResolverError(`Error updateReturn ${error.response?.data?.error}`)
     }
   }
 
