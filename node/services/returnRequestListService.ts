@@ -1,5 +1,5 @@
 
-import { ForbiddenError } from '@vtex/api'
+//import { ForbiddenError } from '@vtex/api'
 import { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
 import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'
@@ -42,21 +42,21 @@ export const returnRequestListService = async (
   const hasUserIdOrEmail = Boolean(userId || userEmail)
 
   if (requireFilterByUser && !hasUserIdOrEmail) {
-    throw new ForbiddenError('Missing params to filter by store user')
+    //throw new ForbiddenError('Missing params to filter by store user')
   }
 
   const adjustedFilter = requireFilterByUser
   ? { ...filter, userId, userEmail }
   : filter
-  
-  let accountInfo = await accountClient.getInfo()
-  
+  const authCookie = header.vtexidclientautcookie as string | undefined
+
+  let accountInfo = await accountClient.getInfo(authCookie)
   let appConfig: Settings = DEFAULT_SETTINGS
 
   if(!accountInfo?.parentAccountName){
     appConfig = await settingsAccount.getSettings(ctx)
   }
-  
+
   const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined
 
   const payload = {
@@ -73,9 +73,7 @@ export const returnRequestListService = async (
       _sellerName: accountInfo.accountName
     },
     parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
-    auth: appConfig
   }
-  
   const rmaSearchResult = await returnClient.getReturnList(payload)
 
   const { list, paging } = rmaSearchResult
