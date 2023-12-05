@@ -1,10 +1,10 @@
 import { IOContext, InstanceOptions, ExternalClient, ResolverError } from '@vtex/api'
-import { BASE_URL, BASE_URL_COMPLEMENT, WS } from '../utils/constants'
+import { BASE_URL, WS } from '../utils/constants'
 
 const baseURL = '/_v/returns/seller/giftcard'
 
 const routes = {
-  createGiftcard: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}`,
+  createGiftcard: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
 }
 
 interface Auth {

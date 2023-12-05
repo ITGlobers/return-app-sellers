@@ -1,19 +1,19 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ResolverError, ExternalClient } from '@vtex/api'
 import axios from 'axios'
-import { BASE_URL, BASE_URL_COMPLEMENT, WS } from '../utils/constants'
+import { BASE_URL, WS } from '../utils/constants'
 
 const baseURL = '/_v/return-request'
 
 const routes = {
   returnByID: (parentAccountName: string, returnId: string) =>
-    `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}/${returnId}`,
+    `${BASE_URL}${parentAccountName}/${WS}${baseURL}/${returnId}`,
   createReturn: (parentAccountName: string) =>
-    `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}`,
+    `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
   returnList: (parentAccountName: string) =>
-    `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}`,
+    `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
   export: (parentAccountName: string) =>
-    `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}/export`,
+    `${BASE_URL}${parentAccountName}/${WS}${baseURL}/export`,
 }
 
 interface Auth {

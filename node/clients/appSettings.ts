@@ -1,13 +1,13 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
-import { BASE_URL, BASE_URL_COMPLEMENT, WS } from '../utils/constants'
+import { BASE_URL, WS } from '../utils/constants'
 
 const baseURL = '/_v/returns/seller/settings'
 const baseURLMket = '/_v/returns/settings'
 const routes = {
-  returnSettingMket: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURLMket}`,
-  returnSettings: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}/${parentAccountName}`,
-  updateSettings: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}`,
+  returnSettingMket: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURLMket}`,
+  returnSettings: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}/${parentAccountName}`,
+  updateSettings: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
 }
 
 interface Auth {

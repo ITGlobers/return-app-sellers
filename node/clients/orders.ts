@@ -1,11 +1,11 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
-import { BASE_URL, BASE_URL_COMPLEMENT, WS } from '../utils/constants'
+import { BASE_URL, WS } from '../utils/constants'
 
 const baseURL = '/_v/returns/seller/orderList'
 
 const routes = {
-  returnList: (parentAccountName: string) => `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}${baseURL}`,
+  returnList: (parentAccountName: string) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
 }
 
 interface Auth {

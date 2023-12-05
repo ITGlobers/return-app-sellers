@@ -1,12 +1,12 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
-import { BASE_URL, BASE_URL_COMPLEMENT, WS } from '../utils/constants'
+import { BASE_URL, WS } from '../utils/constants'
 
 const routes = {
   goodwillMket: (parentAccountName: string , sellerID: string , id?:string ) => 
-    id ? `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}/_v/goodwill/${id}?_sellerId=${sellerID}` :
-    `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}/_v/goodwill?_sellerId=${sellerID}` ,
-  createGoodwillMket: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}${BASE_URL_COMPLEMENT}${parentAccountName}/${WS}/_v/goodwill` ,
+    id ? `${BASE_URL}${parentAccountName}/${WS}/_v/goodwill/${id}?_sellerId=${sellerID}` :
+    `${BASE_URL}${parentAccountName}/${WS}/_v/goodwill?_sellerId=${sellerID}` ,
+  createGoodwillMket: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}/_v/goodwill` ,
  }
 
 interface Auth {
