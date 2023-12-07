@@ -1,13 +1,13 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
+import { BASE_URL, WS } from '../utils/constants'
 
-const baseURL = 'myvtex.com/_v/returns/seller/settings'
-const baseURLMket = 'myvtex.com/_v/returns/settings'
-
+const baseURL = '/_v/returns/seller/settings'
+const baseURLMket = '/_v/returns/settings'
 const routes = {
-  returnSettingMket: (parentAccountName: string ) => `http://${parentAccountName}.${baseURLMket}`,
-  returnSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}/${parentAccountName}`,
-  updateSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
+  returnSettingMket: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURLMket}`,
+  returnSettings: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}/${parentAccountName}`,
+  updateSettings: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
 }
 
 interface Auth {
@@ -25,8 +25,7 @@ export class ReturnSettings extends ExternalClient {
     auth: Auth
   }) : Promise<any | undefined> {
     const {
-      parentAccountName,
-      auth
+      parentAccountName
     } = props
 
     try {
@@ -36,11 +35,8 @@ export class ReturnSettings extends ExternalClient {
         URI,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || ''
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response
@@ -57,7 +53,6 @@ export class ReturnSettings extends ExternalClient {
   }) : Promise<any | undefined> {
     const {
       parentAccountName,
-      auth
     } = props
 
     try {
@@ -67,11 +62,8 @@ export class ReturnSettings extends ExternalClient {
         URI,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || ''
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response
@@ -90,7 +82,6 @@ export class ReturnSettings extends ExternalClient {
     const {
       parentAccountName,
       settings,
-      auth
     } = props
 
     try {
@@ -99,11 +90,8 @@ export class ReturnSettings extends ExternalClient {
         settings,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || ''
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response

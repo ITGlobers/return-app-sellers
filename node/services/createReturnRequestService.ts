@@ -1,5 +1,5 @@
 import { UserInputError, ResolverError } from '@vtex/api'
-import { isUserAllowed } from '../utils/isUserAllowed'
+//import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
@@ -43,10 +43,6 @@ export const createReturnRequestService = async (
     userComment,
     locale,
   } = args
-
-  if (!appkey && !userProfile) {
-    throw new ResolverError('Missing appkey or userProfile')
-  }
 
   const { firstName, lastName, email } = userProfile ?? {}
 
@@ -139,13 +135,13 @@ export const createReturnRequestService = async (
     options: settingsOptions,
     orderStatus
   } = settings
-
-  isUserAllowed({
-    requesterUser: userProfile,
-    clientProfile: clientProfileData,
-    appkey,
-  })
-
+  /*
+    isUserAllowed({
+      requesterUser: userProfile,
+      clientProfile: clientProfileData,
+      appkey,
+    })
+  */
   canOrderBeReturned({
     creationDate,
     maxDays,
@@ -292,7 +288,6 @@ export const createReturnRequestService = async (
   const payload = {
     createRequest: request,
     parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
-    auth: appConfig
   }
   
   const rmaDocument = await returnRequestClient.createReturn(payload)

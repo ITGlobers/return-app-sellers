@@ -1,10 +1,11 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
+import { BASE_URL, WS } from '../utils/constants'
 
-const baseURL = 'myvtex.com/_v/returns/seller/orderList'
+const baseURL = '/_v/returns/seller/orderList'
 
 const routes = {
-  returnList: (parentAccountName: string) => `http://${parentAccountName}.${baseURL}`,
+  returnList: (parentAccountName: string) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
 }
 
 interface Auth {
@@ -27,7 +28,6 @@ export class Order extends ExternalClient {
     const {
       body,
       parentAccountName,
-      auth
     } = props
     
     try {
@@ -39,11 +39,8 @@ export class Order extends ExternalClient {
         },
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken  || '',
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || '',
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response

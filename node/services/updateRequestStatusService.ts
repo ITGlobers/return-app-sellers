@@ -38,7 +38,6 @@ export const updateRequestStatusService = async (
           accountInfo?.parentAccountName || appConfig?.parentAccountName,
         auth: appConfig,
       },
-      vtexidclientautcookie
     )
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors

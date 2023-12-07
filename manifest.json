@@ -1,7 +1,7 @@
 {
-  "vendor": "vtexromania",
+  "vendor": "itglobers001",
   "name": "return-app-sellers",
-  "version": "0.5.3-hkignore",
+  "version": "0.5.5-hkignore",
   "title": "Return app seller",
   "description": "Return app seller",
   "dependencies": {
@@ -32,6 +32,14 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "app.io.vtex.com",
+        "path": "/*.return-app/v3/*/master/_v/return-request",
+        "identity": "vrn:apps:*:*:*:app/*.return-app-sellers@*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "*.myvtex.com",
         "path": "/_v/return-request"
       }
@@ -51,6 +59,13 @@
       "attrs": {
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/oms/pvt/orders/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/vlm/account"
       }
     },
     {

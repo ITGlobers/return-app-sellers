@@ -9,6 +9,9 @@ export const SETTINGS_PATH = 'app-settings'
 export const STATUS_INVOICED = 'invoiced'
 export const STATUS_PAYMENT_APPROVE = 'handling'
 
+export const BASE_URL = 'http://app.io.vtex.com/vtex.return-app/v3/'
+export const WS = 'master'
+
 export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,
   OrderToReturnValidation

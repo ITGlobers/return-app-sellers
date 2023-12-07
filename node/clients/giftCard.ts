@@ -1,9 +1,10 @@
 import { IOContext, InstanceOptions, ExternalClient, ResolverError } from '@vtex/api'
+import { BASE_URL, WS } from '../utils/constants'
 
-const baseURL = 'myvtex.com/_v/returns/seller/giftcard'
+const baseURL = '/_v/returns/seller/giftcard'
 
 const routes = {
-  createGiftcard: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
+  createGiftcard: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}${baseURL}`,
 }
 
 interface Auth {
@@ -24,7 +25,6 @@ export class GiftCard extends ExternalClient {
     const {
       parentAccountName,
       requestCreate,
-      auth
     } = props;
 
     try {
@@ -33,11 +33,8 @@ export class GiftCard extends ExternalClient {
         requestCreate,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || '',
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response

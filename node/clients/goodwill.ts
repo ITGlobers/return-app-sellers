@@ -1,11 +1,12 @@
 import { InstanceOptions, IOContext, ResolverError } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
+import { BASE_URL, WS } from '../utils/constants'
 
 const routes = {
   goodwillMket: (parentAccountName: string , sellerID: string , id?:string ) => 
-    id ? `http://${parentAccountName}.myvtex.com/_v/goodwill/${id}?_sellerId=${sellerID}` :
-    `http://${parentAccountName}.myvtex.com/_v/goodwill?_sellerId=${sellerID}` ,
-  createGoodwillMket: (parentAccountName: string ) => `http://${parentAccountName}.myvtex.com/_v/goodwill` ,
+    id ? `${BASE_URL}${parentAccountName}/${WS}/_v/goodwill/${id}?_sellerId=${sellerID}` :
+    `${BASE_URL}${parentAccountName}/${WS}/_v/goodwill?_sellerId=${sellerID}` ,
+  createGoodwillMket: (parentAccountName: string ) => `${BASE_URL}${parentAccountName}/${WS}/_v/goodwill` ,
  }
 
 interface Auth {
@@ -27,7 +28,6 @@ export class Goodwill extends ExternalClient {
   }) : Promise<any | undefined> {
     const {
       parentAccountName,
-      auth,
       sellerID,
       id
     } = props
@@ -39,11 +39,8 @@ export class Goodwill extends ExternalClient {
         URI,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || ''
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response
@@ -63,7 +60,6 @@ export class Goodwill extends ExternalClient {
     const {
       parentAccountName,
       goodwill,
-      auth
     } = props
 
     try {
@@ -72,11 +68,8 @@ export class Goodwill extends ExternalClient {
         goodwill,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
-            'X-Vtex-Use-Https': 'true',
-            'X-VTEX-API-AppKey': auth?.appKey || '',
-            'X-VTEX-API-AppToken': auth?.appToken || ''
-          }
+            Authorization: `Bearer ${this.context.authToken}` 
+          },
         }
       )
       return response
