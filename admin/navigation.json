@@ -18,10 +18,13 @@
     "path": "/admin/seller/returns/requests",
     "subSectionItems": [
       {
+        "labelId": "navigation.labelCreateReturn",
+        "path": "/admin/seller/returns/createReturn"
+      },
+      {
         "labelId": "navigation.labelRequests",
         "path": "/admin/seller/returns/requests"
       }
     ]
   }
-  
 ]

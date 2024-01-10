@@ -6,7 +6,7 @@
   "admin.app.return-details": {
     "component": "AdminReturnDetails",
     "path": "/admin/app/seller/returns/:id/details/"
-  },  
+  },
   "admin.app.order-list": {
     "component": "AdminReturnOrderList",
     "path": "/admin/app/seller/returns/orders/"
@@ -18,5 +18,9 @@
   "admin.app.return-settings": {
     "component": "AdminReturnSettings",
     "path": "/admin/app/seller/returns/settings/"
+  },
+  "admin.app.return-create": {
+    "component": "AdminCreateReturn",
+    "path": "/admin/app/seller/returns/createReturn/"
   }
 }
