@@ -1,0 +1,31 @@
+query getOrderSummary($orderId: ID!){
+  orderSummary(orderId: $orderId){
+    id
+    shippingValue
+		orderValue
+    creationDate
+    amountsAvailable{
+      order
+      shipping
+    }
+    items{
+      amountAvailablePerItem{
+        amount
+        quantity
+      }
+      amount
+      quantity
+      unitCost
+      name
+      image
+      id
+    }
+    transactions{
+      id
+      type
+      status
+      amount
+      metadata
+    }
+  }
+}

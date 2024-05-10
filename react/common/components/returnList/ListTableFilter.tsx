@@ -2,16 +2,16 @@ import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Input, DatePicker, Button } from 'vtex.styleguide'
-import type {
-  QueryReturnRequestListArgs,
-  ReturnRequestList,
-  Status,
-} from 'obidev.obi-return-app-sellers'
 import type { ApolloQueryResult } from 'apollo-client'
 import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 
 import { StatusActionMenu } from './StatusActionMenu'
+import type {
+  QueryReturnRequestListArgs,
+  ReturnRequestList,
+  Status,
+} from '../../../../typings/ReturnRequest'
 
 const CSS_HANDLES = ['listTableFilterContainer'] as const
 
@@ -62,7 +62,7 @@ const ListTableFilter = (props: Props) => {
   const toDate = createdIn ? new Date(createdIn.to) : ''
 
   // Used solely for refetch's variables
-  const selectedFilters = Object.keys(filters)
+  const selectedFilters: any = Object.keys(filters)
     .filter((key) => filters[key])
     .reduce((newFilters, key) => {
       newFilters[key] = filters[key]
@@ -222,6 +222,17 @@ const ListTableFilter = (props: Props) => {
             variation="danger"
           >
             <FormattedMessage id="return-app.return-request-list.table-filters.clear-filters" />
+          </Button>
+        </div>
+        <div className="mh2">
+          <Button
+            id="custom-excel-button"
+            size="small"
+            href={`/_v/return-request/export/?dateSubmitted=${createdIn?.from},${createdIn?.to}`}
+            disabled={!createdIn || loading}
+            variation="primary"
+          >
+            <FormattedMessage id="return-app.return-request-list.table-filters.export-returns" />
           </Button>
         </div>
       </div>

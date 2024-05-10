@@ -1,7 +1,7 @@
 {
-  "vendor": "obidev",
-  "name": "obi-return-app-sellers",
-  "version": "0.0.2-beta.0",
+  "vendor": "obi",
+  "name": "return-app-sellers",
+  "version": "0.5.36",
   "title": "Return app seller",
   "description": "Return app seller",
   "dependencies": {
@@ -22,14 +22,21 @@
     "docs": "0.x",
     "store": "0.x",
     "node": "6.x",
-    "graphql": "1.x",
-    "masterdata": "1.x"
+    "graphql": "1.x"
   },
   "scripts": {
     "postreleasy": "vtex publish --verbose"
   },
   "credentialType": "absolute",
   "policies": [
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "app.io.vtex.com",
+        "path": "/*.return-app/v3/*/master/_v/return-request",
+        "identity": "vrn:apps:*:*:*:app/*.return-app-sellers@*"
+      }
+    },
     {
       "name": "outbound-access",
       "attrs": {
@@ -45,10 +52,20 @@
       }
     },
     {
+      "name": "colossus-fire-event"
+    },
+    {
       "name": "outbound-access",
       "attrs": {
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/oms/pvt/orders/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/vlm/account"
       }
     },
     {
@@ -78,6 +95,9 @@
     },
     {
       "name": "vtex.catalog-graphql:resolve-graphql"
+    },
+    {
+      "name": "install-apps"
     }
   ],
   "billingOptions": {
@@ -86,6 +106,17 @@
       "url": "https://support.vtex.com/hc/requests"
     },
     "free": true
+  },
+  "settingsSchema": {
+    "title": "Return App Config",
+    "type": "object",
+    "properties": {
+      "parentAccountName": {
+        "title": "Marketplace Account Name",
+        "description": "Use only for seller portal accounts",
+        "type": "string"
+      }
+    }
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

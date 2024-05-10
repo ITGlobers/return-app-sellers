@@ -1,4 +1,4 @@
-import type { CategoryInfo } from 'obidev.obi-return-app-sellers'
+import type { CategoryInfo } from '../../typings/Category'
 
 const transformCategoryTree = (
   categoryTree: CategoryTree[],

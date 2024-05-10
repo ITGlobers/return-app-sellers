@@ -11,7 +11,7 @@ mutation updateReturnRequestStatus(
     status: $status
     comment: $comment
     refundData: $refundData
-  ) @context(provider: "obidev.obi-return-app-sellers") {
+  ) @context(provider: "obi.return-app-sellers") {
     ...ReturnDetailsAdminFragment
   }
 }

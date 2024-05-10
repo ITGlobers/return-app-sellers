@@ -11,8 +11,29 @@
     "component": "AdminReturnOrderList",
     "path": "/admin/app/seller/returns/orders/"
   },
+  "admin.app.goodwill-list": {
+    "component": "AdminGoodwillList",
+    "path": "/admin/app/seller/goodwill/"
+  },
+  "admin.app.invoices-list": {
+    "component": "AdminInvoicesList",
+    "path": "/admin/app/seller/return/"
+  },
+  "admin.app.goodwill-add": {
+    "component": "AdminGoodwillAdd",
+    "path": "/admin/app/seller/goodwill/orders/add/:orderId/"
+  },
+  "admin.app.invoice-add": {
+    "component": "AdminInvoiceAdd",
+    "path": "/admin/app/seller/return/orders/add/:orderId/"
+  },
   "admin.app.return-add": {
     "component": "AdminReturnAdd",
-    "path": "/admin/app/seller/returns/orders/add/:id/"
+    "path": "/admin/app/seller/returns/orders/add/:orderId/"
+  },
+  "admin.app.return-settings": {
+    "component": "AdminReturnSettings",
+    "path": "/admin/app/seller/returns/settings/"
   }
 }
+

@@ -1,18 +1,18 @@
-import type {
-  QueryReturnRequestListArgs
-} from 'obidev.obi-return-app-sellers'
-import { ForbiddenError } from '@vtex/api'
-
+// import { ForbiddenError } from '@vtex/api'
+import type { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const returnRequestListService = async (
   ctx: Context,
   args: QueryReturnRequestListArgs
 ) => {
   const {
-    clients: { return : returnClient , account : accountClient},
+    clients: { return: returnClient, account: accountClient, settingsAccount },
     request: { header },
     state: { userProfile, appkey },
   } = ctx
+
   const { page, perPage, filter } = args
   const {
     userId: userIdProfile,
@@ -42,35 +42,48 @@ export const returnRequestListService = async (
   const hasUserIdOrEmail = Boolean(userId || userEmail)
 
   if (requireFilterByUser && !hasUserIdOrEmail) {
-    throw new ForbiddenError('Missing params to filter by store user')
+    // throw new ForbiddenError('Missing params to filter by store user')
   }
 
   const adjustedFilter = requireFilterByUser
-  ? { ...filter, userId, userEmail }
-  : filter
+    ? { ...filter, userId, userEmail }
+    : filter
 
-  const accountInfo = await accountClient.getInfo()  
-  const createdIn = adjustedFilter?.createdIn ? [adjustedFilter?.createdIn.from+","+adjustedFilter?.createdIn.to]: undefined  
-  const rmaSearchResult = await returnClient.getReturnList(
-    {
+  const authCookie = header.vtexidclientautcookie as string | undefined
+
+  const accountInfo = await accountClient.getInfo(authCookie)
+  let appConfig: Settings = DEFAULT_SETTINGS
+
+  if (!accountInfo?.parentAccountName) {
+    appConfig = await settingsAccount.getSettings(ctx)
+  }
+
+  const createdIn = adjustedFilter?.createdIn
+    ? [`${adjustedFilter?.createdIn.from},${adjustedFilter?.createdIn.to}`]
+    : undefined
+
+  const payload = {
+    params: {
       _page: page,
       _pageSize: perPage && perPage <= 100 ? perPage : 25,
-      _perPage:  perPage,
-      _status : adjustedFilter?.status ,
+      _perPage: perPage,
+      _status: adjustedFilter?.status,
       _sequenceNumber: adjustedFilter?.sequenceNumber,
       _id: adjustedFilter?.id,
-      _dateSubmitted: createdIn ,
+      _dateSubmitted: createdIn,
       _orderId: adjustedFilter?.orderId,
       _userEmail: adjustedFilter?.userEmail,
-      _sellerName: accountInfo.accountName
+      _sellerName: accountInfo.accountName,
     },
-    accountInfo,
-  )
+    parentAccountName:
+      accountInfo?.parentAccountName || appConfig?.parentAccountName,
+  }
+  const rmaSearchResult = await returnClient.getReturnList(payload)
 
   const { list, paging } = rmaSearchResult
-  
+
   return {
     list,
-    paging
+    paging,
   }
 }

@@ -1,0 +1,12 @@
+type OrderToGoodwillList {
+  list: [OrderToGoodwillSummary]
+  paging: Pagination
+}
+
+type OrderToGoodwillSummary {
+  orderId: String!
+  creationDate: String!
+  customer: String
+  hasRefunds: Boolean
+  hasAmount: Boolean
+}

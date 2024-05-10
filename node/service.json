@@ -1,8 +1,35 @@
 {
-  "memory": 512,
+  "memory": 1024,
   "ttl": 60,
-  "timeout": 5000,
+  "timeout": 30,
   "minReplicas": 2,
   "maxReplicas": 4,
-  "routes": {}
+  "routes": {
+    "returnRequest": {
+      "path": "/_v/return-request/:requestId",
+      "public": true
+    },
+    "exportReturns": {
+      "path": "/_v/return-request/export",
+      "public": true
+    },
+    "goodwill": {
+      "path": "/_v/goodwill/*id",
+      "public": true
+    },
+    "invoice": {
+      "path": "/_v/return-app/invoice/:orderId",
+      "public": true
+    },
+    "ping": {
+      "path": "/_v/return-app/ping",
+      "public": true
+    }
+  },
+  "events": {
+    "keepALive": {
+      "sender": "apps",
+      "keys": ["linked", "setup"]
+    }
+  }
 }

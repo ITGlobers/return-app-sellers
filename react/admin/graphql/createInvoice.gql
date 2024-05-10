@@ -1,0 +1,8 @@
+mutation createInvoice($orderId: String!, $invoiceRequest: InvoiceRequestInput!) {
+  createInvoiceRequest(orderId: $orderId, invoiceRequest:  $invoiceRequest )
+    @context(provider: "obi.return-app-sellers"){
+    date
+    orderId
+    receipt
+  }
+}

@@ -9,10 +9,12 @@ export const canOrderBeReturned = ({
   creationDate,
   maxDays,
   status,
+  orderStatus
 }: {
   creationDate: string
   maxDays: number
   status: string
+  orderStatus: string
 }) => {
   if (!isWithinMaxDaysToReturn(creationDate, maxDays)) {
     throw new ResolverError(
@@ -22,7 +24,8 @@ export const canOrderBeReturned = ({
     )
   }
 
-  if (status !== 'invoiced') {
+  if (orderStatus !== 'partial-invoiced' && status !== 'invoiced') {
+
     throw new ResolverError('Order is not invoiced', 400, ORDER_NOT_INVOICED)
   }
 }

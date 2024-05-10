@@ -1,7 +1,8 @@
 query returnAppSettings {
-  returnAppSettings @context(provider: "obidev.obi-return-app-sellers") {
+  returnAppSettings @context(provider: "obi.return-app-sellers") {
     id
     maxDays
+    orderStatus
     excludedCategories
     paymentOptions {
       enablePaymentMethodSelection

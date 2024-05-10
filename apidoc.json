@@ -1,0 +1,9 @@
+{
+  "name": "return-app-seller (OBI)",
+  "version": "0.5.29-hkignore",
+  "description": "App to returns seller",
+  "apidoc": {
+    "title": "Return App Seller Documentation (OBI)",
+    "url": ""
+  }
+}

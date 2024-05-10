@@ -7,13 +7,13 @@ import {
   IconInfo,
 } from 'vtex.styleguide'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { RefundItemInput } from 'obidev.obi-return-app-sellers'
 
 import { useReturnDetails } from '../../../../common/hooks/useReturnDetails'
 import { VerifyItemsTable } from './VerifyItemsTable'
 import { VerifyTotalsTable } from './VerifyTotalsTable'
 import { useUpdateRequestStatus } from '../../../hooks/useUpdateRequestStatus'
 import { verifyItemsModalSchema } from './verifyItemsModalSchema'
+import { RefundItemInput } from '../../../../../typings/ReturnRequest'
 
 export type RefundItemMap = Map<
   number,

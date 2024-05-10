@@ -2,13 +2,13 @@ import type { ReactElement } from 'react'
 import React from 'react'
 import type { IntlFormatters } from 'react-intl'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem } from 'obidev.obi-return-app-sellers'
 
 import type { ItemStatusInterface } from './ItemDetailsList'
 import { AlignItemRight } from '../../../../admin/ReturnDetails/components/AlignItemRight'
 import { ItemVerificationStatus } from './ItemVerificationStatus'
 import ItemName from './ItemName'
 import { defaultReturnConditionsMessages } from '../../../utils/defaultReturnConditionsMessages'
+import { ReturnRequestItem } from '../../../../../typings/ReturnRequest'
 
 const StrongChunk = (chunks: ReactElement) => <b>{chunks}</b>
 

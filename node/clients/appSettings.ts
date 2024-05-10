@@ -1,57 +1,93 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
-import { ExternalClient } from '@vtex/api'
+import { ResolverError, ExternalClient } from '@vtex/api'
 
-const baseURL = 'myvtex.com/_v/returns/seller/settings'
+import { BASE_URL } from '../utils/constants'
 
-const routes = {
-  returnSettings: (parentAccountName: string , sellerName: string) => `http://${parentAccountName}.${baseURL}/${sellerName}`,
-  updateSettings: (parentAccountName: string ) => `http://${parentAccountName}.${baseURL}`,
+const baseURL = '/_v/returns/seller/settings'
+const baseURLMket = '/_v/returns/settings'
+
+interface Auth {
+  parentAccountName?: string
+  appKey?: string
+  appToken?: string
 }
-
 export class ReturnSettings extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
     super('', ctx, options)
   }
 
-  public async getReturnSettings (accountInfo : any ) : Promise<any | undefined> {
+  public async getReturnSettingsMket(props: {
+    parentAccountName: string
+    auth: Auth
+  }): Promise<any | undefined> {
+    const { parentAccountName } = props
+
     try {
+      const URI = this.routes.returnSettingMket(parentAccountName)
+      const response = await this.http.get(URI, {
+        headers: {
+          Authorization: `Bearer ${this.context.authToken}`,
+        },
+      })
 
-      const URI = routes.returnSettings(accountInfo.parentAccountName , accountInfo.accountName )
-      const response = await this.http.get(
-        URI,
-        {
-          headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken,
-            'X-Vtex-Use-Https': 'true',
-          }
-        }
-      )
       return response
-
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error getReturnSettingsMket')
     }
+  }
 
-  } 
+  public async getReturnSettings(props: {
+    parentAccountName: string
+    auth: Auth
+  }): Promise<any | undefined> {
+    const { parentAccountName } = props
 
-  public async saveReturnSettings (   accountInfo : any , settings:any  ) : Promise<any | undefined> {
+    try {
+      const URI = this.routes.returnSettings(parentAccountName)
+      const response = await this.http.get(URI, {
+        headers: {
+          Authorization: `Bearer ${this.context.authToken}`,
+        },
+      })
+
+      return response
+    } catch (error) {
+      throw new ResolverError('Error getReturnSettings')
+    }
+  }
+
+  public async saveReturnSettings(props: {
+    parentAccountName: string
+    settings: any
+    auth: Auth
+  }): Promise<any | undefined> {
+    const { settings, parentAccountName } = props
+
     try {
       const response = await this.http.post(
-        routes.updateSettings(accountInfo.parentAccountName),
+        this.routes.updateSettings(parentAccountName),
         settings,
         {
           headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken || "",
-            'X-Vtex-Use-Https': 'true',
-          }
+            Authorization: `Bearer ${this.context.authToken}`,
+          },
         }
       )
+
       return response
-
     } catch (error) {
-      console.log(error)
+      throw new ResolverError('Error saveReturnSettings')
     }
+  }
 
-  } 
-
+  private get routes() {
+    return {
+      returnSettingMket: (parentAccountName: string) =>
+        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURLMket}`,
+      returnSettings: (parentAccountName: string) =>
+        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}/${parentAccountName}`,
+      updateSettings: (parentAccountName: string) =>
+        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
+    }
+  }
 }

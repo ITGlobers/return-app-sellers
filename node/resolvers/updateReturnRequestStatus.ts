@@ -1,12 +1,11 @@
 import type {
-  MutationUpdateReturnRequestStatusArgs,
+  ParamsUpdateReturnRequestStatus,
   ReturnRequest,
-} from 'obidev.obi-return-app-sellers'
-
+} from '../../typings/ReturnRequest'
 import { updateRequestStatusService } from '../services/updateRequestStatusService'
 
 export const updateReturnRequestStatus = (
   _: unknown,
-  args: MutationUpdateReturnRequestStatusArgs,
+  args: ParamsUpdateReturnRequestStatus,
   ctx: Context
 ): Promise<ReturnRequest> => updateRequestStatusService(ctx, args)

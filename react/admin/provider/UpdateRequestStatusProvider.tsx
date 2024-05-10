@@ -1,12 +1,7 @@
 import type { FC } from 'react'
 import React, { createContext } from 'react'
-import type {
-  Status,
-  ReturnRequestCommentInput,
-  RefundDataInput,
-  ReturnRequestResponse,
-  MutationUpdateReturnRequestStatusArgs,
-} from 'obidev.obi-return-app-sellers'
+import type { ParamsUpdateReturnRequestStatus, RefundDataInput, ReturnRequestCommentInput, ReturnRequestResponse, Status } from '../../../typings/ReturnRequest'
+
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 
@@ -39,7 +34,7 @@ export const UpdateRequestStatusProvider: FC = ({ children }) => {
     {
       updateReturnRequestStatus: ReturnRequestResponse
     },
-    MutationUpdateReturnRequestStatusArgs
+    ParamsUpdateReturnRequestStatus
   >(UPDATE_RETURN_STATUS)
 
   const handleStatusUpdate = async (args: HandleStatusUpdateArgs) => {

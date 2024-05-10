@@ -5,6 +5,8 @@ type OrdersToReturnList {
 
 type OrderToReturnSummary {
   orderId: String!
+  sellerName: String!
+  marketplaceOrderId: String
   creationDate: String!
   """
   Items invoiced / sent to costumer with items details.

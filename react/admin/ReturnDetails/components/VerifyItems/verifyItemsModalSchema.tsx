@@ -1,10 +1,10 @@
 import React from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import type { ReturnRequestItem, CultureInfoData } from 'obidev.obi-return-app-sellers'
 
 import type { RefundItemMap } from './VerifyItemsPage'
 import { AlignItemRight } from '../AlignItemRight'
 import { ProductActionStatus } from './ProductActionStatus'
+import { CultureInfoData, ReturnRequestItem } from '../../../../../typings/ReturnRequest'
 
 export const verifyItemsModalSchema = (
   refundItemMap: RefundItemMap,

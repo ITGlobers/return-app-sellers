@@ -1,0 +1,27 @@
+input GoodwillRequestInput {
+  id: String
+  orderId: String
+  sellerId: String
+  goodwillCreditId: String
+  goodwillCreditAmount: Int
+  shippingCost: Int
+  items: [GoodwillItemInput]
+  reason: String
+}
+
+input GoodwillItemInput {
+  id: String
+  amount: Int
+  description: String
+}
+
+type GoodwillRequestResponse {
+  message: String
+  goodwill: Goodwill
+}
+
+type Item {
+  id: String
+  amount: Int
+  description: String
+}

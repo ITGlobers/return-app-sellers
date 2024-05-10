@@ -1,0 +1,18 @@
+query ordersAvailableToGoodwill($filter: ReturnRequestFilters, $page: Int!) {
+  ordersAvailableToGoodwill(filter: $filter, page: $page) 
+  @context(provider: "obi.return-app-sellers") {
+    list {
+      orderId
+      creationDate
+      customer
+      hasRefunds
+      hasAmount
+    }
+    paging {
+      total
+      pages
+      currentPage
+      perPage
+    }
+  }
+} 

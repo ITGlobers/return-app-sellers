@@ -1,57 +1,61 @@
 import type { OrderDetailResponse } from '@vtex/clients'
-import type {
-  OrderToReturnSummary,
-  InvoicedItem,
-  ExcludedItem,
-  ProcessedItem,
-  ReturnAppSettings,
-  ReturnRequest,
-} from 'obidev.obi-return-app-sellers'
+import { ResolverError } from '@vtex/api'
 
 import { getInvoicedItems } from './getInvoicedItems'
 import { mapItemIndexAndQuantity } from './mapItemIndexAndQuantity'
 import { transformOrderClientProfileData } from './transformOrderClientProfileData'
 import { transformShippingData } from './transformShippingData'
 import { canRefundCard } from './canRefundCard'
+import type { Catalog } from '../clients/catalog'
 import type { CatalogGQL } from '../clients/catalogGQL'
-import type { Return } from '../clients/return'
-import type { Account } from '../clients/account'
 import { handleTranlateItems } from './translateItems'
+import type { Order } from '../clients/orders'
+import type { ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type {
+  ExcludedItem,
+  InvoicedItem,
+  OrderToReturnSummary,
+  ProcessedItem,
+} from '../../typings/OrdertoReturn'
+import type { ReturnRequest } from '../../typings/ReturnRequest'
 
 interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
-  returnRequestClient: Return
+  orderRequestClient: Order
+  catalog: Catalog
   catalogGQL: CatalogGQL
-  accountClient : Account
 }
 
 export const createOrdersToReturnSummary = async (
   order: OrderDetailResponse,
   email: string,
+  accountInfo: any,
   {
     excludedCategories,
-    returnRequestClient,
+    orderRequestClient,
+    catalog,
     catalogGQL,
-    accountClient
   }: CreateOrdersToReturnSummarySetup
 ): Promise<OrderToReturnSummary> => {
-  const { items, orderId, creationDate , marketplaceOrderId} = order
-  const accountInfo = await accountClient.getInfo()  
+  const { items, orderId, creationDate, marketplaceOrderId } = order
 
-  const params = {
-    _page: 1,
-    _pageSize: 10,
-    _perPage:  10,
-    _orderId: marketplaceOrderId,
-    _sellerName: accountInfo.accountName
+  const body = {
+    fields: ['items', 'refundData', 'refundPaymentData'],
+    filter: `orderId=${marketplaceOrderId} AND status <> canceled`,
   }
-  
-  const returnRequestSameOrder = await returnRequestClient.getReturnList(params , accountInfo)
+
+  const returnRequestSameOrder = await orderRequestClient.getOrdersList({
+    body,
+    parentAccountName: accountInfo?.parentAccountName,
+    auth: accountInfo,
+  })
+
   const invoicesCreatedByReturnApp: string[] = []
   const committedItemsToReturn: Array<{ itemIndex: number; quantity: number }> =
     []
+
   try {
-      for (const returnRequest of returnRequestSameOrder.list) {
+    for (const returnRequest of returnRequestSameOrder?.data) {
       const { refundData, items: rmaItems } =
         (returnRequest as Pick<
           ReturnRequest,
@@ -83,10 +87,9 @@ export const createOrdersToReturnSummary = async (
         committedItemsToReturn.push(committedItem)
       }
     }
-  } catch (error) 
-  {
+  } catch (error) {
+    throw new ResolverError('Error createOrdersToReturnSummary')
   }
-  
 
   // get all items (based on index on order.items) that were invoiced and sent to customer.
   // By the documentation: The Output type should be used when the invoice you are sending is a selling invoice
@@ -173,8 +176,15 @@ export const createOrdersToReturnSummary = async (
 
   return {
     orderId,
+    sellerName: accountInfo.accountName,
+    marketplaceOrderId,
     creationDate,
-    invoicedItems: await handleTranlateItems(invoicedItems, catalogGQL),
+    invoicedItems: await handleTranlateItems(
+      invoicedItems,
+      catalog,
+      catalogGQL,
+      accountInfo.isSellerPortal
+    ),
     processedItems,
     excludedItems,
     clientProfileData: transformOrderClientProfileData(

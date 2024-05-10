@@ -1,0 +1,14 @@
+mutation createGoodwill($goodwillRequest: GoodwillRequestInput!) {
+  createGoodwillRequest(goodwillRequest: $goodwillRequest)
+    @context(provider: "obi.return-app-sellers"){
+    goodwill{
+      goodwillCreditId
+      reason
+      shippingCost
+      goodwillCreditAmount
+      reason
+      orderId
+    }
+    message
+  }
+}

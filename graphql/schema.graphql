@@ -5,9 +5,20 @@ type Query {
   storeUserEmail: If not passed, resolver will try to parse it from session cookie.
   """
   ordersAvailableToReturn(
+    filter: ReturnRequestFilters
     page: Int!
     storeUserEmail: String
   ): OrdersToReturnList
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  """
+  storeUserEmail: If not passed, resolver will try to parse it from session cookie.
+  """
+  ordersAvailableToGoodwill(
+    filter: ReturnRequestFilters
+    page: Int!
+    storeUserEmail: String
+  ): OrderToGoodwillList
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
   """
@@ -17,6 +28,9 @@ type Query {
     orderId: ID!
     storeUserEmail: String
   ): OrderToReturnSummary
+    @withUserProfile
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
+  orderSummary(orderId: ID!): OrderSummary
     @withUserProfile
     @cacheControl(scope: PRIVATE, maxAge: SHORT)
   returnRequest(requestId: ID!): ReturnRequestResponse
@@ -34,6 +48,9 @@ type Query {
 
 type Mutation {
   createReturnRequest(returnRequest: ReturnRequestInput!): returnRequestCreated
+    @withUserProfile
+  createGoodwillRequest(goodwillRequest: GoodwillRequestInput!): GoodwillRequestResponse 
+  createInvoiceRequest(orderId: String!,invoiceRequest: InvoiceRequestInput!): InvoiceRequestResponse 
     @withUserProfile
   saveReturnAppSettings(settings: ReturnAppSettingsInput!): Boolean
   updateReturnRequestStatus(

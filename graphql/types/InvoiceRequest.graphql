@@ -1,0 +1,27 @@
+input InvoiceRequestInput {
+  type: String,
+  description: String,
+  issuanceDate: String,
+  invoiceNumber: String,
+  invoiceValue: Int,
+  invoiceKey: String,
+  invoiceUrl: String,
+  courier: String,
+  trackingNumber: String,
+  trackingUrl: String,
+  dispatchedDate: String,
+  items: [InvoiceItemInput]
+ }
+
+input InvoiceItemInput {
+  id: String
+  amount: Int
+  description: String
+  quantity: Int
+}
+
+type InvoiceRequestResponse {
+  date: String
+  orderId: String
+  receipt: String
+}

@@ -1,11 +1,15 @@
-import type { OrderToReturnValidation } from 'obidev.obi-return-app-sellers'
-
+import type { OrderToReturnValidation } from '../../typings/OrdertoReturn'
 import type {
   ReturnRequestConfirmation,
   ReturnRequestStatusUpdate,
 } from '../typings/mailClient'
 
 export const SETTINGS_PATH = 'app-settings'
+export const STATUS_INVOICED = 'invoiced'
+export const STATUS_PAYMENT_APPROVE = 'handling'
+
+export const BASE_URL = 'http://app.io.vtex.com/obi.return-app/v3/'
+export const environment = 'obidev' 
 
 export const ORDER_TO_RETURN_VALIDATON: Record<
   OrderToReturnValidation,

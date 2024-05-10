@@ -44,6 +44,7 @@ div.timeline:last-of-type ul.last-of {
 }
 
 .return-itemsList-body tr {
+  vertical-align: sub;
   border-bottom: 1px solid #e3e4e6;
 }
 

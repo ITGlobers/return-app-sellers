@@ -1,7 +1,5 @@
-import type { ReturnRequestCreated, ReturnRequestInput } from 'obidev.obi-return-app-sellers'
 import { UserInputError, ResolverError } from '@vtex/api'
-import type { DocumentResponse } from '@vtex/clients'
-import { isUserAllowed } from '../utils/isUserAllowed'
+//import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { canReturnAllItems } from '../utils/canReturnAllItems'
 import { validateReturnReason } from '../utils/validateReturnReason'
@@ -11,6 +9,10 @@ import { createItemsToReturn } from '../utils/createItemsToReturn'
 import { createRefundableTotals } from '../utils/createRefundableTotals'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import { validateItemCondition } from '../utils/validateItemCondition'
+import { ReturnRequestInput } from '../../typings/ReturnRequest'
+import { ReturnRequestCreated } from '../../typings/ProductReturned'
+import type { Settings } from '../clients/settings'
+import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const createReturnRequestService = async (
   ctx: Context,
@@ -20,9 +22,12 @@ export const createReturnRequestService = async (
     clients: {
       oms,
       return: returnRequestClient,
+      order: orderRequestClient,
       returnSettings,
       account :accountClient,
+      catalog,
       catalogGQL,
+      settingsAccount
     },
     state: { userProfile, appkey },
     vtex: { logger },
@@ -30,6 +35,7 @@ export const createReturnRequestService = async (
 
   const {
     orderId,
+    marketplaceOrderId,
     items,
     customerProfileData,
     pickupReturnData,
@@ -37,10 +43,6 @@ export const createReturnRequestService = async (
     userComment,
     locale,
   } = args
-
-  if (!appkey && !userProfile) {
-    throw new ResolverError('Missing appkey or userProfile')
-  }
 
   const { firstName, lastName, email } = userProfile ?? {}
 
@@ -71,16 +73,32 @@ export const createReturnRequestService = async (
   }
   const orderPromise = oms.order(orderId, 'AUTH_TOKEN')
 
-  const params = {
-    _page: 1,
-    _pageSize: 1,
-    _perPage:  1,
-    _id: orderId
+  const accountInfo = await accountClient.getInfo()
+
+  let appConfig: Settings = DEFAULT_SETTINGS
+  let isSellerPortal: boolean = false
+
+  if(!accountInfo?.parentAccountName){
+    isSellerPortal = true
+    appConfig = await settingsAccount.getSettings(ctx)
   }
-  
-  const accountInfo = await accountClient.getInfo()  
-  const searchRMAPromise = await returnRequestClient.getReturnList(params , accountInfo)
-  const settingsPromise = returnSettings.getReturnSettings(accountInfo)
+
+  const body = {
+    "fields":    ['id'] ,
+    "filter": `orderId=${marketplaceOrderId}`
+  }
+
+  const searchRMAPromise = await orderRequestClient.getOrdersList({
+    body,
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
+  const settingsPromise = returnSettings.getReturnSettingsMket({
+    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig
+  })
+
   // If order doesn't exist, it throws an error and stop the process.
   // If there is no request created for that order, request searchRMA will be an empty array.
   const [order, searchRMA, settings] = await Promise.all([
@@ -88,11 +106,9 @@ export const createReturnRequestService = async (
     searchRMAPromise,
     settingsPromise,
   ])
-
   if (!settings) {
     throw new ResolverError('Return App settings is not configured', 500)
   }
-
   const {
     pagination: { total },
   } = searchRMA
@@ -107,7 +123,7 @@ export const createReturnRequestService = async (
     sellers,
     // @ts-expect-error itemMetadata is not typed in the OMS client project
     itemMetadata,
-    //shippingData,
+    shippingData,
     storePreferencesData: { currencyCode },
   } = order
 
@@ -117,27 +133,30 @@ export const createReturnRequestService = async (
     customReturnReasons,
     paymentOptions,
     options: settingsOptions,
+    orderStatus
   } = settings
-
-  isUserAllowed({
-    requesterUser: userProfile,
-    clientProfile: clientProfileData,
-    appkey,
-  })
-
+  /*
+    isUserAllowed({
+      requesterUser: userProfile,
+      clientProfile: clientProfileData,
+      appkey,
+    })
+  */
   canOrderBeReturned({
     creationDate,
     maxDays,
     status,
+    orderStatus
   })
 
   // Validate if all items are available to be returned
   await canReturnAllItems(items, {
     order,
     excludedCategories,
-    returnRequestClient,
+    orderRequestClient,
+    catalog,
     catalogGQL,
-    accountClient
+    accountInfo: isSellerPortal ? {...appConfig, isSellerPortal: true} : {...accountInfo, isSellerPortal: false}
   })
 
   // Validate maxDays for custom reasons.
@@ -164,9 +183,10 @@ export const createReturnRequestService = async (
     orderItems,
     sellers,
     itemMetadata,
+    catalog,
     catalogGQL,
+    isSellerPortal
   })
-
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
     totals,
@@ -223,14 +243,11 @@ export const createReturnRequestService = async (
       ? Boolean(automaticallyRefundPaymentMethod)
       : null
 
-  let rmaDocument: DocumentResponse
-
-
   try {
     const request = 
       {
         sellerName: accountInfo.accountName,
-        orderId,
+        orderId : marketplaceOrderId,
         refundableAmount,
         sequenceNumber,
         status: 'new',
@@ -261,8 +278,22 @@ export const createReturnRequestService = async (
           currencyCode,
           locale,
         },
+        logisticsInfo: {
+          currier: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.deliveryCompany)?.join(','),
+          sla: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.selectedSla)?.join(',')
+        }
       }
-    rmaDocument = await returnRequestClient.createReturn( request, accountInfo)
+
+  
+  const payload = {
+    createRequest: request,
+    parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+  }
+  
+  const rmaDocument = await returnRequestClient.createReturn(payload)
+  
+  return { returnRequestId: rmaDocument.returnRequestId }
+
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
@@ -279,6 +310,5 @@ export const createReturnRequestService = async (
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
   }
-
-  return { returnRequestId: rmaDocument.DocumentId }
+  
 }

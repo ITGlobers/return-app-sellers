@@ -4,10 +4,11 @@ import type {
   PriceTag,
   SellerDetail,
 } from '@vtex/clients'
-import type { ReturnRequestItemInput, ReturnRequestItem } from 'obidev.obi-return-app-sellers'
+import { ReturnRequestItemInput, ReturnRequestItem  } from '../../typings/ReturnRequest'
 
-import type { CatalogGQL } from '../clients/catalogGQL'
+import type { Catalog } from '../clients/catalog'
 import { translateItemName } from './translateItems'
+import { CatalogGQL } from '../clients/catalogGQL'
 
 interface ItemMetadata {
   Items: Array<{
@@ -52,13 +53,17 @@ export const createItemsToReturn = async ({
   orderItems,
   sellers,
   itemMetadata,
+  catalog,
   catalogGQL,
+  isSellerPortal
 }: {
   itemsToReturn: ReturnRequestItemInput[]
   orderItems: OrderItemDetailResponse[]
   sellers: SellerDetail[]
   itemMetadata: ItemMetadata
+  catalog: Catalog
   catalogGQL: CatalogGQL
+  isSellerPortal: boolean
 }): Promise<ReturnRequestItem[]> => {
   return Promise.all(
     itemsToReturn.map(async (item) => {
@@ -98,7 +103,7 @@ export const createItemsToReturn = async ({
         sellingPrice,
         tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
         name,
-        localizedName: await translateItemName(id, name, catalogGQL),
+        localizedName: await translateItemName(id, name, catalog,catalogGQL, isSellerPortal),
         imageUrl: productImage,
         unitMultiplier,
         sellerId: seller,

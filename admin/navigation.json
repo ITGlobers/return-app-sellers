@@ -1,11 +1,35 @@
-{
-  "section": "orders",
-  "titleId": "admin/return-app.navigation.label",
-  "path": "/admin/seller/returns/requests",
-  "subSectionItems": [
-    {
-      "labelId": "navigation.labelRequests",
-      "path": "/admin/seller/returns/requests"
-    }
-  ]
-}
+[
+  {
+    "section": "orders",
+    "titleId": "admin/return-app.navigation.label",
+    "path": "/admin/seller/returns/requests",
+    "subSectionItems": [
+      {
+        "labelId": "navigation.labelRequests",
+        "path": "/admin/seller/returns/requests"
+      }
+    ]
+  },
+  {
+    "section": "orders",
+    "subSection": "Return",
+    "adminVersion": 4,
+    "titleId": "admin/return-app.navigation.label",
+    "path": "/admin/seller/returns/requests",
+    "subSectionItems": [
+      {
+        "labelId": "navigation.labelRequests",
+        "path": "/admin/seller/returns/requests"
+      },
+      {
+        "labelId": "navigation.labelGoodwill",
+        "path": "/admin/seller/goodwill"
+      },
+      {
+        "labelId": "navigation.labelInvoice",
+        "path": "/admin/seller/return"
+      }
+    ]
+  }
+  
+]

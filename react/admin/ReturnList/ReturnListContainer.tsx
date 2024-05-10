@@ -21,7 +21,7 @@ export const AdminReturnList = () => {
             variation="primary"
             size="small"
             // disabled={loading}
-            href="orders"
+            href="/admin/app/seller/returns/orders"
           >
             <FormattedMessage id="admin/return-app.return-request-list.page-header.cta" />
           </Button>

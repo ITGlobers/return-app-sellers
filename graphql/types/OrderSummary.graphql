@@ -1,0 +1,38 @@
+type Transactions {
+  id: String
+  amount: Int
+  type: String
+  status: String
+  metadata: String
+}
+
+type AmountAvailablePerItem {
+  amount: Int
+  quantity: Int
+}
+
+type Items {
+  id: String
+  unitCost: Int
+  quantity: Int
+  amount: Int
+  amountAvailablePerItem: AmountAvailablePerItem
+  name: String
+  image: String
+}
+
+type AmountsAvailable {
+  order: Int
+  shipping: Int
+}
+
+type OrderSummary {
+  id: String
+  orderId: String
+  orderValue: Int
+  shippingValue: Int
+  transactions: [Transactions]
+  items: [Items]
+  amountsAvailable: AmountsAvailable
+  creationDate: String
+}

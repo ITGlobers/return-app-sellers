@@ -1,87 +1,49 @@
 import type { IOContext, InstanceOptions } from '@vtex/api'
-import { JanusClient } from '@vtex/api'
+import { ExternalClient, ResolverError } from '@vtex/api'
+import { BASE_URL } from '../utils/constants'
 
-interface GiftCardInfo {
-  relationName: string
-  caption: string
-  expiringDate: string
-  balance: number
-  profileId: string
-  discount: boolean
+const baseURL = '/_v/returns/seller/giftcard'
+
+interface Auth {
+  parentAccountName?: string
+  appKey?: string
+  appToken?: string
 }
-
-interface CreateGiftCardResponse {
-  id: string
-  redemptionToken: string
-  redemptionCode: string
-  balance: number
-  relationName: string
-  emissionDate: string
-  expiringDate: string
-  caption: string
-  discount: boolean
-  transaction: {
-    href: string
-  }
-}
-
-interface UpdateGiftCard {
-  description: string
-  value: number
-}
-
-interface GiftCardCreditResponse {
-  id: string
-  redemptionCode: string
-  balance: number
-  emissionDate: string
-  expiringDate: string
-  multipleCredits: boolean
-  multipleRedemptions: boolean
-  restrictedToOwner: boolean
-  statusId: number
-}
-
-interface GiftCardResponse {
-  id: string
-  redemptionCode: string
-  redemptionToken: string
-  balance: number
-  emissionDate: string
-  expiringDate: string
-  discount: boolean
-  transaction: {
-    href: string
-  }
-}
-
-export class GiftCard extends JanusClient {
+export class GiftCard extends ExternalClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
-    super(ctx, {
-      ...options,
-      headers: {
-        VtexIdClientAutCookie: ctx.adminUserAuthToken ?? ctx.authToken,
-      },
-    })
+    super('', ctx, options)
   }
 
-  public createGiftCard = async (giftCardInfo: GiftCardInfo) =>
-    this.http.post<CreateGiftCardResponse>('/api/giftcards', giftCardInfo, {
-      metric: 'giftcard-create',
-    })
+  public async createGiftCard(props: {
+    parentAccountName: string
+    requestCreate: any
+    auth: Auth
+  }): Promise<any | undefined> {
+    const { requestCreate, parentAccountName } = props
 
-  public updateGiftCard = async (
-    giftCardId: string,
-    giftCardInfo: UpdateGiftCard
-  ) =>
-    this.http.post<GiftCardCreditResponse>(
-      `/api/gift-card-system/pvt/giftCards/${giftCardId}/credit`,
-      giftCardInfo,
-      { metric: 'giftcard-update' }
-    )
+    try {
+      const response = await this.http.post(
+        this.routes.createGiftcard(parentAccountName),
+        requestCreate,
+        {
+          headers: {
+            Authorization: `Bearer ${this.context.authToken}`,
+          },
+        }
+      )
 
-  public getGiftCard = async (giftCardId: string) =>
-    this.http.get<GiftCardResponse>(`/api/giftcards/${giftCardId}`, {
-      metric: 'giftcard-get',
-    })
+      return response
+    } catch (error) {
+      throw new ResolverError('Error saveReturnSettings')
+    }
+  }
+
+  private get routes() {
+    return {
+      createGiftcard: (parentAccountName: string) =>
+        `${BASE_URL}${ parentAccountName }/${
+          this.context.workspace
+        }${baseURL}`,
+    }
+  }
 }

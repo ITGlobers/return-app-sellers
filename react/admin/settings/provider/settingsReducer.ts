@@ -1,15 +1,13 @@
-import type {
-  CustomReturnReason,
-  PaymentOptions,
-  ReturnAppSettings,
-  ReturnOption,
-} from 'obidev.obi-return-app-sellers'
+import { CustomReturnReason, PaymentOptions, ReturnAppSettings, ReturnAppSettingsInput, ReturnOption } from "../../../../typings/ReturnAppSettings"
 
-export const initialSettingsState: ReturnAppSettings = {
+
+export const initialSettingsState: ReturnAppSettingsInput = {
   id: '' ,
   maxDays: 0,
+  enableStatusSelection: true,
   excludedCategories: [],
   termsUrl: '',
+  orderStatus: '',
   paymentOptions: {
     enablePaymentMethodSelection: false,
     allowedPaymentTypes: {
@@ -31,6 +29,13 @@ export const maxDaysAction = (maxDays: number) => {
   return {
     type: 'updateMaxDays' as const,
     payload: maxDays,
+  }
+}
+
+export const orderStatusAction = (orderStatus: string) => {
+  return {
+    type: 'updateOrderStatus' as const,
+    payload: orderStatus,
   }
 }
 
@@ -80,6 +85,7 @@ export const initialStateAction = (initialState: ReturnAppSettings) => {
 
 export type Actions =
   | ReturnType<typeof maxDaysAction>
+  | ReturnType<typeof orderStatusAction>
   | ReturnType<typeof excludedCategoriesAction>
   | ReturnType<typeof termsUrlAction>
   | ReturnType<typeof paymentOptionsAction>
@@ -93,6 +99,13 @@ export const settingsReducer = (state: ReturnAppSettings, action: Actions) => {
       return {
         ...state,
         maxDays: action.payload,
+      }
+    }
+
+    case 'updateOrderStatus': {
+      return {
+        ...state,
+        orderStatus: action.payload,
       }
     }
 

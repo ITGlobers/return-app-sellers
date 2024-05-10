@@ -1,0 +1,15 @@
+{
+  "return-app.return-order-details.button.next.invoice": "Retoure erstellen",
+  "return-app.return-order-details.table-header.quantity-to-invoice": " Anzahl",
+  "return-app.goodwill-order-details.page-input-amount.description": "Verfügbarer Betrag:",
+  "return-app.return-order-details.dropdown-reasons.placeholder.select-reason": "Retouregrund auswählen",
+  "return-app.invoice-order-details.page-header-shipping": "Versandkosten",
+  "return-app.invoice-order-details.page-header-shipping.subtitle": "OPTIONAL: Geben Sie einen Betrag für eine Versandkosten-Erstattung ein",
+  "return-app.return-goodwill-item-unit-cost": "Stückkosten:",
+  "return-app.return-goodwill-item-amount": "Betrag:",
+  "return-app.return-request-list.table-filters.clear-filters": "FILTER ENTFERNEN",
+  "return-app.goodwill-order-details.page-amount-compensated": "Rückerstattungsbetrag:",
+  "return-app.return-request-list.table-filters.toDate": "Bis Datum",
+  "return-app.request-return-order-list.table-header.select-order": "Wählen Sie diesen Auftrag"
+}
+

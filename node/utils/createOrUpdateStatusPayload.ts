@@ -1,10 +1,6 @@
 import { ResolverError } from '@vtex/api'
-import type {
-  Maybe,
-  ReturnRequest,
-  ReturnRequestCommentInput,
-  Status,
-} from 'obidev.obi-return-app-sellers'
+import { Maybe, ReturnRequest, ReturnRequestCommentInput, Status } from '../../typings/ReturnRequest'
+
 
 export const createOrUpdateStatusPayload = ({
   refundStatusData,
