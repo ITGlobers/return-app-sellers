@@ -56,7 +56,7 @@ const TableHeaderRenderer = (
 }
 
 export const ItemsListInvoice = (props: Props) => {
-  const { items, creationDate, isAdmin , orderId , invoiceRequest , shipping } = props
+  const { items, creationDate, isAdmin , invoiceRequest , shipping } = props
 
 
   const {
@@ -93,8 +93,6 @@ export const ItemsListInvoice = (props: Props) => {
             shipping={shipping}
             item={item}
             creationDate={creationDate}
-            isAdmin
-            orderId = {orderId}
             invoiceRequest= {invoiceRequest}
           />
         ))}

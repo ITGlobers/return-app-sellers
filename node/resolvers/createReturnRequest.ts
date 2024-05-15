@@ -8,6 +8,7 @@ export const createReturnRequest = async (
   ctx: Context
 ) => {
   const { returnRequest } = args
+  if (!ctx.state.logs) ctx.state.logs = []
   ctx.state.logs.push({
     message: 'Request received',
     middleware: 'Resolver create Return Request',

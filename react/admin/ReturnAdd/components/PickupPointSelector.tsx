@@ -11,7 +11,6 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { PickupPoint , NearPickupPointQueryResponse, QueryNearestPickupPointsArgs} from '../../../../typings/PickupPoint'
 interface Props {
   geoCoordinates: GeoCoordinates
-  isAdmin: boolean
 }
 
 interface PickupPointsDropdownOptions {

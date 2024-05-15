@@ -45,19 +45,19 @@ export const InvoiceDetails = (props: any & Props) => {
 
   const invoiceKey = JSON.parse(invoiceRequest.invoiceKey)
   const [shippingCost, setShippingCost] = useState<number>(0);
-  const [shippingMessage, setShippingMessageError] = useState<boolean>(false);
-  const [invoiceNumberRequired, setInvoiceNumberRequiredError] = useState<boolean>(invoiceRequest?.invoiceNumber ? false : true);
-  const [preRefund, setPrerefund] = useState<boolean>(invoiceKey.preRefund);
-  const [button, setButtonDisabled] = useState<boolean>(true);
+  const [shippingMessageError, setShippingMessageError] = useState<boolean>(false);
+  const [invoiceNumberRequiredError, setInvoiceNumberRequiredError] = useState<boolean>(invoiceRequest?.invoiceNumber ? false : true);
+  const [preRefund, setPreRefund] = useState<boolean>(invoiceKey.preRefund);
+  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 
 
   const setButton = () => {
     let disabled = false;
 
-    if (invoiceNumberRequired || !invoiceRequest.items.length) {
+    if (invoiceNumberRequiredError || !invoiceRequest.items.length) {
       disabled = true;
     } else {
-        if(shippingMessage){
+        if(shippingMessageError){
           disabled = true;
         }else{
           const updatedItems = items
@@ -140,7 +140,7 @@ export const InvoiceDetails = (props: any & Props) => {
         type: 'updateInvoiceKey',
         payload:JSON.stringify({ preRefund: checked }),
       })
-      setPrerefund(checked)
+      setPreRefund(checked)
     }
 
   return (
@@ -148,7 +148,7 @@ export const InvoiceDetails = (props: any & Props) => {
     <div className={`${handles.returnDetailsContainer} mb5`}>
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button
-          disabled={ button }
+          disabled={ buttonDisabled }
 
           onClick={handleFieldsValidation}
         >
@@ -225,7 +225,7 @@ export const InvoiceDetails = (props: any & Props) => {
             id="return-app.goodwill-order-details.page-input-amount.description" 
           />
           {getCurrency(amountsAvailable.shipping)}
-          {shippingMessage  ? (
+          {shippingMessageError  ? (
             <CustomMessage
               status="error"
               message={
@@ -267,7 +267,7 @@ export const InvoiceDetails = (props: any & Props) => {
               name="invoiceNumber"
               onChange={handleInvoiceNumberChange}
             />
-            {invoiceNumberRequired  ? (
+            {invoiceNumberRequiredError  ? (
             <CustomMessage
               status="error"
               message={

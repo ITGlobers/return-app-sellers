@@ -6,7 +6,6 @@ import { PickupReturnDataInput } from '../../../../typings/ReturnRequest'
 
 interface Props {
   pickupReturnData: PickupReturnDataInput
-  isAdmin: boolean
 }
 
 const CSS_HANDLES = [

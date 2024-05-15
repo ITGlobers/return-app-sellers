@@ -121,7 +121,6 @@ export const ItemsList = (props: Props) => {
             key={item.id}
             itemToReturn={item}
             creationDate={creationDate}
-            isAdmin
           />
         ))}
       </tbody>

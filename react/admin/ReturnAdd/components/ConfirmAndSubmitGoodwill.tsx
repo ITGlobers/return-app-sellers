@@ -6,7 +6,6 @@ import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 import { Card, Button, Alert} from 'vtex.styleguide'
 
-import type { Page } from '../CreateReturnRequest'
 import CREATE_GOODWILL from '../../graphql/createGoodwill.gql'
 import { OrderSummary } from '../../../../typings/Summary'
 import { GoodwillCreated, MutationCreateGoodwillArgs } from '../../../../typings/GoodwillRequest'
@@ -15,7 +14,6 @@ import { getCurrency } from '../../utils/constants'
 import { OrderSummaryState } from '../../provider/OrderToGoodwillReducer'
 
 interface Props {
-  onPageChange: (page: Page) => void
   data: OrderSummary | undefined
   goodwillRequest: OrderSummaryState
 }
@@ -133,7 +131,6 @@ export const ConfirmAndSubmitGoodwill = ({data , goodwillRequest}: Props) => {
                 <GoodwillInformationTable
                 items={data?.items}
                 selectedItems={goodwillRequest.items}
-                isAdmin
                 />      
                 ): null
               }

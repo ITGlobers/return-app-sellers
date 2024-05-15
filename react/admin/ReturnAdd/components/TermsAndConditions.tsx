@@ -14,7 +14,6 @@ const CSS_HANDLES = [
 ] as const
 
 type Props = {
-  isAdmin: boolean
   setIsChecked: React.Dispatch<React.SetStateAction<boolean>>
 }
 

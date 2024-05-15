@@ -7,6 +7,7 @@ export const createInvoiceRequest = async (
   ctx: Context
 ): Promise<any> => {
   const { orderId, invoiceRequest } = args
+  if (!ctx.state.logs) ctx.state.logs = []
   ctx.state.logs.push({
     message: 'Request received',
     middleware: 'Resolver create Invoice',

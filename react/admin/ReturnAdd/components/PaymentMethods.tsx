@@ -15,7 +15,6 @@ import { RefundPaymentDataInput, RefundPaymentMethod } from '../../../../typings
 
 interface Props {
   canRefundCard: boolean,
-  isAdmin: boolean
 }
 
 type PaymentMethodsOptions = {

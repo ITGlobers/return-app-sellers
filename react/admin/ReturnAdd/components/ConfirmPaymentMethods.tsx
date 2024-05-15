@@ -8,7 +8,6 @@ import { defaultPaymentMethodsMessages } from '../../utils/defaultPaymentMethods
 
 interface Props {
   refundPaymentData: RefundPaymentDataInput
-  isAdmin: boolean
 }
 
 const CSS_HANDLES = [

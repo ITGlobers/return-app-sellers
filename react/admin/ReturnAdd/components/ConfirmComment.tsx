@@ -4,7 +4,6 @@ import { useRuntime } from 'vtex.render-runtime'
 
 interface Props {
   userComment?: string | null
-  isAdmin?: boolean
 }
 
 export const ConfirmComment = ({ userComment}: Props) => {

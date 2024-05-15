@@ -8,8 +8,7 @@ import {
   OrderSummaryState,
 } from './OrderToGoodwillReducer'
 
-import { ErrorsValidation } from '../utils/validateNewGoodwillFields'
-import { validateNewGoodwillRequestFields } from '../utils/validateNewGoodwillFields'
+import { ErrorsValidation, validateNewGoodwillRequestFields } from '../utils/validateNewGoodwillFields'
 
 interface OrderToGoodwillContextInterface {
   goodwillRequest: OrderSummaryState

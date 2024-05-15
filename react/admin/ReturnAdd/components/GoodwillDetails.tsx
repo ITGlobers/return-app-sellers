@@ -47,38 +47,33 @@ export const GoodwillDetails = (props: any & Props) => {
     handleDescriptionShipping();
   }, [goodwillRequest]);
 
-  const [shippingMessage, setShippingMessageError] = useState<boolean>(false);
-  const [descriptionRequired, setDescriptionRequiredError] = useState<boolean>(false);
-  const [creditIdRequired, setCreditIdRequiredError] = useState<boolean>(goodwillRequest.goodwillCreditId ? false : true);
-  const [button, setButtonDisabled] = useState<boolean>(true);
+  const [shippingMessageError, setShippingMessageError] = useState<boolean>(false);
+  const [descriptionRequiredError, setDescriptionRequiredError] = useState<boolean>(false);
+  const [creditIdRequiredError, setCreditIdRequiredError] = useState<boolean>(goodwillRequest.goodwillCreditId ? false : true);
+  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 
 
   const setButton = () => {
     let disabled = false;
 
-    if (creditIdRequired || (!goodwillRequest.items.length && (!goodwillRequest.shippingCost || !goodwillRequest.reason))) {
+    if (creditIdRequiredError || (!goodwillRequest.items.length && (!goodwillRequest.shippingCost || !goodwillRequest.reason))) {
       disabled = true;
-    } else {
-      if((goodwillRequest.shippingCost && !goodwillRequest.reason)){
+    } else if((goodwillRequest.shippingCost && !goodwillRequest.reason)){
         disabled = true;
-      }else{
-        if(shippingMessage){
-          disabled = true;
-        }else{
-          const updatedItems = items
-          const description = goodwillRequest.items.some(item => !item.description);
-          const amount = goodwillRequest.items.some(item => item.amount < 0 );
-          const amountGreaterThanUpdated = goodwillRequest.items.some(item => {
-            const updatedItem = updatedItems.find(updatedItem => updatedItem.id === item.id);
-            return updatedItem && item.amount > updatedItem.amountAvailablePerItem;
-          });
-          if((description || amount || amountGreaterThanUpdated)){
-            disabled =  true
-          }
-        }
+    }else if(shippingMessageError){
+      disabled = true;
+    }else{
+      const updatedItems = items
+      const description = goodwillRequest.items.some(item => !item.description);
+      const amount = goodwillRequest.items.some(item => item.amount < 0 );
+      const amountGreaterThanUpdated = goodwillRequest.items.some(item => {
+        const updatedItem = updatedItems.find(updatedItem => updatedItem.id === item.id);
+        return updatedItem && item.amount > updatedItem.amountAvailablePerItem;
+      });
+      if((description || amount || amountGreaterThanUpdated)){
+        disabled =  true
       }
     }
-
     setButtonDisabled(disabled);
   };
 
@@ -159,7 +154,7 @@ export const GoodwillDetails = (props: any & Props) => {
     <div className={`${handles.returnDetailsContainer} mb5`}>
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button
-          disabled={ button }
+          disabled={ buttonDisabled }
 
           onClick={handleFieldsValidation}
         >
@@ -240,7 +235,7 @@ export const GoodwillDetails = (props: any & Props) => {
             id="return-app.goodwill-order-details.page-input-amount.description" 
           />
           {getCurrency(amountsAvailable.shipping)}
-          {shippingMessage  ? (
+          {shippingMessageError  ? (
             <CustomMessage
               status="error"
               message={
@@ -262,7 +257,7 @@ export const GoodwillDetails = (props: any & Props) => {
               />
             )}
           </FormattedMessage> 
-          {descriptionRequired  ? (
+          {descriptionRequiredError  ? (
             <CustomMessage
               status="error"
               message={
@@ -287,7 +282,7 @@ export const GoodwillDetails = (props: any & Props) => {
               name="creditId"
               onChange={handleCreditIdChange}
             />
-            {creditIdRequired  ? (
+            {creditIdRequiredError  ? (
             <CustomMessage
               status="error"
               message={

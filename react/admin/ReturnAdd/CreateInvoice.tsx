@@ -26,7 +26,7 @@ export const CreateInvoice = (props: any) => {
   const isAdmin = props?.page ? true : false
   
   const [page, setPage] = useState<Page>('form-details')
-  const [items, setItemsToGoodwill] = useState<ItemToGoodwill[]>([])
+  const [items, setItems] = useState<ItemToGoodwill[]>([])
   
   const { navigate } = useRuntime()
   
@@ -80,7 +80,7 @@ export const CreateInvoice = (props: any) => {
     const { orderSummary } = data
     const ItemToGoodwill = formatItemsToGoodwill(orderSummary)
     
-    setItemsToGoodwill(ItemToGoodwill)
+    setItems(ItemToGoodwill)
 
   }, [data ])
 
@@ -126,7 +126,7 @@ export const CreateInvoice = (props: any) => {
           ) : null}
           {page === 'submit-form' ? (
             <ConfirmAndSubmitInvoice
-              onPageChange={handlePageChange} data={data?.orderSummary} invoiceRequest = {invoiceRequest} orderId={orderId} />
+              data={data?.orderSummary} invoiceRequest = {invoiceRequest} orderId={orderId} />
           ) : null}
         </OrderDetailsLoader>
       </PageBlock>

@@ -23,10 +23,10 @@ type RouteProps = RouteComponentProps<{ orderId: string }>
 export const CreateGoodwill = (props: any) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
   
-  const isAdmin = props?.page ? true : false
+  const isAdmin = !!props?.page
   
   const [page, setPage] = useState<Page>('form-details')
-  const [items, setItemsToGoodwill] = useState<ItemToGoodwill[]>([])
+  const [items, setItems] = useState<ItemToGoodwill[]>([])
   
   const { navigate } = useRuntime()
   
@@ -80,7 +80,7 @@ export const CreateGoodwill = (props: any) => {
     const { orderSummary } = data
     const ItemToGoodwill = formatItemsToGoodwill(orderSummary)
     
-    setItemsToGoodwill(ItemToGoodwill)
+    setItems(ItemToGoodwill)
 
   }, [data ])
 
@@ -124,7 +124,7 @@ export const CreateGoodwill = (props: any) => {
           ) : null}
           {page === 'submit-form' ? (
             <ConfirmAndSubmitGoodwill
-              onPageChange={handlePageChange} data={data?.orderSummary} goodwillRequest = {goodwillRequest} />
+              data={data?.orderSummary} goodwillRequest = {goodwillRequest} />
           ) : null}
         </OrderDetailsLoader>
       </PageBlock>

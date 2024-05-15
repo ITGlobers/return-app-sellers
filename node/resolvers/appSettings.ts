@@ -1,4 +1,7 @@
-import type { MutationSaveReturnAppSettingsArgs, ReturnAppSettings } from '../../typings/ReturnAppSettings'
+import type {
+  MutationSaveReturnAppSettingsArgs,
+  ReturnAppSettings,
+} from '../../typings/ReturnAppSettings'
 import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'
 
@@ -14,24 +17,23 @@ const returnAppSettings = async (
   ctx: Context
 ): Promise<ReturnAppSettings | null> => {
   const {
-    clients: { 
-      returnSettings : returnSettingsClient,
-      account : accountClient,
-      settingsAccount
+    clients: {
+      returnSettings: returnSettingsClient,
+      account: accountClient,
+      settingsAccount,
     },
   } = ctx
-
-  
   const accountInfo = await accountClient.getInfo()
 
   let appConfig: Settings = DEFAULT_SETTINGS
-  if(!accountInfo?.parentAccountName){
+  if (!accountInfo?.parentAccountName) {
     appConfig = await settingsAccount.getSettings(ctx)
   }
-  
+
   const settings = await returnSettingsClient.getReturnSettingsMket({
-    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
-    auth: appConfig
+    parentAccountName:
+      accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig,
   })
 
   if (!settings) return null
@@ -45,13 +47,14 @@ const saveReturnAppSettings = async (
   ctx: Context
 ) => {
   const {
-    clients: { 
-      returnSettings : returnSettingsClient,
-      account : accountClient,
-      settingsAccount
+    clients: {
+      returnSettings: returnSettingsClient,
+      account: accountClient,
+      settingsAccount,
     },
   } = ctx
 
+  ctx.state.logs = []
   // validate if all custom reasons have max days smaller than the general max days
   validateMaxDaysCustomReasons(
     args.settings.maxDays,
@@ -68,25 +71,25 @@ const saveReturnAppSettings = async (
 
   const accountInfo = await accountClient.getInfo()
   let appConfig: Settings = DEFAULT_SETTINGS
-  if(!accountInfo?.parentAccountName){
+  if (!accountInfo?.parentAccountName) {
     appConfig = await settingsAccount.getSettings(ctx)
   }
 
-  const parentAccountName = accountInfo?.parentAccountName || appConfig?.parentAccountName
-  
+  const parentAccountName =
+    accountInfo?.parentAccountName || appConfig?.parentAccountName
+
   const requestSettings = {
-    settings :
-    {
+    settings: {
       sellerId: accountInfo.accountName,
       parentAccount: parentAccountName,
       ...settings,
-    }
+    },
   }
 
   const payload = {
     parentAccountName,
     settings: requestSettings,
-    auth: appConfig
+    auth: appConfig,
   }
 
   await returnSettingsClient.saveReturnSettings(payload)
@@ -95,6 +98,3 @@ const saveReturnAppSettings = async (
 
 export const queries = { returnAppSettings }
 export const mutations = { saveReturnAppSettings }
-
-
-

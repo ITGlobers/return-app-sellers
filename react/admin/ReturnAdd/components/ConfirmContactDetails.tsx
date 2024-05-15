@@ -6,7 +6,6 @@ import { CustomerProfileDataInput } from '../../../../typings/ReturnRequest'
 
 interface Props {
   contactDetails: CustomerProfileDataInput
-  isAdmin: boolean
 }
 
 const CSS_HANDLES = [

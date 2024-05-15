@@ -8,11 +8,7 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 
 const CSS_HANDLES = ['userCommentDetailsContainer'] as const
 
-type Props = {
-  isAdmin: boolean
-}
-
-export const UserCommentDetails = ({  }: Props) => {
+export const UserCommentDetails = () => {
   const {
     returnRequest,
     actions: { updateReturnRequest },

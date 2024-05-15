@@ -53,7 +53,7 @@ export const CreateReturnRequest = (props: any) => {
   
   
   const [page, setPage] = useState<Page>('form-details')
-  const [items, setItemsToReturn] = useState<ItemToReturn[]>([])
+  const [items, setItems] = useState<ItemToReturn[]>([])
 
   
   const {
@@ -85,7 +85,7 @@ export const CreateReturnRequest = (props: any) => {
 
     const itemsToReturn = formatItemsToReturn(orderToReturnSummary)
 
-    setItemsToReturn(itemsToReturn)
+    setItems(itemsToReturn)
 
     const { clientProfileData, shippingData } = orderToReturnSummary
 
@@ -137,7 +137,7 @@ export const CreateReturnRequest = (props: any) => {
             </>
           ) : null}
           {page === 'submit-form' ? (
-            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} isAdmin />
+            <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />
           ) : null}
         </OrderDetailsLoader>
       </PageBlock>

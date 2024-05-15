@@ -10,9 +10,6 @@ import { OrderSummaryState } from '../../provider/OrderToGoodwillReducer'
 
 interface Props {
   item: ItemToGoodwill
-  orderId: string
-  creationDate?: string
-  isAdmin?: boolean
   goodwillRequest: OrderSummaryState
 }
 
@@ -92,11 +89,10 @@ export const ItemsDetailsGoodwill = (props: Props) => {
       }else{
         updatedItems.splice(existingIndex, 1)
       }
-    } else {
-      if(value){
-        updatedItems.push({amount: Math.round(value * 100), id, description: ''});
-      }
+    } else if(value){
+      updatedItems.push({amount: Math.round(value * 100), id, description: ''});
     }
+    
     updateGoodwillRequest({
       type: 'updateItems',
       payload: updatedItems,
@@ -116,11 +112,10 @@ export const ItemsDetailsGoodwill = (props: Props) => {
       }else{
         updatedItems.splice(existingIndex, 1)
       }
-    } else {
-      if(value){
-        updatedItems.push({amount: 0 , id, description: value});
-      }
+    } else if(value){
+      updatedItems.push({amount: 0 , id, description: value});
     }
+    
     
     updateGoodwillRequest({
       type: 'updateItems',

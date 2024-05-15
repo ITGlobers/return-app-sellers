@@ -32,7 +32,6 @@ const messages = defineMessages({
 
 interface Props {
   shippingData: ShippingData
-  isAdmin: boolean
 }
 
 const CSS_HANDLES = [
@@ -159,7 +158,7 @@ export const AddressDetails = ({ shippingData}: Props) => {
         )}
       </div>
       {isPickupPoint && geoCoordinates ? (
-        <PickupPointSelector geoCoordinates={geoCoordinates} isAdmin />
+        <PickupPointSelector geoCoordinates={geoCoordinates}  />
       ) : null}
 
       <div className={`${handles.addressInputContainer} mb4`}>

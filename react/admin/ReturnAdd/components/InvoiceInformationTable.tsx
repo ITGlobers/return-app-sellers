@@ -10,7 +10,6 @@ import { getCurrency } from '../../utils/constants'
 interface Props {
   items: ItemSummary[] | undefined
   selectedItems: Item[]
-  isAdmin: boolean
 }
 
 const CSS_HANDLES = [
@@ -63,7 +62,7 @@ export const InvoiceInformationTable = ({ items, selectedItems}: Props) => {
         {selectedItems.map(
           ({ amount, quantity , description , id}, key) => {
             if (items){
-            const existingIndex = selectedItems.findIndex(item => item.id === id);
+            const existingIndex = items.findIndex(item => item.id === id);
             const { image,  name } = items[existingIndex]
             return (
               <tr

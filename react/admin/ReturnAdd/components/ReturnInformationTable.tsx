@@ -9,7 +9,6 @@ import { defaultReturnConditionsMessages } from '../../../common/utils/defaultRe
 interface Props {
   items: ItemToReturn[]
   selectedItems: ReturnRequestItemInput[]
-  isAdmin: boolean
 }
 
 const CSS_HANDLES = [

@@ -22,7 +22,6 @@ import { MutationCreateReturnRequestArgs } from '../../../../typings/ReturnReque
 interface Props {
   onPageChange: (page: Page) => void
   items: ItemToReturn[]
-  isAdmin: boolean
 }
 
 type SubmissionStatus = 'success' | 'error' | 'idle'
@@ -110,7 +109,6 @@ export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
           <ReturnInformationTable
             items={items}
             selectedItems={returnRequestValidated.items}
-            isAdmin
           />
           <div className="mv8">
             <Card>
@@ -126,11 +124,9 @@ export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
                 >
                   <ConfirmContactDetails
                     contactDetails={returnRequestValidated.customerProfileData}
-                    isAdmin
                   />
                   <ConfirmPickupAddressDetails
                     pickupReturnData={returnRequestValidated.pickupReturnData}
-                    isAdmin
                   />
                 </section>
                 <section
@@ -142,11 +138,9 @@ export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
                 >
                   <ConfirmPaymentMethods
                     refundPaymentData={returnRequestValidated.refundPaymentData}
-                    isAdmin
                   />
                   <ConfirmComment
                     userComment={returnRequestValidated.userComment}
-                    isAdmin
                   />
                 </section>
               </div>

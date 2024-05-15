@@ -10,6 +10,7 @@ export const createGoodwillRequest = async (
   goodwill: Goodwill
 }> => {
   const { goodwillRequest } = args
+  if (!ctx.state.logs) ctx.state.logs = []
   ctx.state.logs.push({
     message: 'Request received',
     middleware: 'Resolver create Goodwill',

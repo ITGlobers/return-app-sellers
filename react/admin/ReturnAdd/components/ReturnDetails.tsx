@@ -111,8 +111,8 @@ export const ReturnDetails = (props: any & Props) => {
       </div>
       <div className="flex-ns flex-wrap flex-row">
         <ContactDetails isAdmin />
-        <AddressDetails shippingData={shippingData} isAdmin />
-        <UserCommentDetails isAdmin />
+        <AddressDetails shippingData={shippingData}  />
+        <UserCommentDetails  />
       </div>
       <div className="mv8">
         <Divider orientation="horizontal" />
@@ -122,8 +122,8 @@ export const ReturnDetails = (props: any & Props) => {
           <FormattedMessage id="return-app.return-order-details.section-payment" />
         </div>
       </div>
-      <PaymentMethods canRefundCard={canRefundCard} isAdmin />
-      <TermsAndConditions setIsChecked={setIsChecked} isAdmin />
+      <PaymentMethods canRefundCard={canRefundCard}  />
+      <TermsAndConditions setIsChecked={setIsChecked} />
       <div className="flex justify-center mt6">
         <Button
           onClick={handleFieldsValidation}

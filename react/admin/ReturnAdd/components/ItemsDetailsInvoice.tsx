@@ -10,10 +10,8 @@ import { FormattedMessage } from 'react-intl'
 
 interface Props {
   item: ItemToGoodwill
-  orderId: string
   shipping: number
   creationDate?: string
-  isAdmin?: boolean
   invoiceRequest: InvoiceState
 }
 
@@ -60,8 +58,8 @@ export const ItemsDetailsInvoice = (props: Props) => {
   const { items } = invoiceRequest
   const currentItem = items.findIndex(item => item.id === id);
 
-  const [otherReasonValue, setOtherReason] = useState<string>('');
-  const [reasonValue, setReason] = useState<string>('');
+  const [otherReasonValue, setOtherReasonValue] = useState<string>('');
+  const [reasonValue, setReasonValue] = useState<string>('');
   const [formula, setFormula] = useState<number>((invoiceRequest.items[currentItem]?.quantity * amount)-(goodwill/quantity) * invoiceRequest.items[currentItem]?.quantity)
   
 
@@ -71,8 +69,8 @@ export const ItemsDetailsInvoice = (props: Props) => {
   const handles = useCssHandles(CSS_HANDLES)
 
   const handleReasonChange = (reason: string, otherReason = '') => {
-    setOtherReason(otherReason)
-    setReason(reason)
+    setOtherReasonValue(otherReason)
+    setReasonValue(reason)
     if (existingIndex !== -1) {
       if(reason){
         updatedItems[existingIndex] = {

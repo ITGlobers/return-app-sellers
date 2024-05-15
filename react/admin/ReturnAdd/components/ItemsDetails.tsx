@@ -14,7 +14,6 @@ import { ItemCondition } from '../../../../typings/ReturnRequest'
 interface Props {
   itemToReturn: ItemToReturn
   creationDate?: string
-  isAdmin?: boolean
 }
 
 const CSS_HANDLES = [

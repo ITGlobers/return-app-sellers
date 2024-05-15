@@ -6,7 +6,6 @@ import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 import { Card, Button, Alert} from 'vtex.styleguide'
 
-import type { Page } from '../CreateReturnRequest'
 import CREATE_INVOICE from '../../graphql/createInvoice.gql'
 import { OrderSummary } from '../../../../typings/Summary'
 import { InvoiceInformationTable } from './InvoiceInformationTable'
@@ -16,7 +15,6 @@ import { InvoiceResponse, MutationCreateInvoiceArgs } from '../../../../typings/
 import { formatInvoiceRequestInput } from '../../utils/formatItemsToGoodwill'
 
 interface Props {
-  onPageChange: (page: Page) => void
   data: OrderSummary | undefined
   orderId: string
   invoiceRequest: InvoiceState
@@ -138,7 +136,6 @@ export const ConfirmAndSubmitInvoice = ({data , invoiceRequest , orderId}: Props
                 <InvoiceInformationTable
                 items={data?.items}
                 selectedItems={invoiceRequest.items}
-                isAdmin
                 />      
                 ): null
               }

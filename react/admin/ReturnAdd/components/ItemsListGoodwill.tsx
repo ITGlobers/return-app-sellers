@@ -50,7 +50,7 @@ const TableHeaderRenderer = (
 }
 
 export const ItemsListGoodwill = (props: Props) => {
-  const { items, creationDate, isAdmin , orderId , goodwillRequest } = props
+  const { items, isAdmin ,  goodwillRequest } = props
 
 
   const {
@@ -85,9 +85,6 @@ export const ItemsListGoodwill = (props: Props) => {
           <ItemsDetailsGoodwill
             key={item.id}
             item={item}
-            creationDate={creationDate}
-            isAdmin
-            orderId = {orderId}
             goodwillRequest= {goodwillRequest}
           />
         ))}
