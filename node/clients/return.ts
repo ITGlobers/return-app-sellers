@@ -25,7 +25,7 @@ export class Return extends ExternalClient {
     parentAccountName: string
     param: string[]
     auth: Auth
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { id, param, parentAccountName } = props
 
     try {
@@ -54,7 +54,7 @@ export class Return extends ExternalClient {
   public async getReturnList(props: {
     params: any
     parentAccountName: string
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { params, parentAccountName } = props
 
     try {
@@ -77,7 +77,7 @@ export class Return extends ExternalClient {
   public async getReturnById(props: {
     returnId: any
     parentAccountName: string
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { returnId, parentAccountName } = props
 
     try {
@@ -101,7 +101,7 @@ export class Return extends ExternalClient {
     updatedRequest: any
     parentAccountName: string
     auth: Auth
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { returnId, updatedRequest, parentAccountName } = props
 
     try {
@@ -126,7 +126,7 @@ export class Return extends ExternalClient {
   public async createReturn(props: {
     createRequest: any
     parentAccountName: string
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { createRequest, parentAccountName } = props
 
     try {
@@ -149,7 +149,7 @@ export class Return extends ExternalClient {
   public async exportReturn(props: {
     dateSubmitted: string
     parentAccountName: string
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { dateSubmitted, parentAccountName } = props
 
     try {

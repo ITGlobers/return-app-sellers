@@ -22,7 +22,6 @@ const createInvoiceService = async (
 
   let appConfig: Settings = DEFAULT_SETTINGS
   const accountInfo = await accountClient.getInfo()
-
   if (!accountInfo?.parentAccountName) {
     appConfig = await settingsAccount.getSettings(ctx)
   }

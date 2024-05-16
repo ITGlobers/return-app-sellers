@@ -8,7 +8,6 @@ import { ItemsDetailsInvoice } from './ItemsDetailsInvoice'
 
 interface Props {
   items: ItemToGoodwill[]
-  orderId: string
   shipping:number
   invoiceRequest: InvoiceState
   creationDate?: string

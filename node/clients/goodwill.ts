@@ -19,7 +19,7 @@ export class Goodwill extends ExternalClient {
     auth: Auth
     sellerID: string
     id?: string
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { sellerID, id, parentAccountName } = props
 
     const URI = this.routes.goodwillMket(sellerID, parentAccountName, id)

@@ -6,6 +6,32 @@ const baseURL = 'api/vlm/account'
 const routes = {
   getMket: () => `${baseURL}`,
 }
+export interface accountInfo {
+  isActive: boolean
+  id: string
+  name: string
+  accountName: string
+  lv: null
+  isOperating: boolean
+  defaultUrl: null
+  district: null
+  country: null
+  complement: null
+  companyName: string
+  cnpj: null
+  haveParentAccount: boolean
+  parentAccountId: string
+  parentAccountName: string
+  city: null
+  address: null
+  logo: null
+  hasLogo: boolean
+  number: null
+  postalCode: null
+  state: null
+  telephone: string
+  tradingName: string
+}
 
 export class Account extends JanusClient {
   constructor(ctx: IOContext, options?: InstanceOptions) {
@@ -14,7 +40,7 @@ export class Account extends JanusClient {
     })
   }
 
-  public async getInfo(vtexidclientautcookie?: any): Promise<any | undefined> {
+  public async getInfo(vtexidclientautcookie?: string): Promise<accountInfo> {
     try {
       const response = await this.http.get(routes.getMket(), {
         headers: {

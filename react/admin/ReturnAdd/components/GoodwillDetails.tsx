@@ -210,7 +210,7 @@ export const GoodwillDetails = (props: any & Props) => {
         <FormattedMessage id="return-app.goodwill-order-details.page-header.subtitle" />
       </div>
       <div className="overflow-scroll">
-        <ItemsListGoodwill items={items} creationDate={creationDate} isAdmin orderId={orderId} goodwillRequest= {goodwillRequest} />
+        <ItemsListGoodwill items={items} isAdmin goodwillRequest= {goodwillRequest} />
       </div>
       
     </div> 

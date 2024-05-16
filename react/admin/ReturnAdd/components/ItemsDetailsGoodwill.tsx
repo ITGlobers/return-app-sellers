@@ -53,8 +53,8 @@ export const ItemsDetailsGoodwill = (props: Props) => {
   
   const handles = useCssHandles(CSS_HANDLES)
   
-  const [itemMessage, setItemMessageError] = useState<boolean>(false);
-  const [descriptionRequired, setDescriptionRequiredError] = useState<boolean>(false);
+  const [itemMessageError, setItemMessageError] = useState<boolean>(false);
+  const [descriptionRequiredError, setDescriptionRequiredError] = useState<boolean>(false);
   
   const handleAmountChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -176,7 +176,7 @@ export const ItemsDetailsGoodwill = (props: Props) => {
               />
             )}
           </FormattedMessage>
-          {descriptionRequired  ? (
+          {descriptionRequiredError  ? (
           <CustomMessage
             status="error"
             message={
@@ -198,7 +198,7 @@ export const ItemsDetailsGoodwill = (props: Props) => {
             onChange={handleAmountChange}
           />
         </div>    
-        {itemMessage  ? (
+        {itemMessageError  ? (
           <CustomMessage
             status="error"
             message={

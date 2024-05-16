@@ -21,7 +21,9 @@ export const updateRequestStatusService = async (
 
   const { vtexidclientautcookie } = ctx.request.headers
 
-  const accountInfo = await accountClient.getInfo(vtexidclientautcookie)
+  const accountInfo = await accountClient.getInfo(
+    vtexidclientautcookie as string
+  )
 
   let appConfig: Settings = DEFAULT_SETTINGS
 
@@ -30,15 +32,13 @@ export const updateRequestStatusService = async (
   }
 
   try {
-    updatedRequest = await returnClient.updateReturn(
-      {
-        returnId: requestId,
-        updatedRequest: params,
-        parentAccountName:
-          accountInfo?.parentAccountName || appConfig?.parentAccountName,
-        auth: appConfig,
-      },
-    )
+    updatedRequest = await returnClient.updateReturn({
+      returnId: requestId,
+      updatedRequest: params,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      auth: appConfig,
+    })
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 

@@ -15,7 +15,7 @@ import { ExternalLogSeverity } from './errorHandler'
  * @apiBody {String} issuanceDate Date of issuance of the invoice (required).
  * @apiBody {String} invoiceNumber Invoice number (required).
  * @apiBody {Number} invoiceValue Invoice value (required).
- * @apiBody {String} [invoiceKey] Invoice key.
+ * @apiBody {String} [invoiceKey] Invoice key, send "{\"preRefund\":true or false}"
  * @apiBody {String} [invoiceUrl] Invoice URL.
  * @apiBody {String} [courier] Courier information.
  * @apiBody {String} [trackingNumber] Tracking number.
@@ -41,7 +41,7 @@ import { ExternalLogSeverity } from './errorHandler'
  *         "issuanceDate": "2024-03-04T18:25:43-05:00",
  *         "invoiceNumber": "1004003",
  *         "invoiceValue": 100000,
- *         "invoiceKey": null,
+ *         "invoiceKey": "{\"preRefund\":true}",
  *         "invoiceUrl": "link",
  *         "courier": null,
  *         "trackingNumber": null,

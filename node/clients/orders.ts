@@ -19,8 +19,8 @@ export class Order extends ExternalClient {
     body: any
     parentAccountName: string
     auth: Auth
-  }): Promise<any | undefined> {
-    const { body , parentAccountName } = props
+  }): Promise<any> {
+    const { body, parentAccountName } = props
 
     try {
       const response = await this.http.post(
@@ -44,10 +44,8 @@ export class Order extends ExternalClient {
 
   private get routes() {
     return {
-      returnList: (parentAccountName:string) =>
-        `${BASE_URL}${ parentAccountName }/${
-          this.context.workspace
-        }${baseURL}`,
+      returnList: (parentAccountName: string) =>
+        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
     }
   }
 }

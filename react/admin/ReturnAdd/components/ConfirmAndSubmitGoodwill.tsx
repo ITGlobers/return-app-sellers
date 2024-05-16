@@ -43,7 +43,7 @@ export const ConfirmAndSubmitGoodwill = ({data , goodwillRequest}: Props) => {
   const [confirmationStatus, setConfirmationStatus] =
     useState<SubmissionStatus>('idle')
 
-  const [error, setErrorMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -192,7 +192,7 @@ export const ConfirmAndSubmitGoodwill = ({data , goodwillRequest}: Props) => {
                   onClick: () => handleCreateGoodwill(),
                 }}
               >
-              <p>{error}</p>
+              <p>{errorMessage}</p>
               </Alert>
             )}
             {confirmationStatus !== 'idle' ? null : (

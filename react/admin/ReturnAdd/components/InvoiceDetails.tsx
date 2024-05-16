@@ -56,22 +56,21 @@ export const InvoiceDetails = (props: any & Props) => {
 
     if (invoiceNumberRequiredError || !invoiceRequest.items.length) {
       disabled = true;
-    } else {
-        if(shippingMessageError){
-          disabled = true;
-        }else{
-          const updatedItems = items
-          const description = invoiceRequest.items.some(item => !item.description);
-          const amount = invoiceRequest.items.some(item => item.amount < 0 );
-          const amountGreaterThanUpdated = invoiceRequest.items.some(item => {
-            const updatedItem = updatedItems.find(updatedItem => updatedItem.id === item.id);
-            return updatedItem && item.amount > updatedItem.amountAvailablePerItem;
-          });
-          if((description || amount || amountGreaterThanUpdated)){
-            disabled =  true
-          }
-        }
+    } else if(shippingMessageError){
+      disabled = true;
+    }else{
+      const updatedItems = items
+      const description = invoiceRequest.items.some(item => !item.description);
+      const amount = invoiceRequest.items.some(item => item.amount < 0 );
+      const amountGreaterThanUpdated = invoiceRequest.items.some(item => {
+        const updatedItem = updatedItems.find(updatedItem => updatedItem.id === item.id);
+        return updatedItem && item.amount > updatedItem.amountAvailablePerItem;
+      });
+      if((description || amount || amountGreaterThanUpdated)){
+        disabled =  true
+      }
     }
+    
 
     setButtonDisabled(disabled);
   };
@@ -201,7 +200,7 @@ export const InvoiceDetails = (props: any & Props) => {
         </div>
       </div>
       <div className="overflow-scroll">
-        <ItemsListInvoice items={items} creationDate={creationDate} isAdmin orderId={orderId} invoiceRequest= {invoiceRequest} shipping={shippingCost}/>
+        <ItemsListInvoice items={items} creationDate={creationDate} isAdmin invoiceRequest= {invoiceRequest} shipping={shippingCost}/>
       </div>
       
     </div> 

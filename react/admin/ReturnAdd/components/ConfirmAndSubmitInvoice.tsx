@@ -45,7 +45,7 @@ export const ConfirmAndSubmitInvoice = ({data , invoiceRequest , orderId}: Props
   const [confirmationStatus, setConfirmationStatus] =
     useState<SubmissionStatus>('idle')
 
-  const [error, setErrorMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -189,7 +189,7 @@ export const ConfirmAndSubmitInvoice = ({data , invoiceRequest , orderId}: Props
                   onClick: () => handleCreateInvoice(),
                 }}
               >
-              <p>{error}</p>
+              <p>{errorMessage}</p>
               </Alert>
             )}
             {confirmationStatus !== 'idle' ? null : (

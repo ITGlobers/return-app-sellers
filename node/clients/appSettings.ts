@@ -2,6 +2,7 @@ import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ResolverError, ExternalClient } from '@vtex/api'
 
 import { BASE_URL } from '../utils/constants'
+import { ReturnAppSettings } from '../../typings/ReturnAppSettings'
 
 const baseURL = '/_v/returns/seller/settings'
 const baseURLMket = '/_v/returns/settings'
@@ -19,7 +20,7 @@ export class ReturnSettings extends ExternalClient {
   public async getReturnSettingsMket(props: {
     parentAccountName: string
     auth: Auth
-  }): Promise<any | undefined> {
+  }): Promise<ReturnAppSettings> {
     const { parentAccountName } = props
 
     try {
@@ -29,7 +30,6 @@ export class ReturnSettings extends ExternalClient {
           Authorization: `Bearer ${this.context.authToken}`,
         },
       })
-
       return response
     } catch (error) {
       throw new ResolverError('Error getReturnSettingsMket')
@@ -39,7 +39,7 @@ export class ReturnSettings extends ExternalClient {
   public async getReturnSettings(props: {
     parentAccountName: string
     auth: Auth
-  }): Promise<any | undefined> {
+  }): Promise<ReturnAppSettings> {
     const { parentAccountName } = props
 
     try {
@@ -49,7 +49,6 @@ export class ReturnSettings extends ExternalClient {
           Authorization: `Bearer ${this.context.authToken}`,
         },
       })
-
       return response
     } catch (error) {
       throw new ResolverError('Error getReturnSettings')
@@ -60,7 +59,7 @@ export class ReturnSettings extends ExternalClient {
     parentAccountName: string
     settings: any
     auth: Auth
-  }): Promise<any | undefined> {
+  }): Promise<any> {
     const { settings, parentAccountName } = props
 
     try {

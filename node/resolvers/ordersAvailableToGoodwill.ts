@@ -91,6 +91,7 @@ export const ordersAvailableToGoodwill = async (
 
   const accountInfo = await accountClient.getInfo()
 
+  console.log('accountInfo', accountInfo)
   let appConfig: Settings = DEFAULT_SETTINGS
 
   if (!accountInfo?.parentAccountName) {

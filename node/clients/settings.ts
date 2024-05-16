@@ -21,7 +21,7 @@ export class SettingsClient extends ExternalClient {
     super('', context, options)
   }
 
-  public async getSettings(ctx: Context): Promise<any | undefined> {
+  public async getSettings(ctx: Context): Promise<any> {
     const {
       clients: { apps },
     } = ctx

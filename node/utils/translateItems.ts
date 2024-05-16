@@ -1,4 +1,3 @@
-
 import { InvoicedItem } from '../../typings/OrdertoReturn'
 import type { Catalog } from '../clients/catalog'
 import type { CatalogGQL } from '../clients/catalogGQL'
@@ -16,7 +15,7 @@ export const translateItemName = async (
   try {
     let skuName: string | undefined
 
-    if(isSellerPortal){
+    if (isSellerPortal) {
       skuName = await catalog.getSKUByID(id)
     } else {
       skuName = await catalogGQL.getSKUTranslation(id)

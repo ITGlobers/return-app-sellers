@@ -8,9 +8,7 @@ import { OrderSummaryState } from '../../provider/OrderToGoodwillReducer'
 
 interface Props {
   items: ItemToGoodwill[]
-  orderId: string
   goodwillRequest: OrderSummaryState
-  creationDate?: string
   isAdmin?: boolean
 }
 

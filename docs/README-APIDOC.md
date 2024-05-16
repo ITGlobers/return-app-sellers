@@ -232,7 +232,7 @@ POST /_v/return-app/invoice/:orderId
 | issuanceDate | `String` | <p>Date of issuance of the invoice (required).</p> |
 | invoiceNumber | `String` | <p>Invoice number (required).</p> |
 | invoiceValue | `Number` | <p>Invoice value (required).</p> |
-| invoiceKey | `String` | **optional** <p>Invoice key.</p> |
+| invoiceKey | `String` | **optional** <p>Invoice key, send &quot;{&quot;preRefund&quot;:true or false}&quot;</p> |
 | invoiceUrl | `String` | **optional** <p>Invoice URL.</p> |
 | courier | `String` | **optional** <p>Courier information.</p> |
 | trackingNumber | `String` | **optional** <p>Tracking number.</p> |
@@ -255,7 +255,7 @@ Request example:
     "issuanceDate": "2024-03-04T18:25:43-05:00",
     "invoiceNumber": "1004003",
     "invoiceValue": 100000,
-    "invoiceKey": null,
+    "invoiceKey": "{\"preRefund\":true}",
     "invoiceUrl": "link",
     "courier": null,
     "trackingNumber": null,
@@ -316,7 +316,6 @@ HTTP/1.1 400 Bad Request
     "code": "INV003",
     "message": "The amount to be returned to the item ${itemToUpdate.id} is not valid"
 }
-
 HTTP/1.1 400 Bad Request
 {
     "code": "INV004",
@@ -326,19 +325,17 @@ HTTP/1.1 400 Bad Request
 {
     "code": "INV005",
     "message": "The invoice value to be refunded is not available"
-} 
+}
 HTTP/1.1 400 Bad Request
 {
     "code": "INV006",
     "message": "The shipping value to be refunded is greater than the available"
 }
-
 HTTP/1.1 400 Bad Request
 {
     "code": "INV007",
     "message": "The field amount to item ${itemToUpdate.id} is required"
 }
-
 HTTP/1.1 400 Bad Request
 {
     "code": "INV007",
@@ -353,5 +350,11 @@ HTTP/1.1 400 Bad Request
 {
     "code": "INV009",
     "message": "The following items with id: ${itemNotAvailable} are not available to be invoiced."
+}
+HTTP/1.1 400 Bad Request
+{
+    "code": "INV010",
+    "message": "The invoice value cant be greater than order value."
+}
 ```
 
