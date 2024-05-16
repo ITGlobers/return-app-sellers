@@ -30,19 +30,27 @@ const calculateStatus = (
     }
 
     case 'packageVerified': {
-      return refundedQuantity === 0
-        ? 'denied'
-        : returnQuantity > refundedQuantity
-        ? 'partiallyApproved'
-        : 'approved'
+      let status: ItemStatus;
+      if (refundedQuantity === 0) {
+        status = 'denied';
+      } else if (returnQuantity > refundedQuantity) {
+        status = 'partiallyApproved';
+      } else {
+        status = 'approved';
+      }
+      return status;
     }
 
     case 'amountRefunded': {
-      return refundedQuantity === 0
-        ? 'denied'
-        : returnQuantity > refundedQuantity
-        ? 'partiallyApproved'
-        : 'approved'
+      let status: ItemStatus;
+      if (refundedQuantity === 0) {
+        status = 'denied';
+      } else if (returnQuantity > refundedQuantity) {
+        status = 'partiallyApproved';
+      } else {
+        status = 'approved';
+      }
+      return status;
     }
 
     default: {

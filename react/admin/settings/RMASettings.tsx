@@ -153,6 +153,64 @@ export const RMASettings = () => {
     setHasPaymentMethodError(false)
   }
 
+   let content: React.ReactNode = null;
+  if(error){
+    content =(
+      <EmptyState
+        title={
+          <FormattedMessage id="admin/return-app.settings.error.header" />
+        }
+      >
+        <p>
+          <FormattedMessage id="admin/return-app.settings.error.description" />
+        </p>
+      </EmptyState>
+    )
+  }else if (loading){
+    content = (
+      <Spinner />
+    ) 
+  }else{
+    content =  (
+      <>
+        {maxDaysWarning.openModal && (
+          <WarningModal
+            setWarning={setWarning}
+            customMaxDays={maxDaysWarning.customMaxDays}
+          />
+        )}
+        <form onSubmit={handleSubmit}>
+          <RequiredOptions />
+          <Divider />
+          <ExcludedCategories />
+          <Divider />
+          <PaymentOptions
+            handleOptionSelection={handleOptionSelection}
+            hasError={hasPaymentMethodError}
+            ref={paymentMethodsRef}
+          />
+          <Divider />
+          <CustomReasons />
+          <Divider />
+          <GeneralOptions />
+          <Divider />
+          <div className="flex flex-column mt6">
+            <Button
+              disabled={savingAppSettings}
+              variation="primary"
+              type="submit"
+            >
+              {savingAppSettings ? (
+                <Spinner size={20} />
+              ) : (
+                <FormattedMessage id="admin/return-app.settings.save.button" />
+              )}
+            </Button>
+          </div>
+        </form>
+      </>
+    )
+  }
   return (
     <Layout
       pageHeader={
@@ -164,57 +222,7 @@ export const RMASettings = () => {
       }
     >
       <PageBlock variation="full">
-        {error ? (
-          <EmptyState
-            title={
-              <FormattedMessage id="admin/return-app.settings.error.header" />
-            }
-          >
-            <p>
-              <FormattedMessage id="admin/return-app.settings.error.description" />
-            </p>
-          </EmptyState>
-        ) : loading ? (
-          <Spinner />
-        ) : (
-          <>
-            {maxDaysWarning.openModal && (
-              <WarningModal
-                setWarning={setWarning}
-                customMaxDays={maxDaysWarning.customMaxDays}
-              />
-            )}
-            <form onSubmit={handleSubmit}>
-              <RequiredOptions />
-              <Divider />
-              <ExcludedCategories />
-              <Divider />
-              <PaymentOptions
-                handleOptionSelection={handleOptionSelection}
-                hasError={hasPaymentMethodError}
-                ref={paymentMethodsRef}
-              />
-              <Divider />
-              <CustomReasons />
-              <Divider />
-              <GeneralOptions />
-              <Divider />
-              <div className="flex flex-column mt6">
-                <Button
-                  disabled={savingAppSettings}
-                  variation="primary"
-                  type="submit"
-                >
-                  {savingAppSettings ? (
-                    <Spinner size={20} />
-                  ) : (
-                    <FormattedMessage id="admin/return-app.settings.save.button" />
-                  )}
-                </Button>
-              </div>
-            </form>
-          </>
-        )}
+        {content}
       </PageBlock>
     </Layout>
   )

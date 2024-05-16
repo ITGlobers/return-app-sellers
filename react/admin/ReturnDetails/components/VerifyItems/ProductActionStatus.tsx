@@ -8,14 +8,21 @@ const getActionStatus = ({
   quantity,
   selectedQuantity,
 }: {
-  quantity: number
-  selectedQuantity: number
-}): ActionStatus =>
-  selectedQuantity === 0
-    ? 'deny'
-    : selectedQuantity === quantity
-    ? 'approve'
-    : 'partially-approve'
+  quantity: number;
+  selectedQuantity: number;
+}): ActionStatus => {
+  let actionStatus: ActionStatus;
+
+  if (selectedQuantity === 0) {
+    actionStatus = 'deny';
+  } else if (selectedQuantity === quantity) {
+    actionStatus = 'approve';
+  } else {
+    actionStatus = 'partially-approve';
+  }
+
+  return actionStatus;
+}
 
 export const ProductActionStatus = ({
   quantity,

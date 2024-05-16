@@ -137,6 +137,9 @@ export const ItemsDetailsGoodwill = (props: Props) => {
       setDescriptionRequiredError(false)
     }
   }  
+
+  const itemNegative = goodwillRequest.items[existingIndex]?.amount < 0 
+
   return (
     <tr className={`${handles.detailsRowContainer}`}>
       <td className={`${handles.detailsTdWrapper} pa4 pd4 w-60`}>
@@ -202,7 +205,7 @@ export const ItemsDetailsGoodwill = (props: Props) => {
           <CustomMessage
             status="error"
             message={
-              <FormattedMessage id={`return-app.return-goodwill-item-value.error${goodwillRequest.items[existingIndex]?.amount ?  goodwillRequest.items[existingIndex]?.amount < 0 ? '-negative' : '' : ''}`} />
+              <FormattedMessage id={`return-app.return-goodwill-item-value.error${itemNegative ? '-negative' : '' }`} />
             }
           />
         ) : null}

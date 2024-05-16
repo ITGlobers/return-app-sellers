@@ -2,11 +2,9 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 import { Button, Input, InputCurrency ,Toggle } from 'vtex.styleguide'
-import type { Page } from '../CreateReturnRequest'
 import { CustomMessage } from './layout/CustomMessage'
 import { getCurrency } from '../../utils/constants'
 import { useInvoiceRequest } from '../../hooks/useInvoiceRequest'
-import { InvoiceState } from '../../provider/OrderToInvoiceReducer'
 import { ItemsListInvoice } from './ItemsListInvoice'
 
 const CSS_HANDLES = [
@@ -15,15 +13,7 @@ const CSS_HANDLES = [
   'creationDateDetailsWrapper',
 ] as const
 
-
-interface Props {
-  onPageChange: (page: Page) => void
-  items: ItemToGoodwill[]
-  creationDate: string
-  invoiceRequest: InvoiceState
-}
-
-export const InvoiceDetails = (props: any & Props) => {
+export const InvoiceDetails = (props: any ) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
 
   const { onPageChange, items, creationDate , amountsAvailable, invoiceRequest } =
@@ -46,7 +36,7 @@ export const InvoiceDetails = (props: any & Props) => {
   const invoiceKey = JSON.parse(invoiceRequest.invoiceKey)
   const [shippingCost, setShippingCost] = useState<number>(0);
   const [shippingMessageError, setShippingMessageError] = useState<boolean>(false);
-  const [invoiceNumberRequiredError, setInvoiceNumberRequiredError] = useState<boolean>(invoiceRequest?.invoiceNumber ? false : true);
+  const [invoiceNumberRequiredError, setInvoiceNumberRequiredError] = useState<boolean>(!invoiceRequest?.invoiceNumber);
   const [preRefund, setPreRefund] = useState<boolean>(invoiceKey.preRefund);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 

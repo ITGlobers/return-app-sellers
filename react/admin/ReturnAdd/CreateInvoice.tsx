@@ -23,7 +23,7 @@ type RouteProps = RouteComponentProps<{ orderId: string }>
 export const CreateInvoice = (props: any) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
   
-  const isAdmin = props?.page ? true : false
+const isAdmin = !!props?.page;
   
   const [page, setPage] = useState<Page>('form-details')
   const [items, setItems] = useState<ItemToGoodwill[]>([])

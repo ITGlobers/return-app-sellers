@@ -1,7 +1,7 @@
 import { OrderDetailResponse } from '@vtex/clients'
 import { environment } from './constants'
 
-export const getItemsIds = async (ctx: Context, body: any) => {
+export const getItemsIds = async (ctx: Context, body: any): Promise<any> => {
   try {
     const {
       clients: { catalog },
@@ -30,7 +30,7 @@ export const getItemsIds = async (ctx: Context, body: any) => {
 export const getItemsToInvoice = async (
   body: any,
   order: OrderDetailResponse
-) => {
+): Promise<any> => {
   try {
     await Promise.all(
       body.items.map(async (item: any) => {

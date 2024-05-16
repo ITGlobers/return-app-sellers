@@ -99,7 +99,8 @@ export function isValidIBANNumber(input: string) {
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, '')
 
-  const code = iban.match(/^([A-Z]{2})(\d{2})([A-Z\d]+)$/)
+  const match = /^([A-Z]{2})(\d{2})([A-Z\d]+)$/.exec(iban)
+  const code = match ? match[0] : null
 
   if (!code || iban.length !== CODE_LENGTHS[code[1]]) {
     return false

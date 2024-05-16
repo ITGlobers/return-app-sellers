@@ -21,29 +21,25 @@ export class Catalog extends JanusClient {
     })
 
   public async getSKUByID(sku: string): Promise<string> {
-    try {
-      const response = await this.http.get(
-        `/api/catalog-seller-portal/products/sku-id=${sku}`,
-        {
-          metric: 'catalog-get-sku-id',
-          headers: {
-            VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
-          },
-        }
-      )
-
-      if (response?.skus.length > 0) {
-        const currentSku = response.skus.find((item: any) => item.id == sku)
-
-        if (currentSku) {
-          return currentSku?.name
-        }
+    const response = await this.http.get(
+      `/api/catalog-seller-portal/products/sku-id=${sku}`,
+      {
+        metric: 'catalog-get-sku-id',
+        headers: {
+          VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
+        },
       }
+    )
 
-      return response?.name
-    } catch (error) {
-      throw error
+    if (response?.skus.length > 0) {
+      const currentSku = response.skus.find((item: any) => item.id == sku)
+
+      if (currentSku) {
+        return currentSku?.name
+      }
     }
+
+    return response?.name
   }
 
   public getSKU = (skuId: string): Promise<any> =>

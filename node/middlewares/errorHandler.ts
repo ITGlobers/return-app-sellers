@@ -50,15 +50,13 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
       },
     })
 
-    const error = err as any
+    const parsed = err.response?.data || err?.message || err
 
-    const parsed = error.response?.data || error?.message || error
-
-    ctx.status = error.status || error.response?.status || ctx.status || 500
+    ctx.status = err.status || err.response?.status || ctx.status || 500
     ctx.body = parsed
     ctx.set('Cache-Control', 'no-cache ')
 
-    ctx.app.emit('error', error, ctx)
+    ctx.app.emit('error', err, ctx)
     if (ctx.state.logs.length === 0) return
 
     const mappedLogs = ctx.state.logs.map((log) => {

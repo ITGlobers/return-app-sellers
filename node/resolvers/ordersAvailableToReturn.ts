@@ -29,7 +29,7 @@ const createParams = ({
 }: {
   maxDays: number
   page: number
-  orderStatus?: string | any
+  orderStatus?: string
   filter?: {
     orderId: string
     sellerName: string

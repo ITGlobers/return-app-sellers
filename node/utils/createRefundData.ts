@@ -1,5 +1,9 @@
 import { UserInputError } from '@vtex/api'
-import { Maybe, RefundDataInput, ReturnRequest } from '../../typings/ReturnRequest'
+import {
+  Maybe,
+  RefundDataInput,
+  ReturnRequest,
+} from '../../typings/ReturnRequest'
 
 export const createRefundData = ({
   requestId,
@@ -15,7 +19,7 @@ export const createRefundData = ({
   const requestItemsMap = new Map<number, ReturnRequest['items'][number]>()
 
   for (const requestedItem of requestItems ?? []) {
-    requestItemsMap.set(requestedItem.orderItemIndex as number, requestedItem)
+    requestItemsMap.set(requestedItem.orderItemIndex, requestedItem)
   }
 
   const items = []
@@ -47,7 +51,7 @@ export const createRefundData = ({
     items.push({
       orderItemIndex,
       id,
-      price: (Number(sellingPrice) ?? 0) + (Number(tax) ?? 0),
+      price: (Number(sellingPrice) || 0) + (Number(tax) || 0),
       quantity: refundItem.quantity,
       restockFee: refundItem.restockFee,
     })

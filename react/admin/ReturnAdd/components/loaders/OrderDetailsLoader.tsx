@@ -17,16 +17,18 @@ interface Props {
 export const OrderDetailsLoader: FC<Props> = ({ data, children }) => {
   const { formatMessage } = useIntl()
   const { loading, error } = data
+  let content: React.ReactNode = null;
 
-  return (
-    <>
-      {!loading && !error ? (
-        children
-      ) : error ? (
-        <Alert type="error">
-          {formatMessage(parseReturnRequestError(error))}
-        </Alert>
-      ) : (
+  if (!loading && !error) {
+    content = children;
+  } else if (error) {
+    content = (
+      <Alert type="error">
+        {formatMessage(parseReturnRequestError(error))}
+      </Alert>
+    );
+  } else {
+    content = (
         <>
           <div className="mb5 w-100">
             <div className="w-100 flex flex-row-ns ba br3 b--muted-4 flex-column">
@@ -173,7 +175,11 @@ export const OrderDetailsLoader: FC<Props> = ({ data, children }) => {
             <SkeletonPiece width="20" size="4" />
           </div>
         </>
-      )}
+      )
+  }
+  return (
+    <>
+      {content}
     </>
   )
 }

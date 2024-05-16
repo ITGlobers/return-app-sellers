@@ -11,8 +11,6 @@ import { useReturnRequest } from '../../hooks/useReturnRequest'
 import { ItemsList } from './ItemsList'
 import { PaymentMethods } from './PaymentMethods'
 import { TermsAndConditions } from './TermsAndConditions'
-import type { Page } from '../CreateReturnRequest'
-import type { ShippingData } from '../../../../typings/OrdertoReturn'
 
 const CSS_HANDLES = [
   'returnDetailsContainer',
@@ -20,15 +18,7 @@ const CSS_HANDLES = [
   'creationDateDetailsWrapper',
 ] as const
 
-interface Props {
-  onPageChange: (page: Page) => void
-  items: ItemToReturn[]
-  creationDate: string
-  canRefundCard: boolean
-  shippingData: ShippingData
-}
-
-export const ReturnDetails = (props: any & Props) => {
+export const ReturnDetails = (props: any) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
 
   const { onPageChange, items, creationDate, canRefundCard, shippingData } =

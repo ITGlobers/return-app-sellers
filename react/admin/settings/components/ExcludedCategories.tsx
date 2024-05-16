@@ -45,7 +45,7 @@ const filterSearchCategories = ({
   const formattedLabels = removeExcluded.map(({ id, name }) => {
     return {
       label: `${id} - ${name}`,
-      value: id as string,
+      value: id,
     }
   })
 

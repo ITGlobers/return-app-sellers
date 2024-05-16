@@ -1,6 +1,10 @@
-import { Maybe } from "../../../typings/ReturnAppSettings"
-import { CustomerProfileDataInput, PickupReturnDataInput, RefundPaymentDataInput, ReturnRequestItemInput } from "../../../typings/ReturnRequest"
-
+import { Maybe } from '../../../typings/ReturnAppSettings'
+import {
+  CustomerProfileDataInput,
+  PickupReturnDataInput,
+  RefundPaymentDataInput,
+  ReturnRequestItemInput,
+} from '../../../typings/ReturnRequest'
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
@@ -8,14 +12,13 @@ type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 export interface OrderDetailsState {
   orderId: string
   sellerName: string
-  marketplaceOrderId?: Maybe<string> | undefined
+  marketplaceOrderId?: Maybe<string>
   items: Array<PartialBy<ReturnRequestItemInput, 'condition' | 'returnReason'>>
   customerProfileData: CustomerProfileDataInput
   pickupReturnData: PartialBy<PickupReturnDataInput, 'addressType'>
   refundPaymentData?: RefundPaymentDataInput
-  userComment?: Maybe<string> | undefined
+  userComment?: Maybe<string>
 }
-
 
 const initialPickupReturnData = {
   addressId: '',

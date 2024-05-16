@@ -55,36 +55,38 @@ export const createOrdersToReturnSummary = async (
     []
 
   try {
-    for (const returnRequest of returnRequestSameOrder?.data) {
-      const { refundData, items: rmaItems } =
-        (returnRequest as Pick<
-          ReturnRequest,
-          'items' | 'refundData' | 'refundPaymentData'
-        >) ?? {}
+    if (returnRequestSameOrder && returnRequestSameOrder.data) {
+      for (const returnRequest of returnRequestSameOrder.data) {
+        const { refundData, items: rmaItems } =
+          (returnRequest as Pick<
+            ReturnRequest,
+            'items' | 'refundData' | 'refundPaymentData'
+          >) ?? {}
 
-      const { invoiceNumber } = refundData ?? {}
+        const { invoiceNumber } = refundData ?? {}
 
-      /**
-       * Colect all invoices created by the return app.
-       * The app creates invoices type Input on object only when refunding a card.
-       * It's necessary to remove all the invoices from OMS Order object to avoid considering the items twice.
-       */
-      // Use
-      if (invoiceNumber) {
-        invoicesCreatedByReturnApp.push(invoiceNumber)
-      }
-
-      for (const item of rmaItems ?? []) {
-        const { orderItemIndex, quantity } = item
-
-        if (orderItemIndex === undefined || quantity === undefined) continue
-
-        const committedItem = {
-          itemIndex: orderItemIndex,
-          quantity,
+        /**
+         * Colect all invoices created by the return app.
+         * The app creates invoices type Input on object only when refunding a card.
+         * It's necessary to remove all the invoices from OMS Order object to avoid considering the items twice.
+         */
+        // Use
+        if (invoiceNumber) {
+          invoicesCreatedByReturnApp.push(invoiceNumber)
         }
 
-        committedItemsToReturn.push(committedItem)
+        for (const item of rmaItems ?? []) {
+          const { orderItemIndex, quantity } = item
+
+          if (orderItemIndex === undefined || quantity === undefined) continue
+
+          const committedItem = {
+            itemIndex: orderItemIndex,
+            quantity,
+          }
+
+          committedItemsToReturn.push(committedItem)
+        }
       }
     }
   } catch (error) {

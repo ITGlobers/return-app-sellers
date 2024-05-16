@@ -45,12 +45,14 @@ export const VerifyItemsPage = ({ onViewVerifyItems }: Props) => {
 
   if (!data) return null
 
+  if(!data.returnRequestDetails ) return null
+
   const {
     id: requestId,
     items = [],
     refundableAmountTotals = [],
     cultureInfoData,
-  } = data?.returnRequestDetails
+  } = data.returnRequestDetails
 
   const handleItemChanges = ({
     orderItemIndex,

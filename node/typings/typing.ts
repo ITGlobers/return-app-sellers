@@ -56,7 +56,7 @@ interface Restitutions {
 
 interface Refund {
   value: number
-  giftCardData: any | null
+  giftCardData: any
   items: RefundItem[]
 }
 

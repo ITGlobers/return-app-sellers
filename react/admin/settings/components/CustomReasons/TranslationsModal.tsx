@@ -173,6 +173,39 @@ export const TranslationsModal = ({
 
   const availableLocales = localesAvailable(data?.tenantInfo?.bindings ?? [])
 
+  let content: React.ReactNode = null;
+  if(error){
+    content = (
+      <EmptyState
+        title={
+          <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.header" />
+        }
+      >
+        <p>
+          <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.description" />
+        </p>
+      </EmptyState>
+    )
+  }else if (loading){
+    content =  (
+      <Spinner />
+    )
+  }else{
+    content = (
+      <div>
+        <Table
+          schema={tableSchema(handleTranslationInput)}
+          items={createTranslationOptions(
+            availableLocales,
+            tempTranslations
+          )}
+          fullWidth
+        />
+      </div>
+    )
+  }
+
+
   return (
     <ModalDialog
       centered
@@ -207,30 +240,7 @@ export const TranslationsModal = ({
             />
           </p>
         </div>
-        {error ? (
-          <EmptyState
-            title={
-              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.header" />
-            }
-          >
-            <p>
-              <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.error.description" />
-            </p>
-          </EmptyState>
-        ) : loading ? (
-          <Spinner />
-        ) : (
-          <div>
-            <Table
-              schema={tableSchema(handleTranslationInput)}
-              items={createTranslationOptions(
-                availableLocales,
-                tempTranslations
-              )}
-              fullWidth
-            />
-          </div>
-        )}
+        {content}
       </div>
     </ModalDialog>
   )

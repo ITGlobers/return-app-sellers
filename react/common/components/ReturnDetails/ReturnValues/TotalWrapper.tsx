@@ -20,9 +20,11 @@ export const TotalWrapper = (props: Props) => {
   const { data } = useReturnDetails()
 
   if (!data) return null
-
-  const { cultureInfoData } = data?.returnRequestDetails
-
+  
+  let cultureInfoData;
+  if (data && data.returnRequestDetails) {
+    cultureInfoData = data.returnRequestDetails.cultureInfoData;
+  }
   return (
     <div
       className={`${handles.totalWrapperContainer} flex flex-column pa4 b--muted-4 flex-auto bb bb-0-ns br-ns`}

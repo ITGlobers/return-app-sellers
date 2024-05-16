@@ -79,7 +79,6 @@ export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
       })
 
       if (errors) {
-        // TODO: handle validation errors coming from the server
         throw new Error('Error creating return request')
       }
 

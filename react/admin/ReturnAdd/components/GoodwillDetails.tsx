@@ -2,12 +2,10 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { FormattedDate, FormattedMessage } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
 import { Button, Input, InputCurrency ,Divider } from 'vtex.styleguide'
-import type { Page } from '../CreateReturnRequest'
 import { ItemsListGoodwill } from './ItemsListGoodwill'
 import { CustomMessage } from './layout/CustomMessage'
 import { getCurrency } from '../../utils/constants'
 import { useGoodwillRequest } from '../../hooks/useGoodwillRequest'
-import { OrderSummaryState } from '../../provider/OrderToGoodwillReducer'
 
 const CSS_HANDLES = [
   'returnDetailsContainer',
@@ -15,15 +13,7 @@ const CSS_HANDLES = [
   'creationDateDetailsWrapper',
 ] as const
 
-
-interface Props {
-  onPageChange: (page: Page) => void
-  items: ItemToGoodwill[]
-  creationDate: string
-  goodwillRequest: OrderSummaryState
-}
-
-export const GoodwillDetails = (props: any & Props) => {
+export const GoodwillDetails = (props: any) => {
   const orderId = props?.match?.params?.orderId || props?.params?.orderId
 
   const { onPageChange, items, creationDate , amountsAvailable, goodwillRequest } =
@@ -49,7 +39,7 @@ export const GoodwillDetails = (props: any & Props) => {
 
   const [shippingMessageError, setShippingMessageError] = useState<boolean>(false);
   const [descriptionRequiredError, setDescriptionRequiredError] = useState<boolean>(false);
-  const [creditIdRequiredError, setCreditIdRequiredError] = useState<boolean>(goodwillRequest.goodwillCreditId ? false : true);
+  const [creditIdRequiredError, setCreditIdRequiredError] = useState<boolean>(!goodwillRequest.goodwillCreditId);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 
 
@@ -149,6 +139,7 @@ export const GoodwillDetails = (props: any & Props) => {
     calculateAmountShipping(newShipping);
   }
 
+  const valueNegative = goodwillRequest.shippingCost < 0
   return (
     <>   
     <div className={`${handles.returnDetailsContainer} mb5`}>
@@ -239,7 +230,7 @@ export const GoodwillDetails = (props: any & Props) => {
             <CustomMessage
               status="error"
               message={
-              <FormattedMessage id={`return-app.return-goodwill-shipping-value.error${goodwillRequest.shippingCost !== undefined ? (goodwillRequest.shippingCost < 0 ? '-negative' : '') : ''}`} />
+              <FormattedMessage id={`return-app.return-goodwill-shipping-value.error${valueNegative ? '-negative' : ''}`} />
               }
             />
           ) : null}

@@ -1,5 +1,5 @@
 import type { ShippingDetail } from '@vtex/clients'
-import { ShippingData  } from '../../typings/OrdertoReturn'
+import { ShippingData } from '../../typings/OrdertoReturn'
 
 export const transformShippingData = (
   shippingData: ShippingDetail
@@ -11,7 +11,6 @@ export const transformShippingData = (
   /**
    * Order has type pickup for pickup orders.
    * Orders delivered into the customer address has type `residential`
-   * TODO: Map other address types
    */
   const addressType =
     address.addressType === 'pickup' ? 'PICKUP_POINT' : 'CUSTOMER_ADDRESS'
