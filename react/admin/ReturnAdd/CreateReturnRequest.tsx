@@ -122,19 +122,17 @@ const isAdmin = !!props?.page;
         <PageHeader {...createPageHeaderProps(page, navigate, isAdmin)} />
         <OrderDetailsLoader data={{ loading, error }}>
           {page === 'form-details' && data ? (
-            <>
-              <ReturnDetails
-                {...props}
-                onPageChange={handlePageChange}
-                items={items}
-                creationDate={data.orderToReturnSummary.creationDate}
-                canRefundCard={
-                  data?.orderToReturnSummary.paymentData.canRefundCard
-                }
-                shippingData={data.orderToReturnSummary.shippingData}
-                isAdmin
-              />
-            </>
+            <ReturnDetails
+              {...props}
+              onPageChange={handlePageChange}
+              items={items}
+              creationDate={data.orderToReturnSummary.creationDate}
+              canRefundCard={
+                data?.orderToReturnSummary.paymentData.canRefundCard
+              }
+              shippingData={data.orderToReturnSummary.shippingData}
+              isAdmin
+            />
           ) : null}
           {page === 'submit-form' ? (
             <ConfirmAndSubmit onPageChange={handlePageChange} items={items} />

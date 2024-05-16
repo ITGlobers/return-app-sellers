@@ -6,7 +6,7 @@ const baseURL = 'api/vlm/account'
 const routes = {
   getMket: () => `${baseURL}`,
 }
-export interface accountInfo {
+export interface AccountInfo {
   isActive: boolean
   id: string
   name: string
@@ -40,7 +40,7 @@ export class Account extends JanusClient {
     })
   }
 
-  public async getInfo(vtexidclientautcookie?: string): Promise<accountInfo> {
+  public async getInfo(vtexidclientautcookie?: string): Promise<AccountInfo> {
     try {
       const response = await this.http.get(routes.getMket(), {
         headers: {

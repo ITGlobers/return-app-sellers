@@ -65,7 +65,7 @@ export const RMASettings = () => {
     actions: { handleSaveAppSettings, dispatch },
   } = useSettings()
 
-  const [maxDaysWarning, setWarning] = useState<ModalWarningState>({
+  const [maxDaysWarning, setMaxDaysWarning] = useState<ModalWarningState>({
     openModal: false,
     customMaxDays: 0,
     attemptNewSave: false,
@@ -80,7 +80,7 @@ export const RMASettings = () => {
 
     handleSaveAppSettings()
 
-    setWarning({
+    setMaxDaysWarning({
       ...maxDaysWarning,
       attemptNewSave: false,
     })
@@ -97,7 +97,7 @@ export const RMASettings = () => {
     )
 
     if (maxCustomOptionsDays && maxCustomOptionsDays < maxDays) {
-      setWarning({
+      setMaxDaysWarning({
         ...maxDaysWarning,
         openModal: true,
         customMaxDays: maxCustomOptionsDays,
@@ -175,7 +175,7 @@ export const RMASettings = () => {
       <>
         {maxDaysWarning.openModal && (
           <WarningModal
-            setWarning={setWarning}
+            setWarning={setMaxDaysWarning}
             customMaxDays={maxDaysWarning.customMaxDays}
           />
         )}

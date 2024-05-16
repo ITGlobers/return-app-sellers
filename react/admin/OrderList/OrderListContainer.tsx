@@ -73,7 +73,6 @@ export const OrderListContainer = () => {
     <Layout
     fullWidth
     pageHeader={
-       <>
         <PageHeader
         title={
           <FormattedMessage id="return-app.request-return.orders.header" />
@@ -92,7 +91,6 @@ export const OrderListContainer = () => {
         }
       >
       </PageHeader>
-     </>
     }
     > 
 

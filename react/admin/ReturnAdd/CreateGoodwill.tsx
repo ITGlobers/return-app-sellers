@@ -111,16 +111,14 @@ export const CreateGoodwill = (props: any) => {
         <PageHeader {...createPageHeaderProps(page, navigate, isAdmin)} />
         <OrderDetailsLoader data={{ loading, error }}>
           {page === 'form-details' && data ? (
-            <>
-              <GoodwillDetails
-                {...props}
-                onPageChange={handlePageChange}
-                items={items}
-                creationDate={data.orderSummary.creationDate}
-                amountsAvailable = {data.orderSummary.amountsAvailable}
-                goodwillRequest = {goodwillRequest} 
-              />
-            </>
+            <GoodwillDetails
+              {...props}
+              onPageChange={handlePageChange}
+              items={items}
+              creationDate={data.orderSummary.creationDate}
+              amountsAvailable = {data.orderSummary.amountsAvailable}
+              goodwillRequest = {goodwillRequest} 
+            />
           ) : null}
           {page === 'submit-form' ? (
             <ConfirmAndSubmitGoodwill

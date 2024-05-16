@@ -113,16 +113,14 @@ const isAdmin = !!props?.page;
         <PageHeader {...createPageHeaderProps(page, navigate, isAdmin)} />
         <OrderDetailsLoader data={{ loading, error }}>
           {page === 'form-details' && data ? (
-            <>
-              <InvoiceDetails
-                {...props}
-                onPageChange={handlePageChange}
-                items={items}
-                creationDate={data.orderSummary.creationDate}
-                amountsAvailable = {data.orderSummary.amountsAvailable}
-                invoiceRequest = {invoiceRequest} 
-              />
-            </>
+            <InvoiceDetails
+              {...props}
+              onPageChange={handlePageChange}
+              items={items}
+              creationDate={data.orderSummary.creationDate}
+              amountsAvailable = {data.orderSummary.amountsAvailable}
+              invoiceRequest = {invoiceRequest} 
+            />
           ) : null}
           {page === 'submit-form' ? (
             <ConfirmAndSubmitInvoice
