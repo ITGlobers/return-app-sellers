@@ -1,5 +1,5 @@
 import type { FC, ReactElement } from 'react'
-import React, { createContext, useState, useCallback, useEffect } from 'react'
+import React, { createContext, useState, useCallback, useEffect, useMemo } from 'react'
 import { Alert } from 'vtex.styleguide'
 
 type AlertStatus = 'success' | 'error'
@@ -16,10 +16,7 @@ export const AlertProvider: FC = ({ children }) => {
   const [alertStatus, setAlertStatus] = useState<AlertStatus | ''>('')
   const [message, setMessage] = useState<string | ReactElement>('')
 
-  const openAlert = (
-    status: AlertStatus,
-    alertMessage: string | ReactElement
-  ) => {
+  const openAlert = (status: AlertStatus, alertMessage: string | ReactElement) => {
     setAlertStatus(status)
     setMessage(alertMessage)
   }
@@ -41,14 +38,13 @@ export const AlertProvider: FC = ({ children }) => {
     }
   }, [handleClose, alertStatus])
 
+  const contextValue = useMemo(() => ({ openAlert }), [])
+
   return (
-    <AlertContext.Provider value={{ openAlert }}>
+    <AlertContext.Provider value={contextValue}>
       {alertStatus ? (
         <div className="w-100 fixed z-max overflow-hidden">
-          <div
-            className="mt7"
-            style={{ maxWidth: '520px', margin: '2rem auto' }}
-          >
+          <div className="mt7" style={{ maxWidth: '520px', margin: '2rem auto' }}>
             <Alert type={alertStatus} onClose={handleClose}>
               {message}
             </Alert>

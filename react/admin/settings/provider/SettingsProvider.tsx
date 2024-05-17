@@ -1,9 +1,8 @@
 import type { ApolloError } from 'apollo-client'
 import type { FC, Dispatch } from 'react'
-import React, { createContext, useReducer, useEffect } from 'react'
+import React, { createContext, useReducer, useEffect, useMemo } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-
 import APP_SETTINGS from '../graphql/getAppSettings.gql'
 import SAVE_APP_SETTINGS from '../graphql/saveAppSettings.gql'
 import { useAlert } from '../../hooks/userAlert'
@@ -31,12 +30,9 @@ export const SettingsProvider: FC = ({ children }) => {
     settingsReducer,
     initialSettingsState
   )
-
   const { openAlert } = useAlert()
-
   const { data, loading, error } =
     useQuery<{ returnAppSettings: ReturnAppSettings }>(APP_SETTINGS)
-
   const [saveAppSettings, { loading: savingAppSettings }] = useMutation<
     { saveReturnAppSettings: boolean },
     { settings: ReturnAppSettingsInput }
@@ -54,9 +50,7 @@ export const SettingsProvider: FC = ({ children }) => {
   const handleSaveAppSettings = async () => {
     try {
       const { paymentOptions } = appSettings
-
       const { automaticallyRefundPaymentMethod } = paymentOptions
-
       const adjustedPaymentOptions = paymentOptions.enablePaymentMethodSelection
         ? paymentOptions
         : {
@@ -65,17 +59,14 @@ export const SettingsProvider: FC = ({ children }) => {
               automaticallyRefundPaymentMethod
             ),
           }
-
       const { data: mutationResult, errors } = await saveAppSettings({
         variables: {
           settings: { ...appSettings, paymentOptions: adjustedPaymentOptions },
         },
       })
-
       if (errors) {
         throw new Error('Error saving app settings')
       }
-
       if (mutationResult?.saveReturnAppSettings) {
         openAlert(
           'success',
@@ -90,16 +81,16 @@ export const SettingsProvider: FC = ({ children }) => {
     }
   }
 
+  const contextValue = useMemo(() => ({
+    appSettings,
+    loading,
+    error,
+    savingAppSettings,
+    actions: { dispatch, handleSaveAppSettings },
+  }), [appSettings, loading, error, savingAppSettings])
+
   return (
-    <SettingsContext.Provider
-      value={{
-        appSettings,
-        loading,
-        error,
-        savingAppSettings,
-        actions: { dispatch, handleSaveAppSettings },
-      }}
-    >
+    <SettingsContext.Provider value={contextValue}>
       {children}
     </SettingsContext.Provider>
   )

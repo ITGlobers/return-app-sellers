@@ -1,7 +1,6 @@
 import type { Dispatch, FC, SetStateAction } from 'react'
-import React, { createContext, useReducer, useState } from 'react'
+import React, { createContext, useReducer, useState, useMemo } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
-
 import type {
   ReturnRequestActions,
   OrderDetailsState,
@@ -25,25 +24,23 @@ interface OrderToReturnContextInterface {
   }
 }
 
-export const OrderToReturnContext =
-  createContext<OrderToReturnContextInterface>(
-    {} as OrderToReturnContextInterface
-  )
+export const OrderToReturnContext = createContext<OrderToReturnContextInterface>(
+  {} as OrderToReturnContextInterface
+)
 
 export const OrderToReturnProvider: FC = ({ children }) => {
   const [returnRequest, updateReturnRequest] = useReducer(
     orderToReturnReducer,
     initialOrderToReturnState
   )
-
+  
   const { data: storeSettings } = useStoreSettings()
   const { options } = storeSettings ?? {}
   const { enableSelectItemCondition } = options ?? {}
 
   const [termsAndConditions, setTermsAndConditions] = useState(false)
-
   const [inputErrors, setInputErrors] = useState<ErrorsValidation[]>([])
-
+  
   const {
     culture: { locale },
   } = useRuntime()
@@ -54,30 +51,27 @@ export const OrderToReturnProvider: FC = ({ children }) => {
       locale,
       considerItemCondition: Boolean(enableSelectItemCondition),
     })
-
     if (errors) {
       setInputErrors(errors)
-
       return false
     }
-
     setInputErrors([])
-
     return true
   }
+
+  const contextValue = useMemo(() => ({
+    returnRequest,
+    inputErrors,
+    termsAndConditions,
+    actions: {
+      updateReturnRequest,
+      areFieldsValid,
+      toogleTermsAndConditions: setTermsAndConditions,
+    },
+  }), [returnRequest, inputErrors, termsAndConditions])
+
   return (
-    <OrderToReturnContext.Provider
-      value={{
-        returnRequest,
-        inputErrors,
-        termsAndConditions,
-        actions: {
-          updateReturnRequest,
-          areFieldsValid,
-          toogleTermsAndConditions: setTermsAndConditions,
-        },
-      }}
-    >
+    <OrderToReturnContext.Provider value={contextValue}>
       {children}
     </OrderToReturnContext.Provider>
   )

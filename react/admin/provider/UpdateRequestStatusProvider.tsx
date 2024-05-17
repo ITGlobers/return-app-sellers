@@ -1,10 +1,8 @@
 import type { FC } from 'react'
-import React, { createContext } from 'react'
+import React, { createContext, useMemo } from 'react'
 import type { ParamsUpdateReturnRequestStatus, RefundDataInput, ReturnRequestCommentInput, ReturnRequestResponse, Status } from '../../../typings/ReturnRequest'
-
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-
 import UPDATE_RETURN_STATUS from '../graphql/updateReturnRequestStatus.gql'
 import { useAlert } from '../hooks/userAlert'
 import { useReturnDetails } from '../../common/hooks/useReturnDetails'
@@ -29,7 +27,6 @@ export const UpdateRequestStatusContext = createContext<UpdateRequestInterface>(
 export const UpdateRequestStatusProvider: FC = ({ children }) => {
   const { openAlert } = useAlert()
   const { _handleUpdateQuery } = useReturnDetails()
-
   const [updateReturnStatus, { loading: submitting }] = useMutation<
     {
       updateReturnRequestStatus: ReturnRequestResponse
@@ -39,7 +36,6 @@ export const UpdateRequestStatusProvider: FC = ({ children }) => {
 
   const handleStatusUpdate = async (args: HandleStatusUpdateArgs) => {
     const { id, status, comment, cleanUp, refundData } = args
-
     try {
       const { errors, data: mutationData } = await updateReturnStatus({
         variables: {
@@ -49,16 +45,13 @@ export const UpdateRequestStatusProvider: FC = ({ children }) => {
           ...(refundData ? { refundData } : {}),
         },
       })
-
       if (errors) {
         throw new Error('Error updating return request status')
       }
-
       openAlert(
         'success',
         <FormattedMessage id="admin/return-app.return-request-details.update-status.alert.success" />
       )
-
       cleanUp?.()
       if (!mutationData) return
       _handleUpdateQuery(mutationData.updateReturnRequestStatus)
@@ -70,10 +63,13 @@ export const UpdateRequestStatusProvider: FC = ({ children }) => {
     }
   }
 
+  const contextValue = useMemo(() => ({
+    handleStatusUpdate,
+    submitting,
+  }), [handleStatusUpdate, submitting])
+
   return (
-    <UpdateRequestStatusContext.Provider
-      value={{ handleStatusUpdate, submitting }}
-    >
+    <UpdateRequestStatusContext.Provider value={contextValue}>
       {children}
     </UpdateRequestStatusContext.Provider>
   )
