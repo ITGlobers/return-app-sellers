@@ -11,11 +11,10 @@ export const getItemsIds = async (ctx: Context, body: any): Promise<any> => {
       body.items.map(async (item: any) => {
         try {
           const response = await catalog.getSKU(item.id)
-          const AlternateIdValues = response.AlternateIdValues.find(
+          const alternateIdValues = response.AlternateIdValues.find(
             (value: any) => value.includes(environment)
           )
-
-          const id = AlternateIdValues?.split('-')[1]
+          const id = alternateIdValues?.split('-')[1]
           if (id) {
             item.id = id
           }
@@ -47,7 +46,6 @@ export const getItemsToInvoice = async (
         } else {
           const refId = `${environment}-${item.id}`
           const alternateItem = order.items.find((item) => item.refId === refId)
-
           if (alternateItem) {
             return { ...item, id: alternateItem.id }
           } else {

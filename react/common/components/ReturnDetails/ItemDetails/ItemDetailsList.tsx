@@ -1,10 +1,8 @@
 import React from 'react'
 import { Table } from 'vtex.styleguide'
-
 import { useCssHandles } from 'vtex.css-handles'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl } from 'react-intl'
-
 import { useReturnDetails } from '../../../hooks/useReturnDetails'
 import { itemDetailsSchema } from './itemDetailsSchema'
 import { Maybe, RefundData, ReturnRequestItem, Status } from '../../../../../typings/ReturnRequest'
@@ -24,39 +22,15 @@ const calculateStatus = (
   returnQuantity: number,
   refundedQuantity: number
 ): ItemStatus => {
-  switch (status) {
-    case 'denied': {
-      return 'denied'
-    }
-
-    case 'packageVerified': {
-      let status: ItemStatus;
-      if (refundedQuantity === 0) {
-        status = 'denied';
-      } else if (returnQuantity > refundedQuantity) {
-        status = 'partiallyApproved';
-      } else {
-        status = 'approved';
-      }
-      return status;
-    }
-
-    case 'amountRefunded': {
-      let status: ItemStatus;
-      if (refundedQuantity === 0) {
-        status = 'denied';
-      } else if (returnQuantity > refundedQuantity) {
-        status = 'partiallyApproved';
-      } else {
-        status = 'approved';
-      }
-      return status;
-    }
-
-    default: {
-      return 'new'
-    }
+  if (status === 'denied') {
+    return 'denied'
   }
+
+  let statusResult: ItemStatus = 'new'
+  if (refundedQuantity > 0) {
+    statusResult = returnQuantity > refundedQuantity ? 'partiallyApproved' : 'approved'
+  }
+  return statusResult
 }
 
 const getItemVerificationStatus = (
@@ -65,24 +39,20 @@ const getItemVerificationStatus = (
   status: Status
 ) => {
   const refundItemsMap = new Map<number, number>()
-
   for (const item of refundData?.items ?? []) {
     refundItemsMap.set(item.orderItemIndex, item.quantity)
   }
 
   const itemVerificationStatusMap = new Map<number, ItemStatusInterface>()
-
   for (const item of items) {
     const { quantity } = item
     const quantityRefunded = refundItemsMap.get(item.orderItemIndex) ?? 0
-
     itemVerificationStatusMap.set(item.orderItemIndex, {
       status: calculateStatus(status, quantity, quantityRefunded),
       quantity,
       quantityRefunded,
     })
   }
-
   return itemVerificationStatusMap
 }
 
@@ -90,21 +60,12 @@ export const ItemDetailsList = () => {
   const handles = useCssHandles(CSS_HANDLES)
   const { formatMessage } = useIntl()
   const { data } = useReturnDetails()
-  const {
-    hints: { phone },
-  } = useRuntime()
+  const { hints: { phone } } = useRuntime()
 
   if (!data) return null
 
-  const { items, status, refundData, cultureInfoData } =
-    data.returnRequestDetails
-
-  const itemsVerificationStatus = getItemVerificationStatus(
-    items,
-    refundData,
-    status
-  )
-
+  const { items, status, refundData, cultureInfoData } = data.returnRequestDetails
+  const itemsVerificationStatus = getItemVerificationStatus(items, refundData, status)
   const { currencyCode } = cultureInfoData
 
   return (
