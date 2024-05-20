@@ -24,10 +24,10 @@ export const createReturnRequestService = async (
       return: returnRequestClient,
       order: orderRequestClient,
       returnSettings,
-      account :accountClient,
+      account: accountClient,
       catalog,
       catalogGQL,
-      settingsAccount
+      settingsAccount,
     },
     state: { userProfile, appkey },
     vtex: { logger },
@@ -78,25 +78,27 @@ export const createReturnRequestService = async (
   let appConfig: Settings = DEFAULT_SETTINGS
   let isSellerPortal: boolean = false
 
-  if(!accountInfo?.parentAccountName){
+  if (!accountInfo?.parentAccountName) {
     isSellerPortal = true
     appConfig = await settingsAccount.getSettings(ctx)
   }
 
   const body = {
-    "fields":    ['id'] ,
-    "filter": `orderId=${marketplaceOrderId}`
+    fields: ['id'],
+    filter: `orderId=${marketplaceOrderId}`,
   }
 
   const searchRMAPromise = await orderRequestClient.getOrdersList({
     body,
-    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
-    auth: appConfig
+    parentAccountName:
+      accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig,
   })
 
   const settingsPromise = returnSettings.getReturnSettingsMket({
-    parentAccountName: accountInfo?.parentAccountName || appConfig.parentAccountName,
-    auth: appConfig
+    parentAccountName:
+      accountInfo?.parentAccountName || appConfig.parentAccountName,
+    auth: appConfig,
   })
 
   // If order doesn't exist, it throws an error and stop the process.
@@ -133,7 +135,7 @@ export const createReturnRequestService = async (
     customReturnReasons,
     paymentOptions,
     options: settingsOptions,
-    orderStatus
+    orderStatus,
   } = settings
   /*
     isUserAllowed({
@@ -146,7 +148,7 @@ export const createReturnRequestService = async (
     creationDate,
     maxDays,
     status,
-    orderStatus
+    orderStatus,
   })
 
   // Validate if all items are available to be returned
@@ -156,7 +158,9 @@ export const createReturnRequestService = async (
     orderRequestClient,
     catalog,
     catalogGQL,
-    accountInfo: isSellerPortal ? {...appConfig, isSellerPortal: true} : {...accountInfo, isSellerPortal: false}
+    accountInfo: isSellerPortal
+      ? { ...appConfig, isSellerPortal: true }
+      : { ...accountInfo, isSellerPortal: false },
   })
 
   // Validate maxDays for custom reasons.
@@ -185,7 +189,7 @@ export const createReturnRequestService = async (
     itemMetadata,
     catalog,
     catalogGQL,
-    isSellerPortal
+    isSellerPortal,
   })
   const refundableAmountTotals = createRefundableTotals(
     itemsToReturn,
@@ -244,56 +248,58 @@ export const createReturnRequestService = async (
       : null
 
   try {
-    const request = 
-      {
-        sellerName: accountInfo.accountName,
-        orderId : marketplaceOrderId,
-        refundableAmount,
-        sequenceNumber,
-        status: 'new',
-        refundableAmountTotals,
-        customerProfileData: {
-          userId: clientProfileData.userProfileId,
-          name: customerProfileData.name,
-          email: customerEmail,
-          phoneNumber: customerProfileData.phoneNumber,
+    const request = {
+      sellerName: accountInfo.accountName,
+      orderId: marketplaceOrderId,
+      refundableAmount,
+      sequenceNumber,
+      status: 'new',
+      refundableAmountTotals,
+      customerProfileData: {
+        userId: clientProfileData.userProfileId,
+        name: customerProfileData.name,
+        email: customerEmail,
+        phoneNumber: customerProfileData.phoneNumber,
+      },
+      pickupReturnData,
+      refundPaymentData: {
+        ...refundPaymentDataResult,
+        automaticallyRefundPaymentMethod: createInvoiceTypeInput,
+      },
+      items: itemsToReturn,
+      dateSubmitted: requestDate,
+      refundData: null,
+      refundStatusData: [
+        {
+          status: 'new',
+          submittedBy,
+          createdAt: requestDate,
+          comments: userCommentData,
         },
-        pickupReturnData,
-        refundPaymentData: {
-          ...refundPaymentDataResult,
-          automaticallyRefundPaymentMethod: createInvoiceTypeInput,
-        },
-        items: itemsToReturn,
-        dateSubmitted: requestDate,
-        refundData: null,
-        refundStatusData: [
-          {
-            status: 'new',
-            submittedBy,
-            createdAt: requestDate,
-            comments: userCommentData,
-          },
-        ],
-        cultureInfoData: {
-          currencyCode,
-          locale,
-        },
-        logisticsInfo: {
-          currier: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.deliveryCompany)?.join(','),
-          sla: shippingData?.logisticsInfo.map((logisticInfo: any) => logisticInfo?.selectedSla)?.join(',')
-        }
-      }
+      ],
+      cultureInfoData: {
+        currencyCode,
+        locale,
+      },
+      logisticsInfo: {
+        currier: shippingData?.logisticsInfo
+          .map((logisticInfo: any) => logisticInfo?.deliveryCompany)
+          ?.join(','),
+        sla: shippingData?.logisticsInfo
+          .map((logisticInfo: any) => logisticInfo?.selectedSla)
+          ?.join(','),
+      },
+    }
 
-  
-  const payload = {
-    createRequest: request,
-    parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
-  }
-  
-  const rmaDocument = await returnRequestClient.createReturn(payload)
-  
-  return { returnRequestId: rmaDocument.returnRequestId }
+    const payload = {
+      createRequest: request,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
+    }
 
+    const rmaDocument = await returnRequestClient.createReturn(payload)
+
+    return { returnRequestId: rmaDocument.returnRequestId }
   } catch (error) {
     const mdValidationErrors = error?.response?.data?.errors[0]?.errors
 
@@ -310,5 +316,4 @@ export const createReturnRequestService = async (
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
   }
-  
 }

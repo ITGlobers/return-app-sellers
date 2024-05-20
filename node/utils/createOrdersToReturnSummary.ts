@@ -55,7 +55,7 @@ export const createOrdersToReturnSummary = async (
     []
 
   try {
-    if (returnRequestSameOrder.data) {
+    if (returnRequestSameOrder && returnRequestSameOrder.data) {
       for (const returnRequest of returnRequestSameOrder.data) {
         const { refundData, items: rmaItems } =
           (returnRequest as Pick<

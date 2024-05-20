@@ -1,5 +1,4 @@
 import { ResolverError } from '@vtex/api'
-
 import type {
   OrdersToReturnList,
   OrderToReturnSummary,
@@ -12,15 +11,15 @@ import { DEFAULT_SETTINGS } from '../clients/settings'
 
 const ONE_MINUTE = 60 * 1000
 
-function pacer(callsPerMinute: number) {
-  return new Promise((resolve) => {
+async function pacer(callsPerMinute: number) {
+  return new Promise<void>((resolve) => {
     setTimeout(() => {
-      resolve('done')
+      resolve()
     }, ONE_MINUTE / callsPerMinute)
   })
 }
 
-const createParams = ({
+function createParams({
   maxDays,
   page = 1,
   enableStatusSelection,
@@ -36,12 +35,10 @@ const createParams = ({
     createdIn: { from: string; to: string }
   }
   enableStatusSelection: boolean | undefined | null
-}) => {
+}) {
   let query = ''
-
   const currentDate = getCurrentDate()
-
-  let creationDate = `creationDate:[${substractDays(
+  const creationDate = `creationDate:[${substractDays(
     currentDate,
     maxDays || 0
   )} TO ${currentDate}]`
@@ -49,21 +46,27 @@ const createParams = ({
   if (filter) {
     const { createdIn, orderId } = filter
     query = orderId || ''
-
-    creationDate = createdIn
-      ? `creationDate:[${createdIn.from} TO ${createdIn.to}]`
-      : creationDate
-  }
-
-  if (orderStatus === 'partial-invoiced') {
-    return {
-      orderBy: 'creationDate,desc' as const,
-      f_status: 'invoiced,payment-approved,handling',
-      page,
-      per_page: 20 as const,
-      f_creationDate: creationDate,
-      q: query,
-    }
+    return createdIn
+      ? {
+          orderBy: 'creationDate,desc' as const,
+          f_status: enableStatusSelection
+            ? STATUS_INVOICED
+            : `${STATUS_INVOICED},${STATUS_PAYMENT_APPROVE}`,
+          f_creationDate: `creationDate:[${createdIn.from} TO ${createdIn.to}]`,
+          page,
+          per_page: 10 as const,
+          q: query,
+        }
+      : {
+          orderBy: 'creationDate,desc' as const,
+          f_status: enableStatusSelection
+            ? STATUS_INVOICED
+            : `${STATUS_INVOICED},${STATUS_PAYMENT_APPROVE}`,
+          f_creationDate: creationDate,
+          page,
+          per_page: 10 as const,
+          q: query,
+        }
   }
 
   return {
@@ -100,7 +103,6 @@ export const ordersAvailableToReturn = async (
   const { page, storeUserEmail, filter } = args
 
   const accountInfo = await accountClient.getInfo()
-
   let appConfig: Settings = DEFAULT_SETTINGS
 
   if (!accountInfo?.parentAccountName) {
@@ -121,86 +123,27 @@ export const ordersAvailableToReturn = async (
     settings
 
   const { email } = userProfile ?? {}
-
   const userEmail = storeUserEmail ?? email
 
   if (!userEmail) {
     throw new ResolverError('Missing user email', 400)
   }
 
-  // Fetch order associated to the user email
+  // Fetch orders associated with the user email
   const { list, paging } = await oms.listOrdersWithParams(
     createParams({ maxDays, page, filter, orderStatus, enableStatusSelection })
   )
 
-  const orderListPromises = []
-
-  for (const order of list) {
-    // Fetch order details to get items and packages
-    const orderPromise = oms.order(order.orderId)
-
-    orderListPromises.push(orderPromise)
-
-    // eslint-disable-next-line no-await-in-loop
+  const orderListPromises: Promise<any>[] = list.map(async (order) => {
     await pacer(2000)
-  }
+    return oms.order(order.orderId)
+  })
 
   const orders = await Promise.all(orderListPromises)
 
-  const orderSummaryPromises: Array<Promise<OrderToReturnSummary>> = []
-
-  for (const order of orders) {
-    if (orderStatus === 'partial-invoiced' && order.status !== 'invoiced') {
-      const currentDate = getCurrentDate()
-      const startDate = substractDays(currentDate, maxDays || 0)
-      const endDate = currentDate
-
-      const deliveredDate = order.packageAttachment.packages.filter(
-        (item: any) => {
-          if (item?.courierStatus?.deliveredDate || item?.issuanceDate) {
-            return item
-          }
-        }
-      )
-
-      if (deliveredDate.length > 0) {
-        const haspackage = deliveredDate.map((delivered: any) => {
-          const currentDeliveredDate =
-            delivered?.courierStatus?.deliveredDate || delivered?.issuanceDate
-
-          if (
-            currentDeliveredDate &&
-            currentDeliveredDate >= startDate &&
-            currentDeliveredDate <= endDate
-          ) {
-            return delivered
-          }
-        })
-
-        if (haspackage.length > 0) {
-          const orderToReturnSummary = createOrdersToReturnSummary(
-            order,
-            userEmail,
-            accountInfo?.parentAccountName
-              ? { ...accountInfo, isSellerPortal: false }
-              : {
-                  ...appConfig,
-                  isSellerPortal: true,
-                  accountName: accountInfo.accountName,
-                },
-            {
-              excludedCategories,
-              orderRequestClient,
-              catalog,
-              catalogGQL,
-            }
-          )
-
-          orderSummaryPromises.push(orderToReturnSummary)
-        }
-      }
-    } else {
-      const orderToReturnSummary = createOrdersToReturnSummary(
+  const orderSummaryPromises: Promise<OrderToReturnSummary>[] = orders.map(
+    (order) =>
+      createOrdersToReturnSummary(
         order,
         userEmail,
         accountInfo?.parentAccountName
@@ -217,10 +160,7 @@ export const ordersAvailableToReturn = async (
           catalogGQL,
         }
       )
-
-      orderSummaryPromises.push(orderToReturnSummary)
-    }
-  }
+  )
 
   const orderList = await Promise.all(orderSummaryPromises)
 
@@ -228,7 +168,7 @@ export const ordersAvailableToReturn = async (
     list: orderList,
     paging: {
       ...paging,
-      perPage: orderList?.length || 0,
+      perPage: orderList.length || 0,
     },
   }
 }

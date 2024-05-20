@@ -1,11 +1,9 @@
 import { ResolverError, UserInputError } from '@vtex/api'
-
 import { createOrdersToReturnSummary } from '../utils/createOrdersToReturnSummary'
 import { isUserAllowed } from '../utils/isUserAllowed'
 import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import type { OrderToReturnSummary } from '../../typings/OrdertoReturn'
-import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'
 
 export const orderToReturnSummary = async (
@@ -30,12 +28,9 @@ export const orderToReturnSummary = async (
   } = ctx
 
   const accountInfo = await accountClient.getInfo()
-
-  let appConfig: Settings = DEFAULT_SETTINGS
-
-  if (!accountInfo?.parentAccountName) {
-    appConfig = await settingsAccount.getSettings(ctx)
-  }
+  const appConfig = accountInfo?.parentAccountName
+    ? DEFAULT_SETTINGS
+    : await settingsAccount.getSettings(ctx)
 
   const settings = await returnSettings.getReturnSettingsMket({
     parentAccountName:
@@ -47,30 +42,23 @@ export const orderToReturnSummary = async (
     throw new ResolverError('Return App settings is not configured', 500)
   }
 
-  const { maxDays, excludedCategories, orderStatus } = settings
-
-  // For requests where orderId is an empty string
   if (!orderId) {
     throw new UserInputError('Order ID is missing')
   }
 
   const order = await oms.order(orderId)
-
   const { creationDate, clientProfileData, status } = order
-
-  let userEmail = ''
 
   isUserAllowed({
     requesterUser: userProfile,
     clientProfile: clientProfileData,
     appkey,
   })
-
   canOrderBeReturned({
     creationDate,
-    maxDays,
+    maxDays: settings.maxDays,
     status,
-    orderStatus,
+    orderStatus: settings.orderStatus,
   })
 
   if (userProfile?.role === 'admin') {
@@ -82,16 +70,13 @@ export const orderToReturnSummary = async (
       )
 
       if (profileUnmask?.[0]?.document?.email) {
-        const currenProfile = profileUnmask?.[0]?.document
-
-        userEmail = currenProfile.email
-
+        const currentProfile = profileUnmask?.[0]?.document
         order.clientProfileData = {
           ...order.clientProfileData,
-          email: userEmail,
-          firstName: currenProfile?.firstName,
-          lastName: currenProfile?.lastName,
-          phone: currenProfile?.homePhone,
+          email: currentProfile.email,
+          firstName: currentProfile?.firstName,
+          lastName: currentProfile?.lastName,
+          phone: currentProfile?.homePhone,
         }
       } else {
         const response = await profile.searchEmailByUserId(
@@ -101,16 +86,13 @@ export const orderToReturnSummary = async (
         )
 
         if (response.length > 0) {
-          const currenProfile = response?.[0]
-
-          userEmail = currenProfile?.email
-
+          const currentProfile = response?.[0]
           order.clientProfileData = {
             ...order.clientProfileData,
-            email: userEmail,
-            firstName: currenProfile?.email?.firstName,
-            lastName: currenProfile?.email?.lastName,
-            phone: currenProfile?.email?.phone,
+            email: currentProfile?.email,
+            firstName: currentProfile?.email?.firstName,
+            lastName: currentProfile?.email?.lastName,
+            phone: currentProfile?.email?.phone,
           }
         }
       }
@@ -125,7 +107,6 @@ export const orderToReturnSummary = async (
 
       if (addressUnmask?.[0]?.document) {
         const address = addressUnmask?.[0]?.document
-
         order.shippingData.address = {
           ...order.shippingData.address,
           receiverName: address.receiverName,
@@ -161,7 +142,7 @@ export const orderToReturnSummary = async (
           accountName: accountInfo.accountName,
         },
     {
-      excludedCategories,
+      excludedCategories: settings.excludedCategories,
       orderRequestClient,
       catalog,
       catalogGQL,

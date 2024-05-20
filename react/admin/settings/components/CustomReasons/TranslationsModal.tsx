@@ -73,6 +73,16 @@ const tableSchema = (
   },
 })
 
+const TranslationMessage = ({ reason }: { reason: string | undefined }) => (
+  <FormattedMessage
+    id="admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
+    values={{
+      reason,
+      b: (chunks: ReactElement) => <b>{chunks}</b>,
+    }}
+  />
+)
+
 interface TranslationsModalProps {
   isOpen: boolean
   onClose: () => void
@@ -183,16 +193,6 @@ export const TranslationsModal = ({
       </div>
     )
   }
-
-  const TranslationMessage = ({ reason }: { reason: string | undefined }) => (
-    <FormattedMessage
-      id="admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
-      values={{
-        reason,
-        b: (chunks: ReactElement) => <b>{chunks}</b>,
-      }}
-    />
-  )
 
   return (
     <ModalDialog
