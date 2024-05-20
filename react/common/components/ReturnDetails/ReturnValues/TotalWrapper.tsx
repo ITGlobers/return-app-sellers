@@ -22,7 +22,7 @@ export const TotalWrapper = (props: Props) => {
   if (!data) return null
   
   let cultureInfoData;
-  if (data && data.returnRequestDetails) {
+  if (data.returnRequestDetails) {
     cultureInfoData = data.returnRequestDetails.cultureInfoData;
   }
   return (

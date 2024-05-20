@@ -1,10 +1,9 @@
 import type { FC } from 'react'
-import React, { createContext } from 'react'
+import React, { createContext, useMemo } from 'react'
 import type { ApolloError } from 'apollo-client'
 import { useQuery } from 'react-apollo'
-
 import GET_REQUEST_DETAILS from '../graphql/getRequestDetails.gql'
-import { QueryReturnRequestArgs, ReturnRequestResponse } from '../../../typings/ReturnRequest'
+import type { QueryReturnRequestArgs, ReturnRequestResponse } from '../../../typings/ReturnRequest'
 
 interface ReturnDetailsSetupInterface {
   data?: { returnRequestDetails: ReturnRequestResponse }
@@ -41,15 +40,15 @@ export const ReturnDetailsProvider: FC<CustomRouteProps> = ({
     }))
   }
 
+  const contextValue = useMemo(() => ({
+    data,
+    loading,
+    error,
+    _handleUpdateQuery,
+  }), [data, loading, error, _handleUpdateQuery])
+
   return (
-    <ReturnDetailsContext.Provider
-      value={{
-        data,
-        loading,
-        error,
-        _handleUpdateQuery,
-      }}
-    >
+    <ReturnDetailsContext.Provider value={contextValue}>
       {children}
     </ReturnDetailsContext.Provider>
   )

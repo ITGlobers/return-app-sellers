@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import {
   ButtonWithIcon,
@@ -8,7 +8,6 @@ import {
   ModalDialog,
 } from 'vtex.styleguide'
 import { CustomReturnReason } from '../../../../../typings/ReturnAppSettings'
-
 import { useSettings } from '../../hooks/useSettings'
 import { CustomReasonModal } from './CustomReasonModal'
 import { TranslationsModal } from './TranslationsModal'
@@ -46,83 +45,77 @@ export type CustomReasonWithIndex = ReturnType<
   typeof addIndexToCustomReason
 >[number]
 
-interface RowData {
-  rowData: CustomReasonWithIndex
-}
-
-const lineActions = ({
+const createLineActions = ({
   handleDeleteCustomReason,
   handleEditCustomReason,
   handleOpenTranslations,
-}: LineActionsArgs) => {
-  return [
-    {
-      label: () => 'Edit',
-      onClick: ({ rowData }: RowData) => {
-        handleEditCustomReason(rowData)
-      },
+}: LineActionsArgs) => [
+  {
+    label: () => 'Edit',
+    onClick: ({ rowData }: { rowData: CustomReasonWithIndex }) => {
+      handleEditCustomReason(rowData)
     },
-    {
-      label: () => 'Delete',
-      isDangerous: true,
-      onClick: ({ rowData }: RowData) => {
-        handleDeleteCustomReason(rowData.index)
-      },
+  },
+  {
+    label: () => 'Delete',
+    isDangerous: true,
+    onClick: ({ rowData }: { rowData: CustomReasonWithIndex }) => {
+      handleDeleteCustomReason(rowData.index)
     },
-    {
-      label: () => 'Translations',
-      onClick: ({ rowData }: RowData) => {
-        handleOpenTranslations(rowData)
-      },
+  },
+  {
+    label: () => 'Translations',
+    onClick: ({ rowData }: { rowData: CustomReasonWithIndex }) => {
+      handleOpenTranslations(rowData)
     },
-  ]
-}
+  },
+]
 
 export const CustomReasons = () => {
-  const [modalOpen, setModalOpen] = useState<
-    'add' | 'edit' | 'translations' | ''
-  >('')
-
+  const [modalOpen, setModalOpen] = useState<'add' | 'edit' | 'translations' | ''>('')
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null)
-  const [customReasonToEdit, setCustomReasonToEdit] =
-    useState<CustomReasonWithIndex | null>(null)
-
+  const [customReasonToEdit, setCustomReasonToEdit] = useState<CustomReasonWithIndex | null>(null)
+  
   const {
     appSettings: { customReturnReasons },
     actions: { dispatch },
   } = useSettings()
 
-  const handleDeleteCustomReason = (reasonIndex: number) => {
+  const handleDeleteCustomReason = useCallback((reasonIndex: number) => {
     setIndexToDelete(reasonIndex)
-  }
+  }, [])
 
-  const handleEditCustomReason = (customReason: CustomReasonWithIndex) => {
+  const handleEditCustomReason = useCallback((customReason: CustomReasonWithIndex) => {
     setCustomReasonToEdit(customReason)
     setModalOpen('edit')
-  }
+  }, [])
 
-  const handleOpenTranslations = (customReason: CustomReasonWithIndex) => {
+  const handleOpenTranslations = useCallback((customReason: CustomReasonWithIndex) => {
     setCustomReasonToEdit(customReason)
     setModalOpen('translations')
-  }
+  }, [])
 
-  const handleStateCleanup = () => {
+  const handleStateCleanup = useCallback(() => {
     setCustomReasonToEdit(null)
     setModalOpen('')
-  }
+  }, [])
 
   const confirmDelete = () => {
     const newCustomReturnReasons = customReturnReasons?.filter(
       (_, i) => i !== indexToDelete
     )
-
     setIndexToDelete(null)
-
     dispatch({
       type: 'updateCustomReturnReasons',
       payload: newCustomReturnReasons ?? [],
     })
   }
+
+  const lineActions = createLineActions({
+    handleDeleteCustomReason,
+    handleEditCustomReason,
+    handleOpenTranslations,
+  })
 
   return (
     <section>
@@ -143,13 +136,8 @@ export const CustomReasons = () => {
         <Table
           fullWidth
           schema={tableSchema}
-          // Add index to custom reasons so it can be used on edit and delete operations
           items={addIndexToCustomReason(customReturnReasons)}
-          lineActions={lineActions({
-            handleDeleteCustomReason,
-            handleEditCustomReason,
-            handleOpenTranslations,
-          })}
+          lineActions={lineActions}
           emptyStateLabel={
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.empty-custom-reasons" />
           }
@@ -171,8 +159,7 @@ export const CustomReasons = () => {
         onClose={handleStateCleanup}
         customReasonOnFocus={customReasonToEdit}
       />
-      {/* Modal to confirm delete operation. It has to check === null because indexToDelete can be zero */}
-      {indexToDelete === null ? null : (
+      {indexToDelete !== null && (
         <ModalDialog
           centered
           isOpen={indexToDelete !== null}
@@ -196,7 +183,6 @@ export const CustomReasons = () => {
               id="admin/return-app.settings.section.custom-reasons.modal.delete.custom-reason.message"
               values={{
                 reason: customReturnReasons?.[indexToDelete]?.reason,
-                // eslint-disable-next-line react/display-name
                 b: (chunks: ReactElement) => <b>{chunks}</b>,
               }}
             />

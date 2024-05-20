@@ -23,12 +23,10 @@ export const getItemsIds = async (ctx: Context, body: any): Promise<any> => {
         }
       })
     )
-
-    return body
   } catch (error) {
     console.error('Unexpected error:', error)
-    return body
   }
+  return body
 }
 
 export const getItemsToInvoice = async (

@@ -55,8 +55,8 @@ export const handleRefund = async ({
     try {
       const createGiftCardRequest = {
         createdAt,
-        invoiceNumber: refundInvoice?.invoiceNumber as string,
-        invoiceValue: refundInvoice?.invoiceValue as number,
+        invoiceNumber: refundInvoice?.invoiceNumber,
+        invoiceValue: refundInvoice?.invoiceValue,
         userEmail,
       }
 

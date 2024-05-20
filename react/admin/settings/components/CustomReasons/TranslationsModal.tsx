@@ -4,7 +4,6 @@ import { useQuery } from 'react-apollo'
 import type { Tenant, Binding } from 'vtex.tenant-graphql'
 import { ModalDialog, Table, Input, Spinner, EmptyState } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
-
 import TENANT_INFO from './graphql/tenant.gql'
 import type { CustomReasonWithIndex } from './CustomReasons'
 import { useSettings } from '../../hooks/useSettings'
@@ -14,23 +13,18 @@ const localesAvailable = (bindings: Binding[]): string[] => {
   const storefrontBindings = bindings.filter(
     (binding) => binding.targetProduct === 'vtex-storefront'
   )
-
   const localesMap = new Map()
-
   for (const binding of storefrontBindings) {
     const { defaultLocale, supportedLocales } = binding
-
     if (!localesMap.has(defaultLocale)) {
       localesMap.set(defaultLocale, true)
     }
-
     for (const locale of supportedLocales) {
       if (locale && !localesMap.has(locale)) {
         localesMap.set(locale, true)
       }
     }
   }
-
   return Array.from(localesMap.keys())
 }
 
@@ -42,7 +36,6 @@ const createTranslationOptions = (
     const currentTranslation = translation?.find(
       ({ locale }) => locale === availableLocale
     )
-
     return currentTranslation ?? { locale: availableLocale, translation: '' }
   })
 }
@@ -67,7 +60,6 @@ const tableSchema = (
         rowData: CustomReturnReasonTranslation
       }) => {
         const { translation, locale } = rowData
-
         return (
           <Input
             size="small"
@@ -95,12 +87,10 @@ export const TranslationsModal = ({
   const [tempTranslations, setTempTranslations] = useState<
     CustomReturnReasonTranslation[]
   >([])
-
   const {
     appSettings: { customReturnReasons },
     actions: { dispatch },
   } = useSettings()
-
   const { data, loading, error } = useQuery<{ tenantInfo: Tenant }>(TENANT_INFO)
 
   useEffect(() => {
@@ -114,26 +104,20 @@ export const TranslationsModal = ({
     const hasLocale = tempTranslations.find(
       (translation) => translation.locale === name
     )
-
     if (hasLocale) {
       const newTranslations = tempTranslations.map((translation) => {
         if (translation.locale === name) {
           return { ...translation, translation: value }
         }
-
         return translation
       })
-
       setTempTranslations(newTranslations)
-
       return
     }
-
     const newTranslations = [
       ...tempTranslations,
       { locale: name, translation: value },
     ]
-
     setTempTranslations(newTranslations)
   }
 
@@ -146,35 +130,32 @@ export const TranslationsModal = ({
     const updatedCustomReturnReasons = customReturnReasons?.map(
       (customReason, i) => {
         if (i === customReasonOnFocus?.index) {
-          // filters our the ones where the translation is empty to avoid rendering an empty string to final user
+          // filters out the ones where the translation is empty to avoid rendering an empty string to final user
           const translations = tempTranslations.filter(({ translation }) =>
             Boolean(translation)
           )
-
           return {
             ...customReason,
             translations,
           }
         }
-
         return customReason
       }
     )
-
     if (updatedCustomReturnReasons) {
       dispatch({
         type: 'updateCustomReturnReasons',
         payload: updatedCustomReturnReasons,
       })
     }
-
     handleCloseModal()
   }
 
   const availableLocales = localesAvailable(data?.tenantInfo?.bindings ?? [])
 
-  let content: React.ReactNode = null;
-  if(error){
+  let content: React.ReactNode = null
+
+  if (error) {
     content = (
       <EmptyState
         title={
@@ -186,11 +167,9 @@ export const TranslationsModal = ({
         </p>
       </EmptyState>
     )
-  }else if (loading){
-    content =  (
-      <Spinner />
-    )
-  }else{
+  } else if (loading) {
+    content = <Spinner />
+  } else {
     content = (
       <div>
         <Table
@@ -205,6 +184,15 @@ export const TranslationsModal = ({
     )
   }
 
+  const TranslationMessage = ({ reason }: { reason: string | undefined }) => (
+    <FormattedMessage
+      id="admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
+      values={{
+        reason,
+        b: (chunks: ReactElement) => <b>{chunks}</b>,
+      }}
+    />
+  )
 
   return (
     <ModalDialog
@@ -230,14 +218,7 @@ export const TranslationsModal = ({
             <FormattedMessage id="admin/return-app.settings.section.custom-reasons.modal.translations.header.custom-reason-translation" />
           </h4>
           <p>
-            <FormattedMessage
-              id="admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
-              values={{
-                reason: customReasonOnFocus?.reason,
-                // eslint-disable-next-line react/display-name
-                b: (chunks: ReactElement) => <b>{chunks}</b>,
-              }}
-            />
+            <TranslationMessage reason={customReasonOnFocus?.reason} />
           </p>
         </div>
         {content}
