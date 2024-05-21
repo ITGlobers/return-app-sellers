@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
-
 import { useCssHandles } from 'vtex.css-handles'
 import { Card, Button, Alert } from 'vtex.styleguide'
 
@@ -35,27 +34,19 @@ const CSS_HANDLES = [
   'submitButtonWrapper',
 ] as const
 
-export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
+export const ConfirmAndSubmit = ({ onPageChange, items }: Props) => {
   const { returnRequest, termsAndConditions } = useReturnRequest()
-
   const [createReturnRequest, { loading: creatingReturnRequest }] = useMutation<
     { createReturnRequest: ReturnRequestCreated },
     MutationCreateReturnRequestArgs
   >(CREATE_RETURN_REQUEST)
 
-  const {
-    navigate,
-    culture: { locale },
-    hints: { phone },
-  } = useRuntime()
-
+  const { navigate, culture: { locale }, hints: { phone } } = useRuntime()
   const { data: storeSettings } = useStoreSettings()
   const { options } = storeSettings ?? {}
   const { enableSelectItemCondition } = options ?? {}
 
-  const [confirmationStatus, setConfirmationStatus] =
-    useState<SubmissionStatus>('idle')
-
+  const [confirmationStatus, setConfirmationStatus] = useState<SubmissionStatus>('idle')
   const handles = useCssHandles(CSS_HANDLES)
 
   const returnRequestValidated = useMemo(() => {
@@ -91,7 +82,7 @@ export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
   const handleAlertRedirect = () => {
     setConfirmationStatus('idle')
     navigate({
-      to: '/admin/app/seller/returns/requests/' ,
+      to: '/admin/app/seller/returns/requests/',
       replace: true,
     })
   }
@@ -101,118 +92,96 @@ export const ConfirmAndSubmit = ({ onPageChange, items}: Props) => {
     onPageChange('form-details')
   }
 
+  const renderAlert = () => {
+    if (confirmationStatus === 'idle') return null
+
+    const alertProps = {
+      type: confirmationStatus,
+      action: {
+        label: (
+          <FormattedMessage
+            id={`return-app.confirm-and-submit.alert.${confirmationStatus}.label`}
+          />
+        ),
+        onClick:
+          confirmationStatus === 'success'
+            ? handleAlertRedirect
+            : handleCreateReturnRequest,
+      },
+    }
+
+    return (
+      <Alert {...alertProps}>
+        <FormattedMessage
+          id={`return-app.confirm-and-submit.alert.${confirmationStatus}`}
+        />
+      </Alert>
+    )
+  }
+
+  const renderButtons = () => (
+    <div className={`flex ${phone ? 'w-100 flex-column' : 'justify-center'}`}>
+      <div className={`${handles.backButtonWrapper} ${phone ? 'mb5' : 'mr3'}`}>
+        <Button
+          block={phone}
+          size={phone ? 'normal' : 'small'}
+          variation="secondary"
+          onClick={handlePageChange}
+        >
+          <FormattedMessage id="return-app.confirm-and-submit.button.back" />
+        </Button>
+      </div>
+      <div className={`${handles.submitButtonWrapper} ${phone ? '' : 'mr3'}`}>
+        <Button
+          block={phone}
+          size={phone ? 'normal' : 'small'}
+          onClick={handleCreateReturnRequest}
+          isLoading={creatingReturnRequest}
+        >
+          <FormattedMessage id="return-app.confirm-and-submit.button.submit" />
+        </Button>
+      </div>
+    </div>
+  )
+
+  if (!returnRequestValidated) return null
+
   return (
     <>
-      {!returnRequestValidated ? null : (
-        <>
-          <ReturnInformationTable
-            items={items}
-            selectedItems={returnRequestValidated.items}
-          />
-          <div className="mv8">
-            <Card>
-              <div
-                className={`${handles.confirmationActionsContainer} flex flex-wrap`}
-              >
-                <section
-                  className={`${
-                    handles.contactAddressWrapper
-                  } w-100 flex flex-wrap justify-between ${
-                    phone ? 'flex-column' : ''
-                  }`}
-                >
-                  <ConfirmContactDetails
-                    contactDetails={returnRequestValidated.customerProfileData}
-                  />
-                  <ConfirmPickupAddressDetails
-                    pickupReturnData={returnRequestValidated.pickupReturnData}
-                  />
-                </section>
-                <section
-                  className={`${
-                    handles.paymentCommentWrapper
-                  } w-100 flex mt5 justify-between ${
-                    phone ? 'flex-column' : ''
-                  }`}
-                >
-                  <ConfirmPaymentMethods
-                    refundPaymentData={returnRequestValidated.refundPaymentData}
-                  />
-                  <ConfirmComment
-                    userComment={returnRequestValidated.userComment}
-                  />
-                </section>
-              </div>
-            </Card>
+      <ReturnInformationTable
+        items={items}
+        selectedItems={returnRequestValidated.items}
+      />
+      <div className="mv8">
+        <Card>
+          <div className={`${handles.confirmationActionsContainer} flex flex-wrap`}>
+            <section
+              className={`${handles.contactAddressWrapper} w-100 flex flex-wrap justify-between ${phone ? 'flex-column' : ''}`}
+            >
+              <ConfirmContactDetails
+                contactDetails={returnRequestValidated.customerProfileData}
+              />
+              <ConfirmPickupAddressDetails
+                pickupReturnData={returnRequestValidated.pickupReturnData}
+              />
+            </section>
+            <section
+              className={`${handles.paymentCommentWrapper} w-100 flex mt5 justify-between ${phone ? 'flex-column' : ''}`}
+            >
+              <ConfirmPaymentMethods
+                refundPaymentData={returnRequestValidated.refundPaymentData}
+              />
+              <ConfirmComment
+                userComment={returnRequestValidated.userComment}
+              />
+            </section>
           </div>
-          <section
-            className={`${handles.confirmationActionsContainer} flex justify-center`}
-          >
-            {confirmationStatus !== 'success' ? null : (
-              <Alert
-                type={confirmationStatus}
-                action={{
-                  label: (
-                    <FormattedMessage id={`return-app.confirm-and-submit.alert.label`} />
-                  ),
-                  onClick: () => handleAlertRedirect(),
-                }}
-              >
-                <FormattedMessage id={`return-app.confirm-and-submit.alert.success`} />
-              </Alert>
-            )}
-            {confirmationStatus !== 'error' ? null : (
-              <Alert
-                type={confirmationStatus}
-                action={{
-                  label: (
-                    <FormattedMessage id={`return-app.confirm-and-submit.alert.error.label`} />
-                  ),
-                  onClick: () => handleCreateReturnRequest(),
-                }}
-              >
-                <FormattedMessage id={`return-app.confirm-and-submit.alert.error`} />
-              </Alert>
-            )}
-            {confirmationStatus !== 'idle' ? null : (
-              <div
-                className={`flex ${
-                  phone ? 'w-100 flex-column' : 'justify-center'
-                }`}
-              >
-                <div
-                  className={`${handles.backButtonWrapper} ${
-                    phone ? 'mb5' : 'mr3'
-                  }`}
-                >
-                  <Button
-                    block={phone}
-                    size={phone ? 'normal' : 'small'}
-                    variation="secondary"
-                    onClick={() => handlePageChange()}
-                  >
-                    <FormattedMessage id={`return-app.confirm-and-submit.button.back`} />
-                  </Button>
-                </div>
-                <div
-                  className={`${handles.submitButtonWrapper} ${
-                    phone ? '' : 'mr3'
-                  }`}
-                >
-                  <Button
-                    block={phone}
-                    size={phone ? 'normal' : 'small'}
-                    onClick={handleCreateReturnRequest}
-                    isLoading={creatingReturnRequest}
-                  >
-                    <FormattedMessage id={`return-app.confirm-and-submit.button.submit`} />
-                  </Button>
-                </div>
-              </div>
-            )}
-          </section>
-        </>
-      )}
+        </Card>
+      </div>
+      <section className={`${handles.confirmationActionsContainer} flex justify-center`}>
+        {renderAlert()}
+        {confirmationStatus === 'idle' && renderButtons()}
+      </section>
     </>
   )
 }

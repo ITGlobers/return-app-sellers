@@ -81,17 +81,8 @@ export const validateNewReturnRequestFields = (
     errors.push('reason-or-condition')
   }
 
-  for (const field of Object.keys(customerProfileData)) {
-    if (!customerProfileData[field]) {
-      errors.push('customer-data')
-    }
-  }
-
-  for (const field of Object.keys(pickupReturnData)) {
-    if (!pickupReturnData[field]) {
-      errors.push('pickup-data')
-    }
-  }
+  validateFields(customerProfileData, 'customer-data', errors)
+  validateFields(pickupReturnData, 'pickup-data', errors)
 
   const { refundPaymentMethod } = refundPaymentData ?? {}
 
@@ -135,4 +126,12 @@ export const validateNewReturnRequestFields = (
   }
 
   return { validatedFields }
+}
+
+const validateFields = (dataObject, errorType, errors) => {
+  for (const field of Object.keys(dataObject)) {
+    if (!dataObject[field]) {
+      errors.push(errorType)
+    }
+  }
 }
