@@ -46,12 +46,11 @@ export const createReturnRequestService = async (
 
   const { firstName, lastName, email } = userProfile ?? {}
 
-  const submittedByNameOrEmail =
-    firstName || lastName ? `${firstName} ${lastName}` : email
+  const submittedByNameOrEmail = `${firstName} ${lastName}` || email
 
   // If request was validated using appkey and apptoken, we assign the appkey as a sender
   // Otherwise, we try to use requester name. Email is the last resort.
-  const submittedBy = appkey ?? submittedByNameOrEmail
+  const submittedBy = appkey || submittedByNameOrEmail
 
   if (!submittedBy) {
     throw new ResolverError(
@@ -63,7 +62,7 @@ export const createReturnRequestService = async (
 
   // Check items since a request via endpoint might not have it.
   // Graphql validation doesn't prevent user to send empty items
-  if (!items || items.length === 0) {
+  if (!items?.length) {
     throw new UserInputError('There are no items in the request')
   }
 
@@ -88,16 +87,17 @@ export const createReturnRequestService = async (
     filter: `orderId=${marketplaceOrderId}`,
   }
 
+  const parentAccountName =
+    accountInfo?.parentAccountName || appConfig.parentAccountName
+
   const searchRMAPromise = await orderRequestClient.getOrdersList({
     body,
-    parentAccountName:
-      accountInfo?.parentAccountName || appConfig.parentAccountName,
+    parentAccountName,
     auth: appConfig,
   })
 
   const settingsPromise = returnSettings.getReturnSettingsMket({
-    parentAccountName:
-      accountInfo?.parentAccountName || appConfig.parentAccountName,
+    parentAccountName,
     auth: appConfig,
   })
 
@@ -293,8 +293,7 @@ export const createReturnRequestService = async (
 
     const payload = {
       createRequest: request,
-      parentAccountName:
-        accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName,
     }
 
     const rmaDocument = await returnRequestClient.createReturn(payload)
