@@ -64,13 +64,13 @@ export const ConfirmAndSubmitInvoice = ({data , invoiceRequest , orderId}: Props
       }
       setConfirmationStatus('success')
     } catch (error) {
-      let errorMessage = 'An error invoicing has occurred'
+      let errorMessage = 'Invoicing error'
       if (typeof error === 'object' && error !== null && 'graphQLErrors' in error){
         const graphQLErrorsArray = error.graphQLErrors as any[];
         if(graphQLErrorsArray.length > 0){
           const response = await Promise.all(
           graphQLErrorsArray.map((error)=>{
-            return  error.extensions.exception.response.data.message ?? error.extensions.exception.response.data.error.message 
+            return error.extensions.exception.response?.data.message || error.extensions.exception.response?.data.error.message || error.message
           })
           )
           errorMessage = String(response)

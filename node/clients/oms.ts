@@ -1,6 +1,7 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import type { NotificationResponse } from '@vtex/clients'
 import { OMS } from '@vtex/clients'
+import { getErrorLog } from '../typings/error'
 
 const baseURL = '/api/oms'
 
@@ -74,17 +75,25 @@ export class OMSCustom extends OMS {
   }
 
   public async createInvoice(orderId: string, invoice: any) {
-    const response = await this.http.post<NotificationResponse>(
-      routes.invoice(orderId),
-      invoice,
-      {
-        headers: {
-          VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
-        },
-        metric: 'oms-create-invoice',
-      }
-    )
-
-    return response
+    try {
+      const response = await this.http.post<NotificationResponse>(
+        routes.invoice(orderId),
+        invoice,
+        {
+          headers: {
+            VtexIdClientAutCookie: this.context.adminUserAuthToken || '',
+          },
+          metric: 'oms-create-invoice',
+        }
+      )
+      return response
+    } catch (error) {
+      throw new Error(
+        getErrorLog(
+          `Invoice error ${JSON.stringify(error.response.data.error.message)}`,
+          'INV012'
+        )
+      )
+    }
   }
 }

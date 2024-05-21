@@ -118,6 +118,16 @@ import { ExternalLogSeverity } from './errorHandler'
  *         "code": "INV010",
  *         "message": "The invoice value cant be greater than order value."
  *     }
+ *  HTTP/1.1 400 Bad Request
+ *     {
+ *         "code": "INV011",
+ *         "message": "Cant create Invoice goodwill"
+ *     }
+ *  HTTP/1.1 400 Bad Request
+ *     {
+ *         "code": "INV012",
+ *         "message": "Invoice"
+ *     }
  * */
 
 export async function invoice(
