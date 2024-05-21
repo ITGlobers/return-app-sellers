@@ -44,20 +44,7 @@ export const createReturnRequestService = async (
     locale,
   } = args
 
-  const { firstName, lastName, email } = userProfile ?? {}
-
-  const submittedByNameOrEmail = `${firstName} ${lastName}` || email
-
-  // If request was validated using appkey and apptoken, we assign the appkey as a sender
-  // Otherwise, we try to use requester name. Email is the last resort.
-  const submittedBy = appkey || submittedByNameOrEmail
-
-  if (!submittedBy) {
-    throw new ResolverError(
-      'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
-    )
-  }
-
+  const submittedBy = getSubmittedBy(userProfile, appkey)
   const requestDate = new Date().toISOString()
 
   // Check items since a request via endpoint might not have it.
@@ -315,4 +302,21 @@ export const createReturnRequestService = async (
 
     throw new ResolverError(errorMessageString, error.response?.status || 500)
   }
+}
+
+const getSubmittedBy = async (userProfile?: UserProfile, appkey?: string) => {
+  const { firstName, lastName, email } = userProfile ?? {}
+  const submittedByNameOrEmail =
+    firstName || lastName ? `${firstName} ${lastName}` : email
+
+  // If request was validated using appkey and apptoken, we assign the appkey as a sender
+  // Otherwise, we try to use requester name. Email is the last resort.
+  const submittedBy = appkey ?? submittedByNameOrEmail
+
+  if (!submittedBy) {
+    throw new ResolverError(
+      'Unable to get submittedBy from context. The request is missing the userProfile info or the appkey'
+    )
+  }
+  return submittedBy
 }
