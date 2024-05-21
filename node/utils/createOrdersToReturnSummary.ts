@@ -54,44 +54,11 @@ export const createOrdersToReturnSummary = async (
   const committedItemsToReturn: Array<{ itemIndex: number; quantity: number }> =
     []
 
-  try {
-    if (returnRequestSameOrder.data) {
-      for (const returnRequest of returnRequestSameOrder.data) {
-        const { refundData, items: rmaItems } =
-          (returnRequest as Pick<
-            ReturnRequest,
-            'items' | 'refundData' | 'refundPaymentData'
-          >) ?? {}
-
-        const { invoiceNumber } = refundData ?? {}
-
-        /**
-         * Colect all invoices created by the return app.
-         * The app creates invoices type Input on object only when refunding a card.
-         * It's necessary to remove all the invoices from OMS Order object to avoid considering the items twice.
-         */
-        // Use
-        if (invoiceNumber) {
-          invoicesCreatedByReturnApp.push(invoiceNumber)
-        }
-
-        for (const item of rmaItems ?? []) {
-          const { orderItemIndex, quantity } = item
-
-          if (orderItemIndex === undefined || quantity === undefined) continue
-
-          const committedItem = {
-            itemIndex: orderItemIndex,
-            quantity,
-          }
-
-          committedItemsToReturn.push(committedItem)
-        }
-      }
-    }
-  } catch (error) {
-    throw new ResolverError('Error createOrdersToReturnSummary')
-  }
+  validateReturnRequestSameOrder(
+    returnRequestSameOrder,
+    invoicesCreatedByReturnApp,
+    committedItemsToReturn
+  )
 
   // get all items (based on index on order.items) that were invoiced and sent to customer.
   // By the documentation: The Output type should be used when the invoice you are sending is a selling invoice
@@ -197,5 +164,50 @@ export const createOrdersToReturnSummary = async (
     paymentData: {
       canRefundCard: canRefundCard(order.paymentData.transactions),
     },
+  }
+}
+
+const validateReturnRequestSameOrder = async (
+  returnRequestSameOrder: any,
+  invoicesCreatedByReturnApp: string[],
+  committedItemsToReturn: Array<{ itemIndex: number; quantity: number }>
+) => {
+  try {
+    if (returnRequestSameOrder.data) {
+      for (const returnRequest of returnRequestSameOrder.data) {
+        const { refundData, items: rmaItems } =
+          (returnRequest as Pick<
+            ReturnRequest,
+            'items' | 'refundData' | 'refundPaymentData'
+          >) ?? {}
+
+        const { invoiceNumber } = refundData ?? {}
+
+        /**
+         * Colect all invoices created by the return app.
+         * The app creates invoices type Input on object only when refunding a card.
+         * It's necessary to remove all the invoices from OMS Order object to avoid considering the items twice.
+         */
+        // Use
+        if (invoiceNumber) {
+          invoicesCreatedByReturnApp.push(invoiceNumber)
+        }
+
+        for (const item of rmaItems ?? []) {
+          const { orderItemIndex, quantity } = item
+
+          if (orderItemIndex === undefined || quantity === undefined) continue
+
+          const committedItem = {
+            itemIndex: orderItemIndex,
+            quantity,
+          }
+
+          committedItemsToReturn.push(committedItem)
+        }
+      }
+    }
+  } catch (error) {
+    throw new ResolverError('Error createOrdersToReturnSummary')
   }
 }

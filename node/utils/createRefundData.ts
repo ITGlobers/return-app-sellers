@@ -2,6 +2,7 @@ import { UserInputError } from '@vtex/api'
 import {
   Maybe,
   RefundDataInput,
+  RefundItemInput,
   ReturnRequest,
 } from '../../typings/ReturnRequest'
 
@@ -22,39 +23,13 @@ export const createRefundData = ({
     requestItemsMap.set(requestedItem.orderItemIndex, requestedItem)
   }
 
-  const items = []
+  const items: any[] = []
 
   for (const refundItem of refundData?.items ?? []) {
     if (refundItem.quantity === 0) continue
     const requestedItem = requestItemsMap.get(refundItem.orderItemIndex)
 
-    if (!requestedItem) {
-      throw new UserInputError(
-        `Item index ${refundItem.orderItemIndex} isn't in the return request`
-      )
-    }
-
-    if (requestedItem.quantity < refundItem.quantity) {
-      throw new UserInputError(
-        `Item index ${refundItem.orderItemIndex} has a quantity of ${requestedItem.quantity} but ${refundItem.quantity} was requested to return`
-      )
-    }
-
-    const { orderItemIndex, sellingPrice, tax, id } = requestedItem
-
-    if (typeof refundItem.restockFee !== 'number') {
-      throw new UserInputError(
-        `Item index ${refundItem.orderItemIndex} has a invalid restockFee. It must be a number. Pass 0 if there is no restock fee.`
-      )
-    }
-
-    items.push({
-      orderItemIndex,
-      id,
-      price: (Number(sellingPrice) || 0) + (Number(tax) || 0),
-      quantity: refundItem.quantity,
-      restockFee: refundItem.restockFee,
-    })
+    validationsErrors(refundItem, requestedItem, items)
   }
 
   const refundedItemsValue = items.reduce(
@@ -85,4 +60,38 @@ export const createRefundData = ({
     refundedShippingValue,
     items,
   }
+}
+
+const validationsErrors = async (
+  refundItem: RefundItemInput,
+  requestedItem: any,
+  items: any[]
+) => {
+  if (!requestedItem) {
+    throw new UserInputError(
+      `Item index ${refundItem.orderItemIndex} isn't in the return request`
+    )
+  }
+
+  if (requestedItem.quantity < refundItem.quantity) {
+    throw new UserInputError(
+      `Item index ${refundItem.orderItemIndex} has a quantity of ${requestedItem.quantity} but ${refundItem.quantity} was requested to return`
+    )
+  }
+
+  const { orderItemIndex, sellingPrice, tax, id } = requestedItem
+
+  if (typeof refundItem.restockFee !== 'number') {
+    throw new UserInputError(
+      `Item index ${refundItem.orderItemIndex} has a invalid restockFee. It must be a number. Pass 0 if there is no restock fee.`
+    )
+  }
+
+  items.push({
+    orderItemIndex,
+    id,
+    price: (Number(sellingPrice) || 0) + (Number(tax) || 0),
+    quantity: refundItem.quantity,
+    restockFee: refundItem.restockFee,
+  })
 }
