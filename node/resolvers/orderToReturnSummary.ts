@@ -34,9 +34,10 @@ export const orderToReturnSummary = async (
     ? DEFAULT_SETTINGS
     : await settingsAccount.getSettings(ctx)
 
+  const parentAccountName =
+    accountInfo?.parentAccountName || appConfig.parentAccountName
   const settings = await returnSettings.getReturnSettingsMket({
-    parentAccountName:
-      accountInfo?.parentAccountName || appConfig.parentAccountName,
+    parentAccountName,
     auth: appConfig,
   })
 
@@ -68,7 +69,7 @@ export const orderToReturnSummary = async (
       const currentProfile = await fetchProfileData(
         profile,
         clientProfileData,
-        accountInfo?.parentAccountName || appConfig.parentAccountName,
+        parentAccountName,
         adminUserAuthToken
       )
       if (currentProfile) {
@@ -88,7 +89,7 @@ export const orderToReturnSummary = async (
       const address = await fetchAddressData(
         profile,
         clientProfileData,
-        accountInfo?.parentAccountName || appConfig.parentAccountName,
+        parentAccountName,
         adminUserAuthToken
       )
       if (address) {
