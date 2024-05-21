@@ -5,8 +5,7 @@ import { canOrderBeReturned } from '../utils/canOrderBeReturned'
 import { getCustomerEmail } from '../utils/getCostumerEmail'
 import type { OrderToReturnSummary } from '../../typings/OrdertoReturn'
 import { DEFAULT_SETTINGS } from '../clients/settings'
-import { ProfileClient } from '../clients/profile'
-import { ClientProfileDetail } from '@vtex/clients'
+import { ClientProfileDetail, OrderDetailResponse } from '@vtex/clients'
 
 export const orderToReturnSummary = async (
   _: unknown,
@@ -24,9 +23,8 @@ export const orderToReturnSummary = async (
       catalogGQL,
       account: accountClient,
       settingsAccount,
-      profile,
     },
-    vtex: { logger, adminUserAuthToken },
+    vtex: { logger },
   } = ctx
 
   const accountInfo = await accountClient.getInfo()
@@ -65,46 +63,7 @@ export const orderToReturnSummary = async (
   })
 
   if (userProfile?.role === 'admin') {
-    try {
-      const currentProfile = await fetchProfileData(
-        profile,
-        clientProfileData,
-        parentAccountName,
-        adminUserAuthToken
-      )
-      if (currentProfile) {
-        order.clientProfileData = {
-          ...order.clientProfileData,
-          email: currentProfile.email,
-          firstName: currentProfile.firstName,
-          lastName: currentProfile.lastName,
-          phone: currentProfile.homePhone,
-        }
-      }
-    } catch (error) {
-      logger.error('Error fetching profile data')
-    }
-
-    try {
-      const address = await fetchAddressData(
-        profile,
-        clientProfileData,
-        parentAccountName,
-        adminUserAuthToken
-      )
-      if (address) {
-        order.shippingData.address = {
-          ...order.shippingData.address,
-          receiverName: address.receiverName,
-          city: address.locality,
-          postalCode: address.postalCode,
-          street: address.route,
-          number: address.streetNumber,
-        }
-      }
-    } catch (error) {
-      logger.error('Error fetching address data')
-    }
+    UnmaskData(ctx, clientProfileData, order, parentAccountName)
   }
 
   const customerEmail = getCustomerEmail(
@@ -138,43 +97,65 @@ export const orderToReturnSummary = async (
   )
 }
 
-const fetchProfileData = async (
-  profile: ProfileClient,
+const UnmaskData = async (
+  ctx: Context,
   clientProfileData: ClientProfileDetail,
-  accountName: string,
-  adminUserAuthToken?: string
+  order: OrderDetailResponse,
+  parentAccountName: string
 ) => {
+  const {
+    clients: { profile },
+    vtex: { adminUserAuthToken },
+  } = ctx
   const profileUnmask = await profile.getProfileUnmask(
     clientProfileData?.userProfileId,
     adminUserAuthToken,
-    accountName
+    parentAccountName
   )
-  if (profileUnmask?.[0]?.document?.email) {
-    return profileUnmask[0].document
-  }
-  const response = await profile.searchEmailByUserId(
-    clientProfileData?.userProfileId,
-    adminUserAuthToken,
-    accountName
-  )
-  if (response.length > 0) {
-    return response?.[0]
-  }
-}
 
-const fetchAddressData = async (
-  profile: ProfileClient,
-  clientProfileData: ClientProfileDetail,
-  accountName: string,
-  adminUserAuthToken?: string
-) => {
+  if (profileUnmask?.[0]?.document?.email) {
+    const currentProfile = profileUnmask?.[0]?.document
+    order.clientProfileData = {
+      ...order.clientProfileData,
+      email: currentProfile.email,
+      firstName: currentProfile?.firstName,
+      lastName: currentProfile?.lastName,
+      phone: currentProfile?.homePhone,
+    }
+  } else {
+    const response = await profile.searchEmailByUserId(
+      clientProfileData?.userProfileId,
+      adminUserAuthToken,
+      parentAccountName
+    )
+
+    if (response.length > 0) {
+      const currentProfile = response?.[0]
+      order.clientProfileData = {
+        ...order.clientProfileData,
+        email: currentProfile?.email,
+        firstName: currentProfile?.email?.firstName,
+        lastName: currentProfile?.email?.lastName,
+        phone: currentProfile?.email?.phone,
+      }
+    }
+  }
+
   const addressUnmask = await profile.getAddressUnmask(
     clientProfileData?.userProfileId,
     adminUserAuthToken,
-    accountName
+    parentAccountName
   )
+
   if (addressUnmask?.[0]?.document) {
-    return addressUnmask[0].document
+    const address = addressUnmask?.[0]?.document
+    order.shippingData.address = {
+      ...order.shippingData.address,
+      receiverName: address.receiverName,
+      city: address.locality,
+      postalCode: address.postalCode,
+      street: address.route,
+      number: address.streetNumber,
+    }
   }
-  return null
 }
