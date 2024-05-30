@@ -19,6 +19,7 @@ type Items {
   amountAvailablePerItem: AmountAvailablePerItem
   name: String
   image: String
+  sellerSku: String
 }
 
 type AmountsAvailable {

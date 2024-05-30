@@ -1,6 +1,6 @@
 import type { CategoryInfo } from '../../typings/Category'
 
-const transformCategoryTree = (
+export const transformCategoryTree = (
   categoryTree: CategoryTree[],
   parentName = ''
 ): CategoryInfo[] => {

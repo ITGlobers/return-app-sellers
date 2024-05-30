@@ -74,10 +74,16 @@ export class Goodwill extends ExternalClient {
         id?: string
       ) =>
         id
-          ? `${BASE_URL}${parentAccountName}/${this.context.workspace}/_v/goodwill/${id}?_sellerId=${sellerID}`
-          : `${BASE_URL}${parentAccountName}/${this.context.workspace}/_v/goodwill?_sellerId=${sellerID}`,
+          ? `${BASE_URL(parentAccountName)}${parentAccountName}/${
+              this.context.workspace
+            }/_v/goodwill/${id}?_sellerId=${sellerID}`
+          : `${BASE_URL(parentAccountName)}${parentAccountName}/${
+              this.context.workspace
+            }/_v/goodwill?_sellerId=${sellerID}`,
       createGoodwillMket: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}/_v/goodwill`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }/_v/goodwill`,
     }
   }
 }

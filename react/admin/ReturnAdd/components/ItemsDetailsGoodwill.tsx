@@ -30,7 +30,8 @@ export const ItemsDetailsGoodwill = (props: Props) => {
       amount,
       imageUrl,
       name,
-      id
+      id,
+      sellerSku
     },
   goodwillRequest
   } = props
@@ -157,7 +158,7 @@ export const ItemsDetailsGoodwill = (props: Props) => {
       
               <div className="flex">
                 <p className="f6 mv0 mr3 gray b ">
-                  {' '}{id}{' '}
+                  {' '}{sellerSku}{' '}
                 </p>
               </div>
               <div className="flex">

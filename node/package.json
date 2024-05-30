@@ -20,7 +20,8 @@
     "tslint-config-vtex": "^2.1.0"
   },
   "scripts": {
-    "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'"
+    "lint": "tsc --noEmit --pretty && tslint -c tslint.json --fix './**/*.ts'",
+    "test": "vtex-test-tools test"
   },
   "version": "3.5.6"
 }

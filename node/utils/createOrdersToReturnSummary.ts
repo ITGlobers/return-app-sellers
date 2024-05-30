@@ -19,7 +19,7 @@ import type {
 } from '../../typings/OrdertoReturn'
 import type { ReturnRequest } from '../../typings/ReturnRequest'
 
-interface CreateOrdersToReturnSummarySetup {
+export interface CreateOrdersToReturnSummarySetup {
   excludedCategories: ReturnAppSettings['excludedCategories']
   orderRequestClient: Order
   catalog: Catalog
@@ -169,7 +169,7 @@ export const createOrdersToReturnSummary = async (
   }
 }
 
-const validateReturnRequestSameOrder = async (
+export const validateReturnRequestSameOrder = async (
   returnRequestSameOrder: any,
   invoicesCreatedByReturnApp: string[],
   committedItemsToReturn: Array<{ itemIndex: number; quantity: number }>

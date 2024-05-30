@@ -175,13 +175,21 @@ export class Return extends ExternalClient {
 
     return {
       returnByID: (returnId: string, parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}/${returnId}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}/${returnId}`,
       createReturn: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}`,
       returnList: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}`,
       export: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}/export`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}/export`,
     }
   }
 }

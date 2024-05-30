@@ -54,7 +54,7 @@ export const GoodwillInformationTable = ({ items, selectedItems }: Props) => {
             const item = items.find(item => item.id === id)
             if (!item) return null
 
-            const { image, name } = item
+            const { image, name , sellerSku } = item
             return (
               <tr key={`${id}-${index}`} className="ph5">
                 <td className={`pv5 ${phone ? 'w-80' : 'w-50'}`}>
@@ -66,7 +66,7 @@ export const GoodwillInformationTable = ({ items, selectedItems }: Props) => {
                       <p className="b">{name}</p>
                       <div className="flex">
                         <p className="f6 mv0 mr3 gray b">
-                          {id}
+                          {sellerSku}
                         </p>
                       </div>
                       <div className="flex">

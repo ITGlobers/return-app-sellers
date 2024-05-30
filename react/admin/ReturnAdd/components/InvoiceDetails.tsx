@@ -132,7 +132,7 @@ export const InvoiceDetails = (props: any ) => {
       setPreRefund(checked)
     }
 
-  return (
+    return (
     <>   
     <div className={`${handles.returnDetailsContainer} mb5`}>
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

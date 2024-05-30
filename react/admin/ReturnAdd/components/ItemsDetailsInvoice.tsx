@@ -38,7 +38,7 @@ export const ItemsDetailsInvoice = (props: Props) => {
       amount,
       imageUrl,
       name,
-      id
+      sellerSku
     },
   invoiceRequest
   } = props
@@ -56,7 +56,7 @@ export const ItemsDetailsInvoice = (props: Props) => {
   }, [invoiceRequest]);
   
   const { items } = invoiceRequest
-  const currentItem = items.findIndex(item => item.id === id);
+  const currentItem = items.findIndex(item => item.id === sellerSku);
 
   const [otherReasonValue, setOtherReasonValue] = useState<string>('');
   const [reasonValue, setReasonValue] = useState<string>('');
@@ -64,7 +64,7 @@ export const ItemsDetailsInvoice = (props: Props) => {
   
 
   const updatedItems = items
-  const existingIndex = updatedItems.findIndex(item => item.id === id);
+  const existingIndex = updatedItems.findIndex(item => item.id === sellerSku);
   
   const handles = useCssHandles(CSS_HANDLES)
 
@@ -82,7 +82,7 @@ export const ItemsDetailsInvoice = (props: Props) => {
         updatedItems.splice(existingIndex, 1)
       }
     } else {
-      updatedItems.push({quantity:0 , id, description: reason === 'otherReason' ? otherReason : reason, amount: Math.round(formula),});
+      updatedItems.push({quantity:0 , id: sellerSku, description: reason === 'otherReason' ? otherReason : reason, amount: Math.round(formula),});
     }
     updateInvoiceRequest({
       type: 'updateItems',
@@ -113,7 +113,7 @@ export const ItemsDetailsInvoice = (props: Props) => {
         updatedItems.splice(existingIndex, 1)
       }
     } else {
-      updatedItems.push({quantity: value , id, description: '' , amount: Math.round(newFormula)});
+      updatedItems.push({quantity: value , id: sellerSku, description: '' , amount: Math.round(newFormula)});
       
     }
     updateInvoiceRequest({
@@ -140,7 +140,7 @@ export const ItemsDetailsInvoice = (props: Props) => {
       
               <div className="flex">
                 <p className="f6 mv0 mr3 gray b ">
-                  {' '}{id}{' '}
+                  {' '}{sellerSku}{' '}
                 </p>
               </div>
               <div className="flex">

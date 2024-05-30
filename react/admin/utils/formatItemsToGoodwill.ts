@@ -14,6 +14,7 @@ export function formatItemsToGoodwill(
       amountAvailablePerItem: item.amountAvailablePerItem.amount,
       name: item.name,
       imageUrl: item.image,
+      sellerSku: item.sellerSku,
       orderValue: orderToReturn.orderValue,
       shippingValue: orderToReturn.shippingValue,
       id: item.id,

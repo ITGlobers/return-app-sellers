@@ -29,8 +29,7 @@ export const getCustomerEmail = (
     logger: Logger
   }
 ): string => {
-
-  if (userProfile ) return inputEmail || userProfile.email
+  if (userProfile) return inputEmail || userProfile.email
 
   logger.error({
     message: 'Could not parse store user email',

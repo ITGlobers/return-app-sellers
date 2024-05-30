@@ -1,7 +1,6 @@
 import type { Settings } from '../../clients/settings'
 import { ExternalLogSeverity } from '../../middlewares/errorHandler'
 import { getErrorLog } from '../../typings/error'
-import { getItemsIds } from '../../utils/getItemsIds'
 
 export const DEFAULT_SETTINGS = {
   parentAccountName: '',
@@ -32,7 +31,6 @@ export const createGoodwillService = async (
   const parentAccountName =
     accountInfo?.parentAccountName || appConfig?.parentAccountName
 
-  goodwill = await getItemsIds(ctx, goodwill)
   goodwill.sellerId = accountInfo.accountName
 
   const payload = {

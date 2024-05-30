@@ -41,7 +41,9 @@ export class GiftCard extends ExternalClient {
   private get routes() {
     return {
       createGiftcard: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}`,
     }
   }
 }

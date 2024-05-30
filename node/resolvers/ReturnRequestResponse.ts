@@ -1,10 +1,10 @@
-import { ReturnRequest } from "../../typings/ReturnRequest"
+import { ReturnRequest } from '../../typings/ReturnRequest'
 import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'
 
 type VtexProduct = 'admin' | 'store' | undefined
 
-const removeSubmittedByForStoreUser = (
+export const removeSubmittedByForStoreUser = (
   statusData: ReturnRequest['refundStatusData'][number],
   vtexProduct: VtexProduct
 ) => {
@@ -19,7 +19,7 @@ const removeSubmittedByForStoreUser = (
 }
 
 // This function hides the submittedBy field and removes the comments that should not be visible to the store user
-const transformStatusForStoreUser = (
+export const transformStatusForStoreUser = (
   refundStatusDataList: ReturnRequest['refundStatusData'],
   vtexProduct: VtexProduct
 ) => {
@@ -48,23 +48,29 @@ export const ReturnRequestResponse = {
     if (refundableAmount) return refundableAmount
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount},
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['refundableAmount'],
-      auth: appConfig
+      auth: appConfig,
     }
-    const { refundableAmount: refundableAmountValue } = await returnRequestClient.get(payload)
+    const { refundableAmount: refundableAmountValue } =
+      await returnRequestClient.get(payload)
 
     return refundableAmountValue
   },
@@ -78,24 +84,30 @@ export const ReturnRequestResponse = {
     if (customerProfileData) return customerProfileData
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount},
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
-    const accountInfo = await accountClient.getInfo()  
+    const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['customerProfileData'],
-      auth: appConfig
+      auth: appConfig,
     }
 
-    const { customerProfileData: customerProfile } = await returnRequestClient.get(payload)
+    const { customerProfileData: customerProfile } =
+      await returnRequestClient.get(payload)
 
     return customerProfile
   },
@@ -109,28 +121,33 @@ export const ReturnRequestResponse = {
     if (refundableAmountTotals) return refundableAmountTotals
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount },
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
-    const accountInfo = await accountClient.getInfo() 
+    const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['refundableAmountTotals'],
-      auth: appConfig
+      auth: appConfig,
     }
 
-    const { refundableAmountTotals: refundableAmountTotalsData } = await returnRequestClient.get(payload)
+    const { refundableAmountTotals: refundableAmountTotalsData } =
+      await returnRequestClient.get(payload)
 
     return refundableAmountTotalsData
   },
-
 
   pickupReturnData: async (
     root: ReturnRequest,
@@ -142,24 +159,31 @@ export const ReturnRequestResponse = {
     if (pickupReturnData) return pickupReturnData
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount },
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['pickupReturnData'],
-      auth: appConfig
+      auth: appConfig,
     }
 
-    const { pickupReturnData: pickupData } = await returnRequestClient.get(payload)
+    const { pickupReturnData: pickupData } = await returnRequestClient.get(
+      payload
+    )
 
     return pickupData
   },
@@ -174,24 +198,31 @@ export const ReturnRequestResponse = {
     if (refundPaymentData) return refundPaymentData
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount },
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['refundPaymentData'],
-      auth: appConfig
+      auth: appConfig,
     }
 
-    const { refundPaymentData: refundData } = await returnRequestClient.get(payload)
+    const { refundPaymentData: refundData } = await returnRequestClient.get(
+      payload
+    )
 
     return refundData
   },
@@ -202,21 +233,26 @@ export const ReturnRequestResponse = {
     if (items) return items
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount },
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['items'],
-      auth: appConfig
+      auth: appConfig,
     }
 
     const { items: itemsList } = await returnRequestClient.get(payload)
@@ -230,24 +266,31 @@ export const ReturnRequestResponse = {
     if (refundData) return refundData
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount},
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['refundData'],
-      auth: appConfig
+      auth: appConfig,
     }
 
-    const { refundData: refundDataList } = await returnRequestClient.get(payload)
+    const { refundData: refundDataList } = await returnRequestClient.get(
+      payload
+    )
 
     return refundDataList
   },
@@ -259,15 +302,18 @@ export const ReturnRequestResponse = {
     const { id, refundStatusData } = root
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount },
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
       request: { header },
-
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
-    
+
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
@@ -275,9 +321,10 @@ export const ReturnRequestResponse = {
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['refundStatusData'],
-      auth: appConfig
+      auth: appConfig,
     }
 
     const { refundStatusData: refundStatusDataList } = refundStatusData
@@ -296,24 +343,31 @@ export const ReturnRequestResponse = {
     if (cultureInfoData) return cultureInfoData
 
     const {
-      clients: { return: returnRequestClient , account : accountClient, settingsAccount},
+      clients: {
+        return: returnRequestClient,
+        account: accountClient,
+        settingsAccount,
+      },
     } = ctx
 
     const accountInfo = await accountClient.getInfo()
 
     let appConfig: Settings = DEFAULT_SETTINGS
-    if(!accountInfo?.parentAccountName){
+    if (!accountInfo?.parentAccountName) {
       appConfig = await settingsAccount.getSettings(ctx)
     }
 
     const payload = {
       id: id as string,
-      parentAccountName: accountInfo?.parentAccountName || appConfig?.parentAccountName,
+      parentAccountName:
+        accountInfo?.parentAccountName || appConfig?.parentAccountName,
       param: ['cultureInfoData'],
-      auth: appConfig
+      auth: appConfig,
     }
 
-    const { cultureInfoData: cultureInfo } = await returnRequestClient.get(payload)
+    const { cultureInfoData: cultureInfo } = await returnRequestClient.get(
+      payload
+    )
 
     return cultureInfo
   },

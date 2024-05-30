@@ -1,4 +1,3 @@
-// import { ForbiddenError } from '@vtex/api'
 import type { QueryReturnRequestListArgs } from '../../typings/ReturnRequest'
 import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'

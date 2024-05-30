@@ -2,7 +2,7 @@ import { ResolverError, UserInputError } from '@vtex/api'
 import { PickupReturnDataInput } from '../../typings/ReturnRequest'
 
 export const validateCanUsedropoffPoints = (
-  pickupReturnData: PickupReturnDataInput,
+  pickupReturnData?: PickupReturnDataInput,
   isPickupPointsEnabled?: boolean | null
 ) => {
   if (!pickupReturnData) {

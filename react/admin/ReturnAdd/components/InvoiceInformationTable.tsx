@@ -57,7 +57,7 @@ export const InvoiceInformationTable = ({ items, selectedItems }: Props) => {
             const item = items.find(item => item.id === id)
             if (!item) return null
 
-            const { image, name } = item
+            const { image, name, sellerSku } = item
             return (
               <tr key={`${id}-${index}`} className="ph5">
                 <td className={`pv5 ${phone ? 'w-80' : 'w-30'}`}>
@@ -68,7 +68,7 @@ export const InvoiceInformationTable = ({ items, selectedItems }: Props) => {
                     <div className={handles.returnInfoReasonConditionWrapper}>
                       <p className="b">{name}</p>
                       <div className="flex">
-                        <p className="f6 mv0 mr3 gray b">{id}</p>
+                        <p className="f6 mv0 mr3 gray b">{sellerSku}</p>
                       </div>
                       <div className="flex">
                         <p className="f6 mv0 mr3 gray b">

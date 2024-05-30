@@ -82,11 +82,17 @@ export class ReturnSettings extends ExternalClient {
   private get routes() {
     return {
       returnSettingMket: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURLMket}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURLMket}`,
       returnSettings: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}/${parentAccountName}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}/${parentAccountName}`,
       updateSettings: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}`,
     }
   }
 }

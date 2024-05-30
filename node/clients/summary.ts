@@ -70,9 +70,13 @@ export class Summary extends ExternalClient {
   private get routes() {
     return {
       getSummary: (parentAccountName: string, orderId: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}/_v/return-app/orders/${orderId}/summary`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }/_v/return-app/orders/${orderId}/summary`,
       getSummaryList: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}/_v/return-app/orders/summary`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }/_v/return-app/orders/summary`,
     }
   }
 }

@@ -304,7 +304,10 @@ export const createReturnRequestService = async (
   }
 }
 
-const getSubmittedBy = async (userProfile?: UserProfile, appkey?: string) => {
+export const getSubmittedBy = async (
+  userProfile?: UserProfile,
+  appkey?: string
+) => {
   const { firstName, lastName, email } = userProfile ?? {}
   const submittedByNameOrEmail =
     firstName || lastName ? `${firstName} ${lastName}` : email

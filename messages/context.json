@@ -393,6 +393,7 @@
   "return-app.invoice-order-details.page-header-shipping.subtitle": "OPTIONAL: Insert an amount for a shipping return",
   "return-app.invoice-order-details.page-header-prerefund.subtitle": "No action needed if this is a standard return. Select the toggle below if you want to create this return as a pre-refund. If you are not sure, do not select this option.",
   "return-app.goodwill-order-details.page-header-credit": "Goodwill credit ID",
+  "return-app.goodwill-order-details.page-header-credit-confirm": "Goodwill credit ID",
   "return-app.goodwill-order-details.page-header-credit.subtitle": "Indicate the goodwill credit ID",
   "return-app.invoice-order-details.page-header-credit": "Invoice details",
   "return-app.invoice-order-details.page-header-invoice": "Invoice number",

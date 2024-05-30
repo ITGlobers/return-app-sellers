@@ -4,7 +4,10 @@ import type {
   PriceTag,
   SellerDetail,
 } from '@vtex/clients'
-import { ReturnRequestItemInput, ReturnRequestItem  } from '../../typings/ReturnRequest'
+import {
+  ReturnRequestItemInput,
+  ReturnRequestItem,
+} from '../../typings/ReturnRequest'
 
 import type { Catalog } from '../clients/catalog'
 import { translateItemName } from './translateItems'
@@ -17,7 +20,7 @@ interface ItemMetadata {
   }>
 }
 
-const calculateItemTax = ({
+export const calculateItemTax = ({
   tax,
   priceTags,
   quantity,
@@ -55,7 +58,7 @@ export const createItemsToReturn = async ({
   itemMetadata,
   catalog,
   catalogGQL,
-  isSellerPortal
+  isSellerPortal,
 }: {
   itemsToReturn: ReturnRequestItemInput[]
   orderItems: OrderItemDetailResponse[]
@@ -103,7 +106,13 @@ export const createItemsToReturn = async ({
         sellingPrice,
         tax: calculateItemTax({ tax, priceTags, quantity, sellingPrice }),
         name,
-        localizedName: await translateItemName(id, name, catalog,catalogGQL, isSellerPortal),
+        localizedName: await translateItemName(
+          id,
+          name,
+          catalog,
+          catalogGQL,
+          isSellerPortal
+        ),
         imageUrl: productImage,
         unitMultiplier,
         sellerId: seller,

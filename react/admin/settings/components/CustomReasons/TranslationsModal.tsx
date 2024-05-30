@@ -73,7 +73,11 @@ const tableSchema = (
   },
 })
 
-const TranslationMessage = ({ reason }: { reason: string | undefined }) => (
+interface TranslationMessageProps {
+  reason: string | undefined;
+}
+
+const TranslationMessage: React.FC<TranslationMessageProps> = ({ reason }) => (
   <FormattedMessage
     id="admin/return-app.settings.section.custom-reasons.modal.translations.sub-header.custom-reason-translation"
     values={{

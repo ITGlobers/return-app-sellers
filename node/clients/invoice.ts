@@ -56,7 +56,9 @@ export class Invoice extends ExternalClient {
   private get routes() {
     return {
       createInvoice: (orderId: string, parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}/_v/return-app/invoice/${orderId}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }/_v/return-app/invoice/${orderId}`,
     }
   }
 }

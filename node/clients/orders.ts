@@ -45,7 +45,9 @@ export class Order extends ExternalClient {
   private get routes() {
     return {
       returnList: (parentAccountName: string) =>
-        `${BASE_URL}${parentAccountName}/${this.context.workspace}${baseURL}`,
+        `${BASE_URL(parentAccountName)}${parentAccountName}/${
+          this.context.workspace
+        }${baseURL}`,
     }
   }
 }

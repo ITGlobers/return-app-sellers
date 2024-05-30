@@ -2,7 +2,6 @@ import type { OrderDetailResponse } from '@vtex/clients'
 
 import type { Settings } from '../../clients/settings'
 import { getErrorLog } from '../../typings/error'
-import { getItemsIds, getItemsToInvoice } from '../../utils/getItemsIds'
 import { ExternalLogSeverity } from '../../middlewares/errorHandler'
 
 export const DEFAULT_SETTINGS = {
@@ -35,8 +34,7 @@ const createInvoiceService = async (
     throw new Error(getErrorLog('Order not found', 'INV000'))
   }
 
-  const invoiceSeller = await getItemsToInvoice(invoiceSellerInput, order)
-  if (invoiceSeller.type !== 'Input') {
+  if (invoiceSellerInput.type !== 'Input') {
     ctx.status = 400
     throw new Error(getErrorLog('Invoice type error', 'INV008'))
   }
@@ -46,7 +44,7 @@ const createInvoiceService = async (
       (pack: any) => pack.items
     )
 
-    const itemNotAvailable = invoiceSeller.items.filter(
+    const itemNotAvailable = invoiceSellerInput.items.filter(
       (itemToInvoice: any) =>
         !itemsInoviced.some(
           (itemInvoiced: any) => itemInvoiced.id === itemToInvoice.id
@@ -66,7 +64,7 @@ const createInvoiceService = async (
     }
   }
 
-  if (Number(invoiceSeller.invoiceValue) > order.value) {
+  if (Number(invoiceSellerInput.invoiceValue) > order.value) {
     ctx.status = 400
     throw new Error(
       getErrorLog(
@@ -76,13 +74,11 @@ const createInvoiceService = async (
     )
   }
 
-  const invoiceMarketplace = await getItemsIds(ctx, invoiceSeller)
-
-  invoiceMarketplace.seller = accountInfo.accountName
+  invoiceSellerInput.seller = accountInfo.accountName
   const payload = {
     parentAccountName:
       accountInfo?.parentAccountName || appConfig?.parentAccountName,
-    invoice: invoiceMarketplace,
+    invoice: invoiceSellerInput,
     auth: appConfig,
     orderId,
   }
@@ -93,7 +89,7 @@ const createInvoiceService = async (
     severity: ExternalLogSeverity.INFO,
     payload: {
       details: 'Body of the request captured',
-      stack: JSON.stringify(invoiceMarketplace),
+      stack: JSON.stringify(invoiceSellerInput),
     },
   })
 

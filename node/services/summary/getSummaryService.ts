@@ -12,7 +12,6 @@ const getSummaryService = async (ctx: Context, orderId: string) => {
   } = ctx
   let appConfig: Settings = DEFAULT_SETTINGS
   const accountInfo = await accountClient.getInfo()
-  console.log('accountInfo', accountInfo)
   if (!accountInfo?.parentAccountName) {
     appConfig = await settingsAccount.getSettings(ctx)
   }

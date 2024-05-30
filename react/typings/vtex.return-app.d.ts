@@ -20,6 +20,7 @@ interface ItemToGoodwill {
   amount: number
   quantity: number
   goodwill: number
+  sellerSku: string
 }
 
 type MaybeGlobal<T> = T | null

@@ -102,17 +102,19 @@ export function isValidIBANNumber(input: string) {
   const match = /^([A-Z]{2})(\d{2})([A-Z\d]+)$/.exec(iban)
   const code = match ? match[0] : null
 
-  if (!code || iban.length !== CODE_LENGTHS[code[1]]) {
+  if (match) {
+    if (!code || iban.length !== CODE_LENGTHS[match[1]]) {
+      return false
+    }
+    const dig = match[3] + match[1] + match[2]
+    const digits = dig.replace(/[A-Z]/g, (letter) => {
+      const returnVar = letter.charCodeAt(0) - 55
+
+      return returnVar.toString()
+    })
+    // If the IBAN is correct the result should be 1 if not any number higher than 1.
+    return mod97(digits) === 1
+  } else {
     return false
   }
-
-  const dig = code[3] + code[1] + code[2]
-  const digits = dig.replace(/[A-Z]/g, (letter) => {
-    const returnVar = letter.charCodeAt(0) - 55
-
-    return returnVar.toString()
-  })
-
-  // If the IBAN is correct the result should be 1 if not any number higher than 1.
-  return mod97(digits) === 1
 }

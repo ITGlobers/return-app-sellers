@@ -31,6 +31,7 @@ export type ItemSummary = {
   amountAvailablePerItem: AmountAvailablePerItem
   name: string
   image: string
+  sellerSku: string
 }
 
 export type AmountAvailablePerItem = {

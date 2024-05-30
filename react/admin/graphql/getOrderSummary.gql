@@ -19,6 +19,7 @@ query getOrderSummary($orderId: ID!){
       name
       image
       id
+      sellerSku
     }
     transactions{
       id

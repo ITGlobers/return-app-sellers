@@ -10,6 +10,24 @@
   "return-app.return-request-list.table-filters.clear-filters": "FILTER ENTFERNEN",
   "return-app.goodwill-order-details.page-amount-compensated": "Rückerstattungsbetrag:",
   "return-app.return-request-list.table-filters.toDate": "Bis Datum",
-  "return-app.request-return-order-list.table-header.select-order": "Wählen Sie diesen Auftrag"
+  "return-app.request-return-order-list.table-header.select-order": "Wählen Sie diesen Auftrag",
+  "return-app.goodwill.orders.header": "Erstellen Sie eine neue Kulanz",
+  "return-app.goodwill-order-details.page-header.title": "Erstellen Sie eine neue Kulanz",  
+  "return-app.return-order-details.button.next.goodwill": "Kulanz erstellen",
+  "return-app.goodwill-order-details.section-products": "Für welche Artikel möchten Sie eine Kulanz erstellen?",
+  "return-app.return-order-details.table-header.product": "Artikel",
+  "return-app.goodwill-order-details.page-input.description": "Grund für die Kulanzerstellung (erforderlich falls für diesen Artikel ein Betrag eingegeben wurde)",
+  "return-app.goodwill-order-details.page-header-shipping": "Kulanz für Versandkosten",
+  "return-app.goodwill-order-details.page-header-shipping.description": "Grund für die Kulanz auf die Versandkosten (erforderlich falls Versandkulanz angegeben wurde)",
+  "return-app.return-goodwill-credit-id.error": "Die Kulanz ID muss angegeben werden",
+  "return-app.goodwill-order-details.page-header-credit": "ID der Kulanzgutschrift (darf nicht gleich der originalen Rechnungsnummer sein)",
+  "return-app.goodwill-order-details.page-header-credit.subtitle": "Geben Sie eine Kulanz ID an ",
+  "return-app.confirm-and-submit-goodwill.page-header.title": "Details zur Kulanz",
+  "return-app.goodwill-order-details.section-products-resume-goodwill": "Kulanz für Artikel",
+  "return-app.goodwill-order-details.page-header-credit-confirm": "ID der Kulanzgutschrift",
+  "navigation.labelGoodwill": "Erstellen Sie eine neue Kulanz",
+  "return-app.goodwill-order-details.page-header-shipping.subtitle": "OPTIONAL: Geben Sie einen Betrag für eine Versandkosten ein",
+  "return-app.return-order-details.table-header.amount-to-goodwill": "Kulanzbetrag",
+  "return-app.return-order-details.table-header.amount-to-return": "Erstattungsbetrag"
 }
 
