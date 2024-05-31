@@ -30,7 +30,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           cd node
-          yarn jest --coverage
+          yarn test --coverage
 
       - name: SonarCloud Scan
         run: |
