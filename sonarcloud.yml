@@ -3,8 +3,7 @@ name: SonarCloud Analysis
 on:
   push:
     branches:
-      - main  # Aquí puedes especificar la rama que desees
- 
+      - main  
 jobs:
   sonarcloud:
     name: SonarCloud Scan
@@ -39,10 +38,10 @@ jobs:
           args: >
             -Dsonar.projectKey=return-app-sellers
             -Dsonar.organization=itglobers
-            -Dsonar.sources=node/
+            -Dsonar.sources=./node/
             -Dsonar.exclusions=**/__tests__/**/*
             -Dsonar.tests=**/__tests__/**/*
-            -Dsonar.test.inclusions=src/test/**/*.java
+            -Dsonar.test.inclusions=**/__tests__/**/*
             -Dsonar.coverage.exclusions=**/__tests__/**/*
-            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+            -Dsonar.javascript.lcov.reportPaths=./node/coverage/lcov.info
             -Dsonar.host.url=https://sonarcloud.io
