@@ -1,4 +1,0 @@
-sonarcloud:
-  exclusions:
-    - "**/__tests__/**/*"
-  language: "ts"  
