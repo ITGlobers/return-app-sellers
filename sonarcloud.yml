@@ -35,11 +35,11 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
-          args: >
-            -Dsonar.projectKey=return-app-sellers
-            -Dsonar.organization=itglobers
-            -Dsonar.sources=./node/
-            -Dsonar.exclusions=**/__tests__/**/*,**/__tests__/*
-            -Dsonar.tests=**/__tests__/**/*,**/__tests__/*
-            -Dsonar.typescript.lcov.reportPaths=./node/coverage/lcov.info
-            -Dsonar.host.url=https://sonarcloud.io
+        args: >
+          -Dsonar.projectKey=return-app-sellers
+          -Dsonar.organization=itglobers
+          -Dsonar.sources=./node/
+          -Dsonar.exclusions=**/__tests__/**/*,**/__tests__/*
+          -Dsonar.tests=**/__tests__/**/*,**/__tests__/*
+          -Dsonar.typescript.lcov.reportPaths=./node/coverage/lcov.info
+          -Dsonar.host.url=https://sonarcloud.io
