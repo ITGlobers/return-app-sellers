@@ -20,15 +20,14 @@ jobs:
           cd node 
           yarn test --coverage
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets. SONARCLOUD_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=return-app-sellers
-            -Dsonar.organization=itglobers
-            -Dsonar.sources=node
-            -Dsonar.exclusions=node/__tests__/**/*,**/__tests__/*
-            -Dsonar.tests=node/__tests__/**/*,node/__tests__/*
-            -Dsonar.typescript.lcov.reportPaths=node/coverage/lcov.info
-            -Dsonar.host.url=https://sonarcloud.io
+        run: |
+          yarn global add sonar-scanner
+          sonar-scanner \
+            -Dsonar.projectKey=return-app-sellers \
+            -Dsonar.organization=itglobers \
+            -Dsonar.sources=node \
+            -Dsonar.exclusions=node/__tests__/**/*,**/__tests__/* \
+            -Dsonar.tests=node/__tests__/**/*,node/__tests__/* \
+            -Dsonar.typescript.lcov.reportPaths=node/coverage/lcov.info \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
