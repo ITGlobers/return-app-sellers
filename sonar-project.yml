@@ -2,7 +2,7 @@ sonarcloud:
   sources:
     - "/node"
   exclusions:
-    - "/node/__tests__/*.test.ts"
+    - "/node/__tests__/*,/react/*"
   language: "ts"  
 sonar:
   tests: "/node/__tests__"
