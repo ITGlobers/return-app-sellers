@@ -11,15 +11,15 @@ export class ProfileClient extends ExternalClient {
     token: string | undefined,
     parentAccountName: string
   ) {
-    return this.http.get(
-      `https://${parentAccountName}.myvtex.com/api/dataentities/CL/search?userId=${userId}&_fields=email,firstName,lastName,phone`,
-      {
-        metric: 'get-email-by-userId',
-        headers: {
-          VtexIdClientAutCookie: token,
-        },
-      }
-    )
+    if (!userId) return
+    const URI = `https://${parentAccountName}.myvtex.com/api/dataentities/CL/search?userId=${userId}&_fields=email,firstName,lastName,phone`
+    return this.http.get(URI, {
+      metric: 'get-email-by-userId',
+      headers: {
+        VtexIdClientAutCookie: token,
+        'X-Vtex-Use-Https': 'true',
+      },
+    })
   }
 
   public getProfileUnmask(
@@ -27,15 +27,15 @@ export class ProfileClient extends ExternalClient {
     token: string | undefined,
     parentAccountName: string
   ) {
-    return this.http.get(
-      `https://${parentAccountName}.myvtex.com/api/storage/profile-system/profiles/${userId}/unmask`,
-      {
-        metric: 'get-profile-unmask',
-        headers: {
-          VtexIdClientAutCookie: token,
-        },
-      }
-    )
+    if (!userId) return
+    const URI = `https://${parentAccountName}.myvtex.com/api/storage/profile-system/profiles/${userId}/unmask`
+    return this.http.get(URI, {
+      metric: 'get-profile-unmask',
+      headers: {
+        VtexIdClientAutCookie: token,
+        'X-Vtex-Use-Https': 'true',
+      },
+    })
   }
 
   public getAddressUnmask(
@@ -43,14 +43,14 @@ export class ProfileClient extends ExternalClient {
     token: string | undefined,
     parentAccountName: string
   ) {
-    return this.http.get(
-      `https://${parentAccountName}.myvtex.com/api/storage/profile-system/profiles/${userId}/addresses/unmask`,
-      {
-        metric: 'get-address-unmask',
-        headers: {
-          VtexIdClientAutCookie: token,
-        },
-      }
-    )
+    if (!userId) return
+    const URI = `https://${parentAccountName}.myvtex.com/api/storage/profile-system/profiles/${userId}/addresses/unmask`
+    return this.http.get(URI, {
+      metric: 'get-address-unmask',
+      headers: {
+        VtexIdClientAutCookie: token,
+        'X-Vtex-Use-Https': 'true',
+      },
+    })
   }
 }

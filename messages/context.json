@@ -171,6 +171,7 @@
   "return-app.confirm-and-submit.alert.error": "Something went wrong, please try again.",
   "return-app.confirm-and-submit.button.back": "Back",
   "return-app.confirm-and-submit.button.submit": "Submit",
+  "return-app.confirm-and-submit.alert.success.label": "Back",
   "return-app.confirm-and-submit.pickup-address.title": "Delivery address",
   "return-app.confirm-and-submit.contact-details.title": "Contact details",
   "return-app.confirm-and-submit.user-comment.title": "Comment",

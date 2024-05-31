@@ -32,7 +32,7 @@ export const mockReturnRequest: ReturnRequest = {
   status: 'new',
   refundableAmountTotals: [],
   customerProfileData: {
-    userId: '',
+    userId: '123',
     name: '',
     email: '',
     phoneNumber: '',
@@ -67,7 +67,13 @@ describe('ReturnRequestResponse', () => {
       return: {
         get: jest.fn().mockResolvedValue({}),
       },
+      returnRequestClient: {
+        get: jest.fn().mockResolvedValue({}),
+      },
       account: { getInfo: jest.fn().mockResolvedValue({ mockAccountInfo }) },
+      accountClient: {
+        getInfo: jest.fn().mockResolvedValue({ mockAccountInfo }),
+      },
       settingsAccount: {
         getSettings: jest.fn().mockResolvedValue({ mockSettings }),
       },
@@ -96,10 +102,10 @@ describe('ReturnRequestResponse', () => {
         expect(mockContext.clients.return.get).toHaveBeenCalled()
       })
 
-      it('should return refundData from settings if it does not exist in root', async () => {
+      it('should return refundableAmount', async () => {
         const mockReturnData = undefined
 
-        const result = await ReturnRequestResponse.refundData(
+        const result = await ReturnRequestResponse.refundableAmount(
           {
             id: '123',
             refundData: null,
@@ -144,6 +150,52 @@ describe('ReturnRequestResponse', () => {
 
         expect(result).toEqual(mockReturnData)
         expect(mockContext.clients.return.get).toHaveBeenCalled()
+      })
+      it('should return refundableAmount 100', async () => {
+        const result = await ReturnRequestResponse.refundableAmount(
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 100,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
+          {},
+          mockContext
+        )
+
+        expect(result).toEqual(100)
       })
 
       it('should return refundData from settings if parentAccountName is not available', async () => {
@@ -260,12 +312,87 @@ describe('ReturnRequestResponse', () => {
         const ctx = {} as unknown as Context
 
         const result = await ReturnRequestResponse.items(
-          mockReturnRequest,
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 100,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [
+              {
+                orderItemIndex: 0,
+                id: '',
+                name: '',
+                sellingPrice: 0,
+                tax: 0,
+                quantity: 0,
+                imageUrl: '',
+                unitMultiplier: 0,
+                sellerId: '',
+                productId: '',
+                refId: '',
+                returnReason: {
+                  reason: '',
+                  otherReason: undefined,
+                },
+                condition: 'unspecified',
+              },
+            ],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
           null,
           ctx
         )
 
-        expect(result).toEqual(mockReturnRequest.items)
+        expect(result).toEqual([
+          {
+            condition: 'unspecified',
+            id: '',
+            imageUrl: '',
+            name: '',
+            orderItemIndex: 0,
+            productId: '',
+            quantity: 0,
+            refId: '',
+            returnReason: {
+              otherReason: undefined,
+              reason: '',
+            },
+            sellerId: '',
+            sellingPrice: 0,
+            tax: 0,
+            unitMultiplier: 0,
+          },
+        ])
       })
 
       it('should fetch items if they are not present in the root', async () => {
@@ -292,7 +419,11 @@ describe('ReturnRequestResponse', () => {
         )
 
         expect(ctx.clients.return.get).toHaveBeenCalled
-        expect(result).toEqual([])
+        expect(result).toEqual([
+          {
+            id: 'item1',
+          },
+        ])
       })
 
       it('should fetch items with settings if parentAccountName is not present', async () => {
@@ -320,7 +451,11 @@ describe('ReturnRequestResponse', () => {
 
         expect(ctx.clients.settingsAccount.getSettings).toHaveBeenCalled
         expect(ctx.clients.return.get).toHaveBeenCalled
-        expect(result).toEqual([])
+        expect(result).toEqual([
+          {
+            id: 'item1',
+          },
+        ])
       })
     })
 
@@ -356,18 +491,44 @@ describe('ReturnRequestResponse', () => {
         } as unknown as Context
 
         const result = await ReturnRequestResponse.refundPaymentData(
-          mockReturnRequest,
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '123',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
           null,
           ctx
         )
 
         expect(ctx.clients.return.get).toHaveBeenCalled
-        expect(result).toEqual({
-          accountHolderName: undefined,
-          automaticallyRefundPaymentMethod: undefined,
-          iban: undefined,
-          refundPaymentMethod: 'bank',
-        })
+        expect(result).toEqual({ amount: 100 })
       })
 
       it('should fetch refundPaymentData with settings if parentAccountName is not present', async () => {
@@ -408,53 +569,70 @@ describe('ReturnRequestResponse', () => {
 
     describe('pickupReturnData', () => {
       it('should return pickupReturnData if it is already present in the root', async () => {
-        const ctx = {} as unknown as Context
-
         const result = await ReturnRequestResponse.pickupReturnData(
-          mockReturnRequest,
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '123',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
           null,
-          ctx
+          mockContext
         )
 
-        expect(result).toEqual(mockReturnRequest.pickupReturnData)
+        expect(result).toEqual({
+          addressId: '123',
+          address: '',
+          city: '',
+          state: '',
+          country: '',
+          zipCode: '',
+          addressType: 'PICKUP_POINT',
+          returnLabel: undefined,
+        })
       })
 
       it('should fetch pickupReturnData if it is not present in the root', async () => {
-        const ctx = {
-          clients: {
-            return: {
-              get: jest.fn().mockResolvedValue({
-                pickupReturnData: { address: '123 Main St' },
-              }),
-            },
-            account: {
-              getInfo: jest
-                .fn()
-                .mockResolvedValue({ parentAccountName: 'parent' }),
-            },
-            settingsAccount: {
-              getSettings: jest.fn(),
-            },
-          },
-        } as unknown as Context
-
         const result = await ReturnRequestResponse.pickupReturnData(
           mockReturnRequest,
           null,
-          ctx
+          mockContext
         )
 
-        expect(ctx.clients.return.get).toHaveBeenCalled
-        expect(result).toEqual({
-          address: '',
-          addressId: '',
-          addressType: 'PICKUP_POINT',
-          city: '',
-          country: '',
-          returnLabel: undefined,
-          state: '',
-          zipCode: '',
-        })
+        expect(mockContext.clients.return.get).toHaveBeenCalled
+        expect(result).toEqual(undefined)
       })
 
       it('should fetch pickupReturnData with settings if parentAccountName is not present', async () => {
@@ -485,14 +663,7 @@ describe('ReturnRequestResponse', () => {
         expect(ctx.clients.settingsAccount.getSettings).toHaveBeenCalled
         expect(ctx.clients.return.get).toHaveBeenCalled
         expect(result).toEqual({
-          address: '',
-          addressId: '',
-          addressType: 'PICKUP_POINT',
-          city: '',
-          country: '',
-          returnLabel: undefined,
-          state: '',
-          zipCode: '',
+          address: '123 Main St',
         })
       })
     })
@@ -510,18 +681,314 @@ describe('ReturnRequestResponse', () => {
 
       it('should fetch customerProfileData if not present in root', async () => {
         const result = await ReturnRequestResponse.customerProfileData(
-          mockReturnRequest,
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [],
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
           null,
           mockContext
         )
 
         expect(mockContext.clients.return.get).toHaveBeenCalled
-        expect(result).toEqual({
-          email: '',
-          name: '',
-          phoneNumber: '',
-          userId: '',
-        })
+        expect(result).toEqual(undefined)
+      })
+
+      it('should return customerProfileData if already present in root', async () => {
+        const mockContextWithoutAccount = {
+          clients: {
+            return: {
+              get: jest.fn().mockResolvedValue({}),
+            },
+            account: {
+              getInfo: jest.fn().mockResolvedValue(undefined),
+            },
+            settingsAccount: {
+              getSettings: jest.fn().mockResolvedValue({ mockSettings }),
+            },
+          },
+          request: {
+            header: { 'x-vtex-product': 'store' },
+          },
+        } as unknown as Context
+
+        const result = await ReturnRequestResponse.customerProfileData(
+          mockReturnRequest,
+          null,
+          mockContextWithoutAccount
+        )
+
+        expect(result).toEqual(mockReturnRequest.customerProfileData)
+      })
+    })
+
+    describe('refundableAmountTotals', () => {
+      it('should return refundableAmountTotals if already present in root', async () => {
+        const result = await ReturnRequestResponse.refundableAmountTotals(
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [
+              {
+                id: 'items',
+                value: 0,
+              },
+            ],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
+          null,
+          mockContext
+        )
+
+        expect(result).toEqual([
+          {
+            id: 'items',
+            value: 0,
+          },
+        ])
+      })
+
+      it('should fetch refundableAmountTotals if not present in root', async () => {
+        const result = await ReturnRequestResponse.refundableAmountTotals(
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
+          null,
+          mockContext
+        )
+
+        expect(mockContext.clients.return.get).toHaveBeenCalled
+        expect(result).toEqual(undefined)
+      })
+
+      it('should use default settings if parent account name is not available', async () => {
+        const result = await ReturnRequestResponse.refundableAmountTotals(
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [
+              {
+                id: 'items',
+                value: 0,
+              },
+            ],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
+          null,
+          mockContext
+        )
+
+        expect(result).toEqual([
+          {
+            id: 'items',
+            value: 0,
+          },
+        ])
+      })
+    })
+
+    describe('refundStatusData', () => {
+      it('should return refundStatusData if already present in root', async () => {
+        const result = await ReturnRequestResponse.refundStatusData(
+          mockReturnRequest,
+          null,
+          mockContext
+        )
+
+        expect(result).toEqual([
+          {
+            comments: [
+              {
+                comment: '',
+                createdAt: '',
+                role: 'adminUser',
+                submittedBy: '',
+                visibleForCustomer: true,
+              },
+            ],
+            createdAt: '',
+            status: 'new',
+            submittedBy: undefined,
+          },
+        ])
+      })
+      it('should fetch refundStatusData if not present in root', async () => {
+        const result = await ReturnRequestResponse.refundStatusData(
+          {
+            id: '123',
+            refundData: null,
+            orderId: '',
+            refundableAmount: 0,
+            sequenceNumber: '',
+            status: 'new',
+            refundableAmountTotals: [
+              {
+                id: 'items',
+                value: 0,
+              },
+            ],
+            customerProfileData: {
+              userId: '',
+              name: '',
+              email: '',
+              phoneNumber: '',
+            },
+            pickupReturnData: {
+              addressId: '',
+              address: '',
+              city: '',
+              state: '',
+              country: '',
+              zipCode: '',
+              addressType: 'PICKUP_POINT',
+              returnLabel: undefined,
+            },
+            refundPaymentData: {
+              refundPaymentMethod: 'bank',
+              iban: undefined,
+              accountHolderName: undefined,
+              automaticallyRefundPaymentMethod: undefined,
+            },
+            items: [],
+            dateSubmitted: '',
+            refundStatusData: [],
+            cultureInfoData: {
+              currencyCode: '',
+              locale: '',
+            },
+          },
+          null,
+          mockContext
+        )
+
+        expect(mockContext.clients.account.getInfo).toHaveBeenCalled()
+        expect(result).toEqual([])
       })
     })
   })

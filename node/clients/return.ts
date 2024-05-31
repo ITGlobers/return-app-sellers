@@ -130,15 +130,12 @@ export class Return extends ExternalClient {
     const { createRequest, parentAccountName } = props
 
     try {
-      const response = await this.http.post(
-        this.routes.createReturn(parentAccountName),
-        createRequest,
-        {
-          headers: {
-            Authorization: `Bearer ${this.context.authToken}`,
-          },
-        }
-      )
+      const URI = this.routes.createReturn(parentAccountName)
+      const response = await this.http.post(URI, createRequest, {
+        headers: {
+          Authorization: `Bearer ${this.context.authToken}`,
+        },
+      })
 
       return response
     } catch (error) {

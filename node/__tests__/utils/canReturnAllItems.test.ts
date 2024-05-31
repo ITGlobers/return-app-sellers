@@ -29,9 +29,7 @@ const mockItemsToReturn: ReturnRequestItemInput[] = [
   },
 ]
 
-const mockExcludedCategories: ReturnAppSettings['excludedCategories'] = [
-  // Add mock excluded categories
-]
+const mockExcludedCategories: ReturnAppSettings['excludedCategories'] = []
 
 const mockOrderRequestClient = {} as Order
 const mockCatalog = {} as Catalog

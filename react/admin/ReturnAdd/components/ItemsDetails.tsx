@@ -162,7 +162,7 @@ export const ItemsDetails = (props: Props) => {
         >
           <div
             className={`${handles.productImageWrapper} flex`}
-            style={{ flexBasis: '50%' }}
+            style={{ flexBasis: '10%' }}
           >
             <img
               className={`${handles.productImage}`}

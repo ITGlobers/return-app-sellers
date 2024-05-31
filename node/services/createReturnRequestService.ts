@@ -115,6 +115,9 @@ export const createReturnRequestService = async (
     shippingData,
     storePreferencesData: { currencyCode },
   } = order
+  if (!pickupReturnData.state) {
+    pickupReturnData.state = pickupReturnData.state || ''
+  }
 
   const {
     maxDays,
@@ -204,7 +207,6 @@ export const createReturnRequestService = async (
 
   // customerProfileData can be undefined when coming from a endpoint request
   const { email: inputEmail } = customerProfileData ?? {}
-
   const customerEmail = getCustomerEmail(
     clientProfileData,
     {

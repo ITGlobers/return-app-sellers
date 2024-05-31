@@ -3,7 +3,6 @@ import {
   translateItemName,
   handleTranlateItems,
 } from '../../utils/translateItems'
-// Mock de Catalog y CatalogGQL
 jest.mock('../../clients/catalog', () => ({
   getSKUByID: jest.fn(),
 }))

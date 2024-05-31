@@ -54,7 +54,6 @@ describe('transformCategoryTree', () => {
   })
 })
 
-// Test suite for categoryTreeName resolver function
 describe('categoryTreeName', () => {
   it('should return transformed category tree', async () => {
     const ctx = createContext()

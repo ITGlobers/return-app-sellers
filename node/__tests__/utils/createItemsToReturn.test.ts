@@ -352,8 +352,6 @@ describe('calculateItemTax', () => {
 
     const result = calculateItemTax({ tax, priceTags, quantity, sellingPrice })
 
-    // (0.1 * 100 * 2) + (0.05 * 100 * 2) = 20 + 10 = 30
-    // 30 / 2 = 15
     expect(result).toBe(15)
   })
 
@@ -380,8 +378,6 @@ describe('calculateItemTax', () => {
 
     const result = calculateItemTax({ tax, priceTags, quantity, sellingPrice })
 
-    // 50 + 30 = 80
-    // 80 / 2 = 40
     expect(result).toBe(40)
   })
 
@@ -407,9 +403,6 @@ describe('calculateItemTax', () => {
     const sellingPrice = 100
 
     const result = calculateItemTax({ tax, priceTags, quantity, sellingPrice })
-
-    // (0.1 * 100 * 2) + 30 = 20 + 30 = 50
-    // 50 / 2 = 25
     expect(result).toBe(25)
   })
 })

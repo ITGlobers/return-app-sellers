@@ -1,5 +1,8 @@
 import { ReturnRequest } from '../../../typings/ReturnRequest'
-import { removeSubmittedByForStoreUser } from '../../resolvers/ReturnRequestResponse'
+import {
+  VtexProduct,
+  removeSubmittedByForStoreUser,
+} from '../../resolvers/ReturnRequestResponse'
 
 jest.mock('@vtex/api', () => {
   const originalModule = jest.requireActual('@vtex/api')
@@ -31,7 +34,8 @@ const mockStatusData: ReturnRequest['refundStatusData'][number] = {
 
 describe('removeSubmittedByForStoreUser', () => {
   it('should remove submittedBy for store user', () => {
-    const result = removeSubmittedByForStoreUser(mockStatusData, 'store')
+    const vtexProduct: VtexProduct = 'store'
+    const result = removeSubmittedByForStoreUser(mockStatusData, vtexProduct)
     expect(result).toEqual({
       ...mockStatusData,
       submittedBy: undefined,

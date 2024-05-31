@@ -23,8 +23,9 @@ export class Order extends ExternalClient {
     const { body, parentAccountName } = props
 
     try {
+      const URI = this.routes.returnList(parentAccountName)
       const response = await this.http.post(
-        this.routes.returnList(parentAccountName),
+        URI,
         {
           ...body,
           sellerName: this.context.account,

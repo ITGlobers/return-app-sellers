@@ -65,7 +65,7 @@ export const ReturnInformationTable = ({ items, selectedItems}: Props) => {
               >
                 <td className={`pv5 ${phone ? 'w-80' : 'w-50'}`}>
                   <div className="flex items-center">
-                    <div className={`${handles.returnInfoBodyImgWrapper} mr3`}>
+                    <div className={`${handles.returnInfoBodyImgWrapper} mr3` } style={{ flexBasis: '20%' }}>
                       <img src={imageUrl} alt="Product" />
                     </div>
                     <div className={handles.returnInfoReasonConditionWrapper}>

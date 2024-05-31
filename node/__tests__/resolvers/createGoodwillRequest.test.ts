@@ -51,7 +51,6 @@ describe('createGoodwillRequest', () => {
 
     const result = await createGoodwillRequest({}, { goodwillRequest }, ctx)
 
-    // Verificar que se añada el log correctamente
     expect(ctx.state.logs).toEqual([
       {
         message: 'Request received',
@@ -64,7 +63,6 @@ describe('createGoodwillRequest', () => {
       },
     ])
 
-    // Verificar que createGoodwillService fue llamado con los argumentos correctos
     expect(createGoodwillService).toHaveBeenCalledWith(ctx, goodwillRequest)
 
     expect(result).toEqual(expectedResult)

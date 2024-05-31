@@ -14,7 +14,7 @@ describe('mapItemIndexAndQuantity', () => {
 
     const result = mapItemIndexAndQuantity(itemPackages)
     const expected = new Map([
-      [1, 6], // 2 + 4
+      [1, 6],
       [2, 3],
       [3, 1],
     ])

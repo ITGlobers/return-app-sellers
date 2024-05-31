@@ -1,0 +1,11 @@
+sonarcloud:
+  sources:
+    - "/node"
+  exclusions:
+    - "/node/__tests__/*.test.ts"
+  language: "ts"  
+sonar:
+  tests: "/node/__tests__"
+  test.inclusions: "/node/__tests__"
+  coverage.exclusions: "/node/__tests__, /react"
+  sonar.exclusions: "/node/__tests__, /react"

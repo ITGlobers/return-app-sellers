@@ -14,7 +14,6 @@ const routes = {
 }
 
 interface OrderList {
-  // This API returns more than orderId, but we only need the orderId so far
   list: Array<{ orderId: string; creationDate: string }>
   paging: {
     total: number

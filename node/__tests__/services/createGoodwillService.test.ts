@@ -109,7 +109,6 @@ describe('createGoodwillService', () => {
 
     expect(mockContext.clients.goodwill.updateGoodwillSeller).toHaveBeenCalled
 
-    // Verificar que se agregó un log al estado con la información esperada
     expect(mockContext.state.logs).toEqual([
       {
         message: 'Request received',

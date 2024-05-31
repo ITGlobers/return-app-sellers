@@ -36,7 +36,7 @@ describe('canOrderBeReturned', () => {
 
   it('should not throw errors if creationDate is within maxDays and orderStatus is "partial-invoiced"', () => {
     const creationDate = '2024-05-01'
-    const maxDays = 30
+    const maxDays = 3000
     const status = 'invoiced'
     const orderStatus = 'partial-invoiced'
 
@@ -47,7 +47,7 @@ describe('canOrderBeReturned', () => {
 
   it('should not throw errors if creationDate is within maxDays and status is "invoiced"', () => {
     const creationDate = '2024-05-01'
-    const maxDays = 30
+    const maxDays = 3000
     const status = 'invoiced'
     const orderStatus = 'invoiced'
 

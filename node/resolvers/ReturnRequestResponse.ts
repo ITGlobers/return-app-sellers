@@ -2,7 +2,7 @@ import { ReturnRequest } from '../../typings/ReturnRequest'
 import type { Settings } from '../clients/settings'
 import { DEFAULT_SETTINGS } from '../clients/settings'
 
-type VtexProduct = 'admin' | 'store' | undefined
+export type VtexProduct = 'admin' | 'store' | undefined
 
 export const removeSubmittedByForStoreUser = (
   statusData: ReturnRequest['refundStatusData'][number],
@@ -118,7 +118,7 @@ export const ReturnRequestResponse = {
   ) => {
     const { id, refundableAmountTotals } = root
 
-    if (refundableAmountTotals) return refundableAmountTotals
+    if (refundableAmountTotals.length > 0) return refundableAmountTotals
 
     const {
       clients: {
@@ -156,7 +156,7 @@ export const ReturnRequestResponse = {
   ) => {
     const { id, pickupReturnData } = root
 
-    if (pickupReturnData) return pickupReturnData
+    if (pickupReturnData && pickupReturnData.addressId) return pickupReturnData
 
     const {
       clients: {
@@ -230,7 +230,7 @@ export const ReturnRequestResponse = {
   items: async (root: ReturnRequest, _args: unknown, ctx: Context) => {
     const { id, items } = root
 
-    if (items) return items
+    if (items?.length > 0) return items
 
     const {
       clients: {

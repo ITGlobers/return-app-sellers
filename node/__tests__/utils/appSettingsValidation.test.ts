@@ -22,7 +22,7 @@ describe('validatePaymentOptions', () => {
     const paymentOptions: PaymentOptionsInput = {
       enablePaymentMethodSelection: false,
       allowedPaymentTypes: {},
-      automaticallyRefundPaymentMethod: 'true' as any, // invalid type
+      automaticallyRefundPaymentMethod: 'true' as any,
     }
     expect(() => validatePaymentOptions(paymentOptions)).toThrow(Error)
   })

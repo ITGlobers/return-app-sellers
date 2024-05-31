@@ -1,7 +1,7 @@
 {
   "vendor": "obi",
   "name": "return-app-sellers",
-  "version": "0.6.0",
+  "version": "0.7.0-beta.1",
   "title": "Return app seller",
   "description": "Return app seller",
   "dependencies": {
@@ -33,7 +33,15 @@
       "name": "outbound-access",
       "attrs": {
         "host": "app.io.vtex.com",
-        "path": "/*.return-app/v3/*/master/_v/return-request",
+        "path": "/*.return-app/v3/*/*/_v/return-request",
+        "identity": "vrn:apps:*:*:*:app/*.return-app-sellers@*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "app.io.vtex.com",
+        "path": "/*.return-app/v3/*/*/_v/returns/settings",
         "identity": "vrn:apps:*:*:*:app/*.return-app-sellers@*"
       }
     },
@@ -42,6 +50,27 @@
       "attrs": {
         "host": "*.myvtex.com",
         "path": "/_v/return-request"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*.myvtex.com",
+        "path": "/api/storage/profile-system/profiles/*/unmask"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*.myvtex.com",
+        "path": "/api/storage/profile-system/profiles/*/addresses/unmask"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*.myvtex.com",
+        "path": "/api/dataentities/CL/*"
       }
     },
     {
