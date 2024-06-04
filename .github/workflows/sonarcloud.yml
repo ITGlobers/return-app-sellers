@@ -31,12 +31,3 @@ jobs:
         run: |
           cd node
           yarn test --coverage
-
-      - name: SonarCloud Scan
-        run: |
-          cd ..
-          yarn global add sonar-scanner
-          sonar-scanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
